@@ -16,8 +16,8 @@ const ClientApiSSR = async (
     method: req?.method ? (req.method as Method) : 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: session?.user?.token
-        ? `Bearer ${session?.user?.token}`
+      Authorization: session?.user?.accessToken
+        ? `Bearer ${session?.user?.accessToken}`
         : undefined
     }
   };
