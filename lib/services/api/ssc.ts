@@ -13,8 +13,8 @@ ClientApi.interceptors.request.use(async config => {
   try {
     const session = await getSession();
 
-    if (!config.headers.Authorization && session?.user?.token) {
-      config.headers.Authorization = `Bearer ${session?.user?.token}`;
+    if (!config.headers.Authorization && session?.user?.accessToken) {
+      config.headers.Authorization = `Bearer ${session?.user?.accessToken}`;
     }
   } catch (error) {
     // Silently handle error

@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: tfi-fe-sanchezpalomino
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXTAUTH_SECRET
+        generateValue: true
+      - key: NEXTAUTH_URL
+        value: https://tfi-fe-sanchezpalomino.onrender.com
+      - key: NEXT_PUBLIC_API_URL
+        value: https://tfi-backend-sanchezpalomino.onrender.com/api 
