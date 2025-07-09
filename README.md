@@ -1,6 +1,12 @@
-# RFI Frontend - Sanchez Palomino
+# TFI Frontend - Sanchez Palomino
 
 A modern Next.js application built with TypeScript, featuring authentication, state management, and a comprehensive UI system.
+
+## 🌐 Live Demo
+
+**Production URL:** [https://tfi-fe-sanchezpalomino.onrender.com](https://tfi-fe-sanchezpalomino.onrender.com)
+
+The application is automatically deployed on Render.com and updates on every push to the main branch.
 
 ## Technology Stack
 
@@ -77,6 +83,21 @@ npm start
 ```bash
 npm run lint
 ```
+
+## Deployment
+
+This application is automatically deployed on [Render.com](https://render.com) with the following configuration:
+
+- **Build Command:** `npm install && npm run build`
+- **Start Command:** `npm start`
+- **Environment:** Node.js
+- **Auto-deploy:** Enabled (deploys on every push to main branch)
+
+### Environment Variables (Production)
+The following environment variables are configured in Render:
+- `NEXTAUTH_SECRET` - NextAuth.js secret for session encryption
+- `NEXTAUTH_URL` - Production URL for NextAuth callbacks
+- `NEXT_PUBLIC_API_URL` - Backend API URL
 
 ## Project Structure
 
