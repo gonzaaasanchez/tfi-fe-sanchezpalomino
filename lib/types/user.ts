@@ -1,0 +1,28 @@
+import { Role } from "./role";
+
+export interface User {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  phoneNumber?: string;
+  role: Role;
+  avatar?: string;
+  avatarContentType?: string;
+}
+
+export interface Admin {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: {
+    id: string;
+    name: string;
+    description?: string;
+  };
+  avatar?: string;
+  avatarContentType?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}

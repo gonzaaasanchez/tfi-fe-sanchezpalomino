@@ -1,0 +1,161 @@
+{
+  "components": {
+    "forms": {
+      "auth": {
+        "forgotPassword": {
+          "cta": {
+            "login": "Iniciar Sesión",
+            "submit": "Enviar"
+          },
+          "description": "Ingresa tu dirección de correo electrónico para restablecer tu contraseña.",
+          "labels": {
+            "email": "Correo Electrónico"
+          },
+          "placeholders": {
+            "email": "ejemplo@gmail.com"
+          },
+          "title": "¿Olvidaste tu contraseña?"
+        },
+        "login": {
+          "cta": {
+            "createAccount": "Crear una cuenta",
+            "forgotPassword": "¿Olvidaste tu contraseña?",
+            "submit": "Iniciar Sesión"
+          },
+          "labels": {
+            "email": "Correo Electrónico",
+            "password": "Contraseña"
+          },
+          "placeholders": {
+            "email": "ejemplo@gmail.com",
+            "password": "·················"
+          },
+          "responses": {
+            "error": "Credenciales inválidas",
+            "success": "¡Bienvenido!"
+          },
+          "title": "Iniciar Sesión"
+        },
+        "resetPassword": {
+          "title": "Restablecer contraseña",
+          "labels": {
+            "password": "Contraseña"
+          },
+          "placeholders": {
+            "password": "·················"
+          },
+          "cta": {
+            "submit": "Guardar Contraseña"
+          }
+        },
+        "signUp": {
+          "cta": {
+            "signIn": "Iniciar Sesión"
+          },
+          "labels": {
+            "email": "Correo Electrónico",
+            "firstName": "Nombre",
+            "lastName": "Apellido",
+            "password": "Contraseña",
+            "role": "Me estoy registrando como:"
+          },
+          "placeholders": {
+            "email": "ejemplo@gmail.com",
+            "firstName": "Juan",
+            "lastName": "Pérez",
+            "password": "·················",
+            "role": "Seleccionar",
+            "schoolName": "Ingresa el nombre completo de tu escuela"
+          },
+          "title": "Crear una Cuenta"
+        }
+      }
+    },
+    "layout": {
+      "header": {
+        "nav": {
+          "options": {
+            "classes": "Clases",
+            "discover": "Descubrir",
+            "projects": "Proyectos"
+          }
+        }
+      }
+    }
+  },
+  "general": {
+    "form": {
+      "errors": {
+        "email": "Correo electrónico inválido",
+        "invalidDate": "Fecha inválida",
+        "max": "Máximo: {max}",
+        "maxFileSize": "Tamaño de archivo excedido, máximo: {maxSize}mb",
+        "maxLength": "Longitud máxima: {maxLength}",
+        "minLength": "Longitud mínima: {minLength}",
+        "min": "Mínimo: {min}",
+        "password": "Debe contener: un número, una letra mayúscula y una minúscula",
+        "required": "Campo requerido",
+        "requiredSelect": "Selecciona una opción",
+        "requiredTeamLeader": "Líder de equipo pendiente",
+        "url": "URL inválida"
+      }
+    }
+  },
+  "layouts": {
+  },
+  "lib": {
+    "hooks": {
+    }
+  },
+  "pages": {
+    "admins": {
+      "index": {
+        "meta": {
+          "title": "Administradores",
+          "description": "Gestión de administradores del sistema"
+        },
+        "title": "Administradores"
+      }
+    },
+    "auth": {
+      "login": {
+        "meta": {
+          "description": "Inicia sesión en - nombre de la app-",
+          "title": "Iniciar Sesión"
+        },
+        "responses": {
+          "accountValidated": "¡Tu dirección de correo electrónico está confirmada!",
+          "passwordUpdated": "Tu contraseña ha sido restablecida."
+        }
+      }
+    },
+    "dashboard": {
+      "index": {
+        "meta": {
+          "title": "Dashboard",
+          "description": "Panel principal"
+        },
+        "title": "Dashboard"
+      }
+    },
+    "roles": {
+      "meta": {
+        "title": "Roles",
+        "description": "Gestión de roles y permisos del sistema"
+      },
+      "title": "Roles",
+      "description": "Administra los roles y permisos de los usuarios",
+      "actions": {
+        "view": "Ver",
+        "edit": "Editar",
+        "delete": "Eliminar"
+      },
+      "columns": {
+        "id": "ID",
+        "name": "Nombre",
+        "description": "Descripción"
+      },
+      "empty": "No hay roles disponibles"
+    }
+  }
+} 
