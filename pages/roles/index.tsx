@@ -10,7 +10,7 @@ import { Role } from 'lib/types/role';
 
 const Roles: NextPageWithLayout = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { roles, search, setSearch } = useGetRoles({ limit: 10 });
+  const { roles, search, setSearch, isPending } = useGetRoles({ limit: 10 });
 
   const columns: Column[] = [
     {
@@ -43,7 +43,9 @@ const Roles: NextPageWithLayout = () => {
       color: 'blue',
       variant: 'ghost' as const,
       size: 'sm' as const,
-      tooltip: 'Ver detalles del rol'
+      tooltip: 'Ver detalles del rol',
+      module: 'roles',
+      action: 'read'
     },
     {
       name: 'edit',
@@ -52,7 +54,9 @@ const Roles: NextPageWithLayout = () => {
       color: 'orange',
       variant: 'ghost' as const,
       size: 'sm' as const,
-      tooltip: 'Editar rol'
+      tooltip: 'Editar rol',
+      module: 'roles',
+      action: 'update'
     },
     {
       name: 'delete',
@@ -61,7 +65,9 @@ const Roles: NextPageWithLayout = () => {
       color: 'red',
       variant: 'ghost' as const,
       size: 'sm' as const,
-      tooltip: 'Eliminar rol'
+      tooltip: 'Eliminar rol',
+      module: 'roles',
+      action: 'delete'
     }
   ];
 
@@ -69,29 +75,29 @@ const Roles: NextPageWithLayout = () => {
     switch (actionName) {
       case 'view':
         console.log('Ver rol:', item);
-        // Aquí iría la navegación a la página de detalles
+        // Here would go navigation to details page
         break;
       case 'edit':
         console.log('Editar rol:', item);
-        // Aquí iría la navegación a la página de edición
+        // Here would go navigation to edit page
         break;
       case 'delete':
         console.log('Eliminar rol:', item);
-        // Aquí iría la confirmación de eliminación
+        // Here would go delete confirmation
         break;
       default:
         break;
     }
   };
 
-  // Manejar cambio de página
+  // Handle page change
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  // Manejar ordenamiento
+  // Handle sorting
   const handleSort = (key: string, direction: 'ASC' | 'DESC') => {
-    // Aquí iría la lógica de ordenamiento
+    // Here would go sorting logic
   };
 
   return (
@@ -114,7 +120,7 @@ const Roles: NextPageWithLayout = () => {
           rows={roles || []}
           columns={columns}
           actions={actions}
-          loading={false}
+          loading={isPending}
           emptyText="No hay roles disponibles"
           shadow={true}
           onAction={handleAction}

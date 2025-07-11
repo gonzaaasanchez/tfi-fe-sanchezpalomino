@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-// Tipos básicos para el componente de tabla
+// Basic types for table component
 export interface Column {
   key: string;
   label: ReactNode;
@@ -51,7 +51,7 @@ export interface TableProps {
   onPageSizeChange?: (pageSize: number) => void;
 }
 
-// Tipos extendidos para casos específicos
+// Extended types for specific cases
 export interface SortableColumn extends Column {
   sortable: true;
   sortKey: string;
@@ -71,7 +71,7 @@ export interface BadgeColumn extends Column {
   type: 'badge';
 }
 
-// Tipos para acciones específicas
+// Types for specific actions
 export interface EditAction extends Action {
   name: 'edit';
   color: 'blue' | 'orange';
@@ -87,7 +87,7 @@ export interface ViewAction extends Action {
   color: 'blue' | 'green';
 }
 
-// Tipo para datos de usuario (ejemplo)
+// Type for user data (example)
 export interface UserData {
   id: number;
   name: string;
@@ -98,7 +98,7 @@ export interface UserData {
   lastLogin?: string;
 }
 
-// Tipo para configuración de tabla de usuarios
+// Type for user table configuration
 export interface UserTableConfig {
   columns: Column[];
   actions: Action[];

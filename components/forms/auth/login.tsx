@@ -9,7 +9,7 @@ import {
   VStack
 } from '@chakra-ui/react';
 import { emailPattern } from '@helpers/field-validators';
-import { getSession, signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -56,57 +56,82 @@ export const LoginForm: React.FC = () => {
 
   return (
     <FormProvider {...methods}>
-      <Box>
-        <Heading as="h2" color="white" size="h2" textAlign="center">
+      <VStack spacing={{ base: 6, sm: 8 }} w="full">
+        <Heading 
+          as="h2" 
+          color="brand1.700" 
+          size={{ base: "lg", sm: "xl", md: "h2" }}
+          textAlign="center"
+          mb={{ base: 2, sm: 4 }}
+        >
           {t('title')}
         </Heading>
-        <Box as="form" mt={8} noValidate onSubmit={handleSubmit(onSubmit)}>
-          <FormControl isInvalid={!!errors.email}>
-            <FormLabel htmlFor="email">{t('labels.email')}</FormLabel>
-            <Input
-              id="email"
-              placeholder={t('placeholders.email')}
-              {...register('email', {
-                required: te('required'),
-                pattern: emailPattern(te('email'))
-              })}
-            />
-            <FormErrorMessage>
-              <FormErrorIcon me={1} />
-              {errors.email && errors.email.message}
-            </FormErrorMessage>
-          </FormControl>
-          
-          <FormControl isInvalid={!!errors.password} mt={4}>
-            <FormLabel htmlFor="password">{t('labels.password')}</FormLabel>
-            <Input
-              id="password"
-              type="password"
-              placeholder={t('placeholders.password')}
-              {...register('password', {
-                required: te('required'),
-                // pattern: passwordPattern(te('password'))
-              })}
-            />
-            <FormErrorMessage>
-              <FormErrorIcon me={1} />
-              {errors.password && errors.password.message}
-            </FormErrorMessage>
-          </FormControl>
-          
-          <VStack textAlign="center">
+        
+        <Box as="form" noValidate onSubmit={handleSubmit(onSubmit)} w="full">
+          <VStack spacing={{ base: 4, sm: 6 }} w="full">
+            <FormControl isInvalid={!!errors.email} w="full">
+              <FormLabel 
+                htmlFor="email"
+                fontSize="md"
+                mb={{ base: 2, sm: 3 }}
+              >
+                {t('labels.email')}
+              </FormLabel>
+              <Input
+                id="email"
+                placeholder={t('placeholders.email')}
+                size="md"
+                fontSize="md"
+                {...register('email', {
+                  required: te('required'),
+                  pattern: emailPattern(te('email'))
+                })}
+              />
+              <FormErrorMessage fontSize={{ base: "xs", sm: "sm" }}>
+                <FormErrorIcon me={1} />
+                {errors.email && errors.email.message}
+              </FormErrorMessage>
+            </FormControl>
+            
+            <FormControl isInvalid={!!errors.password} w="full">
+              <FormLabel 
+                htmlFor="password"
+                fontSize="md"
+                mb={{ base: 2, sm: 3 }}
+              >
+                {t('labels.password')}
+              </FormLabel>
+              <Input
+                id="password"
+                type="password"
+                placeholder={t('placeholders.password')}
+                size="md"
+                fontSize="md"
+                {...register('password', {
+                  required: te('required'),
+                  // pattern: passwordPattern(te('password'))
+                })}
+              />
+              <FormErrorMessage fontSize={{ base: "xs", sm: "sm" }}>
+                <FormErrorIcon me={1} />
+                {errors.password && errors.password.message}
+              </FormErrorMessage>
+            </FormControl>
+            
             <Button
               isDisabled={!isValid || isSubmitting}
               isLoading={isSubmitting}
-              mt={5}
-              mx="auto"
               type="submit"
+              w="full"
+              size="md"
+              mt={{ base: 4, sm: 6 }}
+              colorScheme="brand1"
             >
               {t('cta.submit')}
             </Button>
           </VStack>
         </Box>
-      </Box>
+      </VStack>
     </FormProvider>
   );
 };

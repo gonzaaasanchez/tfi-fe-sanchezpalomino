@@ -15,10 +15,8 @@ import { AxiosError } from 'axios';
 export function useGetAdmins(params?: UseGetAllType) {
   const [search, setSearch] = useState<string>(params?.initialSearch || '');
 
-  const { data } = useQuery<PaginatedResponse<Admin>, AxiosError>({
-    queryKey: [
-      '/admins'
-    ],
+  const { data, isPending } = useQuery<PaginatedResponse<Admin>, AxiosError>({
+    queryKey: ['/admins', search],
     queryFn: () =>
       AdminService.getAdmins({ search, limit: params?.limit || DEFAULT_PARAM_LIMIT }),
     retry: false,
@@ -27,7 +25,7 @@ export function useGetAdmins(params?: UseGetAllType) {
     staleTime: 60000
   });
 
-  return { admins: data?.data as Admin[], search, setSearch };
+  return { admins: data?.data as Admin[], search, setSearch, isPending };
 }
 
 export function useGetAdmin({ id }: UseGetOneByIdType) {
@@ -38,7 +36,7 @@ export function useGetAdmin({ id }: UseGetOneByIdType) {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     staleTime: 60000,
-    enabled: id > 0
+    enabled: !!id
   });
 
   return { admin: data || null, isPending };
@@ -46,54 +44,47 @@ export function useGetAdmin({ id }: UseGetOneByIdType) {
 
 export const useCreateAdmin = () => {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
 
   return useMutation({
     mutationFn: (adminData: AdminCreateService) => AdminService.createAdmin(adminData),
     onSuccess: (data) => {
-      successToast('Administrador creado exitosamente');
-      queryClient.invalidateQueries({ queryKey: [
-        '/admins'
-      ], });
+      queryClient.invalidateQueries({ queryKey: ['/admins'] });
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || 'Error al crear el administrador';
+      const message = error.response?.data?.message || 'Error al crear el operador';
       errorToast(message);
     },
   });
 };
 
-export const useUpdateAdmin = () => {
+export function useUpdateAdmin(id: string) {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
 
   return useMutation({
-    mutationFn: ({ id, adminData }: { id: string; adminData: AdminUpdateService }) =>
-      AdminService.updateAdmin(id, adminData),
-    onSuccess: (data) => {
-      successToast('Administrador actualizado exitosamente');
-      queryClient.invalidateQueries({ queryKey: [
-        '/admins'
-      ], });
+    mutationFn: (adminData: AdminUpdateService) => AdminService.updateAdmin(id, adminData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [`/admins/${id}`]
+      });
+      queryClient.invalidateQueries({ queryKey: ['/admins'] });
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || 'Error al actualizar el administrador';
+      const message = error.response?.data?.message;
       errorToast(message);
     },
   });
-};
+}
 
 export const useDeleteAdmin = () => {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
 
   return useMutation({
     mutationFn: (id: string) => AdminService.deleteAdmin(id),
-    onSuccess: (data) => {
-      successToast('Administrador eliminado exitosamente');
-      queryClient.invalidateQueries({ queryKey: [
-        '/admins'
-      ], });
+    onSuccess: (data, id) => {
+      queryClient.invalidateQueries({ queryKey: ['/admins'] });
     },
     onError: (error: any) => {
       const message = error.response?.data?.message || 'Error al eliminar el administrador';

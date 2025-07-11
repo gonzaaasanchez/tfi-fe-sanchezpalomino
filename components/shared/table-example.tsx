@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Text, Badge } from '@chakra-ui/react';
 import { ViewIcon } from '@chakra-ui/icons';
 import Table, { Column, Action, PaginationMetadata } from './table';
 
-// Datos de ejemplo simples
+// Simple example data
 const sampleData = [
   {
     id: 1,
@@ -28,7 +28,7 @@ const sampleData = [
   }
 ];
 
-// Configuración de columnas simplificada
+  // Simplified column configuration
 const columns: Column[] = [
   {
     key: 'id',
@@ -62,7 +62,7 @@ const columns: Column[] = [
   }
 ];
 
-// Acción simple
+  // Simple action with permission validation
 const actions: Action[] = [
   {
     name: 'view',
@@ -70,11 +70,13 @@ const actions: Action[] = [
     icon: <ViewIcon />,
     color: 'blue',
     variant: 'ghost',
-    tooltip: 'Ver información detallada'
+    tooltip: 'Ver información detallada',
+    module: 'users',
+    action: 'read'
   }
 ];
 
-// Metadata de paginación
+  // Pagination metadata
 const metadata: PaginationMetadata = {
   page: 1,
   pageCount: 1,
@@ -83,6 +85,17 @@ const metadata: PaginationMetadata = {
 };
 
 const TableExample: React.FC = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simular carga inicial
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000); // 3 segundos de carga simulada
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleAction = (actionName: string, item: any) => {
     console.log(`Acción ${actionName} ejecutada para:`, item);
   };
@@ -92,7 +105,7 @@ const TableExample: React.FC = () => {
       rows={sampleData}
       columns={columns}
       actions={actions}
-      loading={false}
+      loading={isLoading}
       emptyText="No hay datos disponibles"
       title="Listado de Operadores"
       metadata={metadata}

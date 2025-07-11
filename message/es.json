@@ -1,6 +1,42 @@
 {
   "components": {
     "forms": {
+      "admin": {
+        "cta": {
+          "create": "Crear Administrador",
+          "update": "Actualizar Administrador",
+          "cancel": "Cancelar"
+        },
+        "labels": {
+          "firstName": "Nombre",
+          "lastName": "Apellido",
+          "email": "Correo Electrónico",
+          "password": "Contraseña",
+          "confirmPassword": "Confirmar Contraseña",
+          "role": "Rol",
+          "phoneNumber": "Número de Teléfono",
+          "avatar": "Foto de Perfil"
+        },
+        "placeholders": {
+          "firstName": "Ingresa el nombre",
+          "lastName": "Ingresa el apellido",
+          "email": "ejemplo@gmail.com",
+          "password": "·················",
+          "confirmPassword": "·················",
+          "role": "Selecciona un rol",
+          "phoneNumber": "+1 (555) 123-4567"
+        },
+        "responses": {
+          "createSuccess": "Operador creado exitosamente",
+          "updateSuccess": "Operador actualizado exitosamente",
+          "createError": "Error al crear el Operador",
+          "updateError": "Error al actualizar el Operador"
+        },
+        "validation": {
+          "passwordMismatch": "Las contraseñas no coinciden",
+          "passwordMinLength": "La contraseña debe tener al menos 8 caracteres"
+        }
+      },
       "auth": {
         "forgotPassword": {
           "cta": {
@@ -102,6 +138,12 @@
     }
   },
   "layouts": {
+    "private": {
+      "header": {
+        "signOut": "Cerrar Sesión",
+        "profile": "Perfil"
+      }
+    }
   },
   "lib": {
     "hooks": {
@@ -110,11 +152,89 @@
   "pages": {
     "admins": {
       "index": {
+        "actions": {
+          "edit": {
+            "label": "Editar",
+            "tooltip": "Editar administrador"
+          },
+          "delete": {
+            "label": "Eliminar",
+            "tooltip": "Eliminar administrador"
+          },
+          "view": {
+            "label": "Ver",
+            "tooltip": "Ver detalles del administrador"
+          }
+        },
+        "cta": {
+          "createAdmin": "Crear Administrador"
+        },
+        "description": "Gestión de administradores del sistema",
+        "emptyText": "No hay administradores disponibles",
         "meta": {
           "title": "Administradores",
           "description": "Gestión de administradores del sistema"
         },
         "title": "Administradores"
+      },
+      "create": {
+        "meta": {
+          "title": "Crear Administrador",
+          "description": "Crear un nuevo administrador en el sistema"
+        },
+        "title": "Crear Administrador",
+        "description": "Completa el formulario para crear un nuevo administrador",
+        "breadcrumb": {
+          "home": "Inicio",
+          "admins": "Administradores",
+          "create": "Crear"
+        }
+      },
+      "edit": {
+        "meta": {
+          "title": "Editar Administrador",
+          "description": "Editar información del administrador"
+        },
+        "title": "Editar Administrador",
+        "description": "Modifica la información del administrador",
+        "breadcrumb": {
+          "home": "Inicio",
+          "admins": "Administradores",
+          "edit": "Editar"
+        },
+        "form": {
+          "title": "Formulario de Edición"
+        }
+      },
+      "view": {
+        "meta": {
+          "title": "Ver Administrador",
+          "description": "Ver detalles del administrador"
+        },
+        "title": "Detalles del Administrador",
+        "description": "Información completa del administrador",
+        "breadcrumb": {
+          "home": "Inicio",
+          "admins": "Administradores",
+          "view": "Ver"
+        },
+        "actions": {
+          "back": "Volver",
+          "edit": "Editar"
+        },
+        "sections": {
+          "basicInfo": "Información Básica",
+          "additionalInfo": "Información Adicional"
+        },
+        "fields": {
+          "id": "ID",
+          "firstName": "Nombre",
+          "lastName": "Apellido",
+          "email": "Correo Electrónico",
+          "role": "Rol",
+          "createdAt": "Fecha de Creación",
+          "updatedAt": "Última Actualización"
+        }
       }
     },
     "auth": {

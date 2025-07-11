@@ -1,0 +1,240 @@
+import {
+  Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Container,
+  Heading,
+  Text,
+  VStack,
+  Spinner,
+  Center,
+  HStack,
+  Button,
+  Card,
+  CardBody,
+  Badge,
+  Divider
+} from '@chakra-ui/react';
+import { ChevronRightIcon } from '@chakra-ui/icons';
+import { EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
+import { useTranslations } from 'next-intl';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { GetServerSideProps } from 'next';
+import { pick } from 'lodash';
+import { handlePermission } from '@helpers/middlewares';
+import { PrivateLayout } from 'layouts';
+import { NextSeo } from 'next-seo';
+import { useGetAdmin } from '@hooks/use-admins';
+import { PermissionGuard } from 'components/shared/permission-guard';
+
+const ViewAdminPage: NextPage = () => {
+  const t = useTranslations('pages.admins.view');
+  const router = useRouter();
+  const { id } = router.query;
+  
+  const { admin, isPending: isLoadingAdmin } = useGetAdmin({ 
+    id: id as string 
+  });
+
+  const handleEdit = () => {
+    router.push(`/admins/${id}/edit`);
+  };
+
+  const handleBack = () => {
+    router.push('/admins');
+  };
+
+  // Si está cargando el admin, mostrar spinner
+  if (isLoadingAdmin) {
+    return (
+      <PrivateLayout>
+        <Container maxW="container.lg" height="100vh" py={8}>
+          <Center>
+            <Spinner size="xl" color="brand1.500" />
+          </Center>
+        </Container>
+      </PrivateLayout>
+    );
+  }
+
+  // Si no se encontró el admin, redirigir
+  if (!admin) {
+    router.push('/admins');
+    return null;
+  }
+
+  return (
+    <PrivateLayout>
+      <NextSeo
+        title={t('meta.title')}
+        description={t('meta.description')}
+      />
+
+      <Container maxW="container.lg" py={8}>
+        <VStack spacing={6} align="stretch">
+          {/* Breadcrumb */}
+          <Breadcrumb
+            spacing="8px"
+            separator={<ChevronRightIcon color="gray.500" />}
+            fontSize="sm"
+          >
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/dashboard" color="gray.500">
+                {t('breadcrumb.home')}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/admins" color="gray.500">
+                {t('breadcrumb.admins')}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink color="brand1.700" fontWeight="medium">
+                {t('breadcrumb.view')}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+
+          {/* Header */}
+          <Box>
+            <HStack justify="space-between" align="flex-start">
+              <Box>
+              <Heading size="lg" mb={2} color="gray.800">
+                  {t('title')}
+                </Heading>
+                <Text color="gray.600" fontSize="sm">
+                  {t('description')}
+                </Text>
+              </Box>
+              <HStack spacing={3}>
+                <PermissionGuard module="admins" action="update">
+                  <Button
+                    leftIcon={<EditIcon />}
+                    onClick={handleEdit}
+                  >
+                    {t('actions.edit')}
+                  </Button>
+                </PermissionGuard>
+              </HStack>
+            </HStack>
+          </Box>
+
+          {/* Admin Details Card */}
+          <Card>
+            <CardBody>
+              <VStack spacing={6} align="stretch">
+                {/* Basic Information */}
+                <Box>
+                  <Heading size="sm" color="brand1.700" mb={4}>
+                    {t('sections.basicInfo')}
+                  </Heading>
+                  <VStack spacing={4} align="stretch">
+                    <HStack justify="space-between">
+                      <Text fontWeight="medium" color="gray.700">
+                        {t('fields.id')}:
+                      </Text>
+                      <Text color="gray.600">{admin.id}</Text>
+                    </HStack>
+                    <HStack justify="space-between">
+                      <Text fontWeight="medium" color="gray.700">
+                        {t('fields.firstName')}:
+                      </Text>
+                      <Text color="gray.600">{admin.firstName}</Text>
+                    </HStack>
+                    <HStack justify="space-between">
+                      <Text fontWeight="medium" color="gray.700">
+                        {t('fields.lastName')}:
+                      </Text>
+                      <Text color="gray.600">{admin.lastName}</Text>
+                    </HStack>
+                    <HStack justify="space-between">
+                      <Text fontWeight="medium" color="gray.700">
+                        {t('fields.email')}:
+                      </Text>
+                      <Text color="gray.600">{admin.email}</Text>
+                    </HStack>
+                    <HStack justify="space-between">
+                      <Text fontWeight="medium" color="gray.700">
+                        {t('fields.role')}:
+                      </Text>
+                      <Badge
+                        colorScheme={admin.role?.name === 'superadmin' ? 'orange' : 'blue'}
+                        variant="subtle"
+                        px={3}
+                        py={1}
+                      >
+                        {admin.role?.name || '-'}
+                      </Badge>
+                    </HStack>
+                  </VStack>
+                </Box>
+
+                <Divider />
+
+                {/* Additional Information */}
+                <Box>
+                  <Heading size="sm" color="brand1.700" mb={4}>
+                    {t('sections.additionalInfo')}
+                  </Heading>
+                  <VStack spacing={4} align="stretch">
+                    <HStack justify="space-between">
+                      <Text fontWeight="medium" color="gray.700">
+                        {t('fields.createdAt')}:
+                      </Text>
+                      <Text color="gray.600">
+                        {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString('es-ES') : '-'}
+                      </Text>
+                    </HStack>
+                    <HStack justify="space-between">
+                      <Text fontWeight="medium" color="gray.700">
+                        {t('fields.updatedAt')}:
+                      </Text>
+                      <Text color="gray.600">
+                        {admin.updatedAt ? new Date(admin.updatedAt).toLocaleDateString('es-ES') : '-'}
+                      </Text>
+                    </HStack>
+                  </VStack>
+                </Box>
+              </VStack>
+            </CardBody>
+          </Card>
+        </VStack>
+        <Box mt={10}>
+          <Button
+            leftIcon={<ArrowBackIcon />}
+            variant="outline"
+            onClick={handleBack}
+          >
+            {t('actions.back')}
+          </Button>
+        </Box>
+      </Container>
+    </PrivateLayout>
+  );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+  locale = 'es',
+  params,
+  ...ctx
+}) => {
+  const errors: any = await handlePermission(ctx.req, ctx.res, '/admins/view');
+  if (errors) {
+    return errors;
+  }
+  
+  return {
+    props: {
+      messages: pick(await import(`../../../message/${locale}.json`), [
+        'layouts.private',
+        'pages.admins.view',
+        'pages.admins.index',
+        'components.shared.permission-guard'
+      ])
+    }
+  };
+};
+
+export default ViewAdminPage; 

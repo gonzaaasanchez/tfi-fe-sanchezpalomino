@@ -16,6 +16,7 @@ export interface Admin {
   firstName: string;
   lastName: string;
   email: string;
+  phoneNumber?: string;
   role: {
     id: string;
     name: string;

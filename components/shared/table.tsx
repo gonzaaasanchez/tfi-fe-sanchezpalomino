@@ -21,6 +21,7 @@ import {
 import { format } from 'date-fns';
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import Pagination from './pagination';
+import { usePermissions } from '@hooks/use-permissions';
 
 // Data types
 export interface Column {
@@ -47,6 +48,7 @@ export interface Action {
   isDisabled?: (item: any) => boolean;
   tooltip?: string;
   action?: string; // For permissions
+  module?: string; // Module for permission validation
   visible?: (item: any) => boolean; // To show/hide actions
   loading?: (item: any) => boolean; // To show loading for specific actions
 }
@@ -97,6 +99,7 @@ const TableComponent: React.FC<TableProps> = ({
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const hoverBg = useColorModeValue('gray.50', 'gray.700');
+  const { hasPermission, isSuperAdmin } = usePermissions();
 
   // Sorting
   const handleSort = (column: Column) => {
@@ -138,10 +141,27 @@ const TableComponent: React.FC<TableProps> = ({
     return item[column.key] || '-';
   };
 
-  // Row actions
+  // Row actions with permission validation
   const showAction = (action: Action, item: any): boolean => {
-    return action.visible ? action.visible(item) : true;
+    // Check if action should be visible based on custom logic
+    if (action.visible && !action.visible(item)) {
+      return false;
+    }
+
+    // Super admin can see all actions
+    if (isSuperAdmin()) {
+      return true;
+    }
+
+    // If no module or action specified, show by default
+    if (!action.module || !action.action) {
+      return true;
+    }
+
+    // Check permissions
+    return hasPermission(action.module, action.action);
   };
+
   const showLoading = (action: Action, item: any): boolean => {
     return action.loading ? action.loading(item) : false;
   };

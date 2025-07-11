@@ -164,9 +164,7 @@ export type AdminCreateService = {
   lastName: string;
   email: string;
   password: string;
-  roleId: string;
-  avatar?: string;
-  avatarContentType?: string;
+  role: string;
 };
 
 export type AdminUpdateService = {
@@ -175,8 +173,8 @@ export type AdminUpdateService = {
   email?: string;
   password?: string;
   roleId?: string;
-  avatar?: string;
-  avatarContentType?: string;
+  phoneNumber?: string;
+  avatar?: File;
 };
 
 export type AdminDeleteService = {

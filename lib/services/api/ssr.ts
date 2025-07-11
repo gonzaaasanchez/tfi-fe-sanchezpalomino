@@ -10,16 +10,17 @@ const ClientApiSSR = async (
   url: string
 ) => {
   const session = await getServerSession(req, res, authOptions);
+  console.log(session)
 
   const config: AxiosRequestConfig = {
     url,
     method: req?.method ? (req.method as Method) : 'GET',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: session?.user?.accessToken
-        ? `Bearer ${session?.user?.accessToken}`
+      Authorization: session?.user?.token
+        ? `Bearer ${session?.user?.token}`
         : undefined
-    }
+    },
   };
 
   const { data } = await ClientApi.request(config);

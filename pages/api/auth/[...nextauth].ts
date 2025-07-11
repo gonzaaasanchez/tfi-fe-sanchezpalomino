@@ -61,7 +61,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }: any) {
       if (user) {
-        // Guardar el usuario y el token en el JWT
+        // Save user and token in JWT
         token.user = {
           id: user.id,
           firstName: user.firstName,
@@ -74,7 +74,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     async session({ session, token }: any) {
-      // Pasar el usuario desde el token a la sesión
+      // Pass user from token to session
       if (token.user) {
         session.user = token.user;
       }

@@ -1,6 +1,6 @@
 import { PaginationMetadata } from '../types/table';
 
-// Utilidades para paginación
+// Pagination utilities
 export const createPaginationMetadata = (
   page: number,
   pageSize: number,
@@ -25,7 +25,7 @@ export const getPageInfo = (metadata: PaginationMetadata) => {
   };
 };
 
-// Utilidades para ordenamiento
+// Sorting utilities
 export const getSortDirection = (currentKey: string, currentDirection: 'ASC' | 'DESC', newKey: string): 'ASC' | 'DESC' => {
   if (currentKey === newKey) {
     return currentDirection === 'ASC' ? 'DESC' : 'ASC';
@@ -33,7 +33,7 @@ export const getSortDirection = (currentKey: string, currentDirection: 'ASC' | '
   return 'ASC';
 };
 
-// Utilidades para filtros
+// Filter utilities
 export const filterRows = (rows: any[], filters: Record<string, any>) => {
   return rows.filter(row => {
     return Object.entries(filters).every(([key, value]) => {
@@ -49,7 +49,7 @@ export const filterRows = (rows: any[], filters: Record<string, any>) => {
   });
 };
 
-// Utilidades para búsqueda
+// Search utilities
 export const searchRows = (rows: any[], searchTerm: string, searchFields: string[]) => {
   if (!searchTerm) return rows;
   
@@ -62,7 +62,7 @@ export const searchRows = (rows: any[], searchTerm: string, searchFields: string
   });
 };
 
-// Utilidades para estilos condicionales
+// Conditional styles utilities
 export const createRowClassFn = (config: {
   adminClass?: string;
   inactiveClass?: string;

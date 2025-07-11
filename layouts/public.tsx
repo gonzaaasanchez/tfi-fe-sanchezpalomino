@@ -1,4 +1,4 @@
-import { Box, Container, Flex, VStack } from '@chakra-ui/react';
+import { Box, Flex, Image } from '@chakra-ui/react';
 import { PublicLayout as PublicLayoutProps } from '@interfaces/layout';
 
 export function PublicLayout({
@@ -7,54 +7,47 @@ export function PublicLayout({
   children
 }: PublicLayoutProps) {
   return (
-    <>
-      <VStack bg={bg} h="100dvh" spacing={0}>
-        <Flex
-          bg={bg}
-          flex="1"
+    <Box minH="100vh" bg={bg}>
+      <Flex
+        minH="100vh"
+        alignItems="center"
+        justifyContent="center"
+        w="full"
+        direction={{ base: 'column', lg: 'row' }}
+        gap={{ base: 6, lg: 16 }}
+        px={{ base: 4, sm: 6, lg: 0 }}
+      >
+        {/* Imagen visible, nunca de fondo */}
+        <Box
+          display="flex"
           alignItems="center"
           justifyContent="center"
-          w="full"
+          mb={{ base: 4, lg: 0 }}
+          mr={{ base: 0, lg: 8 }}
+          pl={{ base: 0, lg: 24 }}
+          flexShrink={0}
         >
-          <Container
-            bgImage={{
-              lg: `url("/images/${bgImage}")`
-            }}
-            bgPosition="5.7625rem center"
-            bgRepeat="no-repeat"
-            bgSize={{
-              base: '30.5rem'
-            }}
-          >
-            <Flex
-              alignItems="center"
-              justifyContent={{
-                base: 'center',
-                lg: 'end'
-              }}
-              px={{
-                base: 4,
-                lg: 20
-              }}
-              py={4}
-              minH={{ base: 'auto', lg: '100vh' }}
-            >
-              <Box
-                bg="white"
-                borderRadius="sm"
-                p={{
-                  base: 4,
-                  sm: 12
-                }}
-                textAlign="center"
-                w={{ base: 'full', sm: '33.3125rem' }}
-              >
-                <Box mt={{ lg: 8 }}>{children}</Box>
-              </Box>
-            </Flex>
-          </Container>
-        </Flex>
-      </VStack>
-    </>
+          <Image
+            src={`/images/${bgImage}`}
+            alt="Gato login"
+            maxW={{ base: '220px', sm: '300px', lg: '380px' }}
+            w="100%"
+            h="auto"
+            objectFit="contain"
+          />
+        </Box>
+        <Box
+          bg="white"
+          borderRadius={{ base: 'md', sm: 'lg' }}
+          p={{ base: 8, md: 12 }}
+          textAlign="center"
+          w="full"
+          maxW={{ base: '90vw', md: '33.3125rem' }}
+          boxShadow={{ base: 'lg', md: 'xl' }}
+        >
+          {children}
+        </Box>
+      </Flex>
+    </Box>
   );
 }

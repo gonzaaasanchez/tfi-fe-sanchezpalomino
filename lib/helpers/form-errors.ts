@@ -20,7 +20,7 @@ const getField = (name: string): string | string[] => {
 export const getFormattedErrors = (errors: FieldErrors<any>) => {
   const formattedFormErrors: FormattedFormError[] = [];
 
-  // If "errors" is an object with a "type" key, it means that it is a single error and not an objet of many errores
+  // If "errors" is an object with a "type" key, it means that it is a single error and not an object of many errors
   if (errors?.type) {
     errors = {
       error: errors

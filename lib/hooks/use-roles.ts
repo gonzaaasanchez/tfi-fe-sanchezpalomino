@@ -15,7 +15,7 @@ import { AxiosError } from 'axios';
 export function useGetRoles(params?: UseGetAllType) {
   const [search, setSearch] = useState<string>(params?.initialSearch || '');
 
-  const { data } = useQuery<PaginatedResponse<Role>, AxiosError>({
+  const { data, isPending } = useQuery<PaginatedResponse<Role>, AxiosError>({
     queryKey: [
       '/roles'
     ],
@@ -27,7 +27,7 @@ export function useGetRoles(params?: UseGetAllType) {
     staleTime: 60000
   });
 
-  return { roles: data?.data as Role[], search, setSearch };
+  return { roles: data?.data as Role[], search, setSearch, isPending };
 }
 
 export function useGetRole({ id }: UseGetOneByIdType) {

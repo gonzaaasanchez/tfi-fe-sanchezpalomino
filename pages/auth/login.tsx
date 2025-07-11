@@ -4,17 +4,14 @@ import { NextSeo } from 'next-seo';
 import { GetServerSideProps } from 'next/types';
 import { pick } from 'lodash';
 import { useTranslations } from 'next-intl';
-import { LoginForm } from 'components/forms/auth/login';
 import { useRouter } from 'next/router';
-import { Center, Tag } from '@chakra-ui/react';
 import { PublicLayout } from 'layouts';
 import { handlePublicRoute } from '@helpers/middlewares';
+import { LoginForm } from 'components/forms/auth/login';
 
 const Login: NextPageWithLayout = () => {
   const t = useTranslations('pages.auth.login');
-  const { pathname, query, replace } = useRouter();
-  const token = query.token as string;
-  const resetPassword = query.resetPassword as string;
+  const { query } = useRouter();
 
   const updateMeta = {
     title: t('meta.title'),
@@ -24,19 +21,6 @@ const Login: NextPageWithLayout = () => {
   return (
     <>
       <NextSeo {...updateMeta} />
-      {!!resetPassword && (
-        <Center>
-          <Tag
-            borderRadius="10rem"
-            bg="goldenrod.600"
-            mb={7}
-            size="sm"
-            variant="messageSuccess"
-          >
-            {t('responses.passwordUpdated')}
-          </Tag>
-        </Center>
-      )}
       <LoginForm />
     </>
   );
@@ -59,6 +43,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     props: {
       messages: pick(await import(`/message/${locale}.json`), [
         'general.form.errors',
+        'layouts.private',
         'pages.auth.login',
         'components.forms.auth.login'
       ])

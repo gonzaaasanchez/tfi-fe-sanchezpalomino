@@ -1,22 +1,26 @@
-import { Text } from '@chakra-ui/react';
+import { Text, Box, useDisclosure } from '@chakra-ui/react';
 import { Layout as PrivateLayoutProps } from '@interfaces/layout';
+import { Header } from 'components/layout/header';
 import Sidebar from 'components/layout/sidebar';
 
 export function PrivateLayout({ children }: PrivateLayoutProps) {
-  const logo = (
-    <Text fontSize="xl" fontWeight="bold" color="white">
-      TFI Admin
-    </Text>
-  );
+  const { isOpen, onToggle, onClose } = useDisclosure({ defaultIsOpen: true });
 
   return (
-    <div style={{ display: 'flex' }}>
-      <Sidebar logo={logo} />
-      <div style={{ marginLeft: '280px', width: '100%' }}>
-        <div style={{ padding: '1rem' }}>
-          <div style={{ width: '100%' }}>{children}</div>
-        </div>
-      </div>
-    </div>
+    <Box>
+      <Header onToggleSidebar={onToggle} isSidebarOpen={isOpen} />
+      <Box display="flex">
+        <Sidebar isOpen={isOpen} onClose={onClose} />
+        <Box 
+          ml={{ base: 0, lg: '280px' }} 
+          w="100%" 
+          transition="margin-left 0.3s ease-in-out"
+        >
+          <Box p={4}>
+            <Box w="100%">{children}</Box>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 }

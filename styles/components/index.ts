@@ -10,9 +10,13 @@ import { NumberInput } from './number-input';
 import { Table, TableContainer, TableActions, TableRow, TablePagination, TableStates, TableTooltip, TableBadge, TableDateCell, TableSortableColumn, TableSortIndicator, TableActionButton, TableWrapper } from './table';
 import { Text } from './text';
 import { Textarea } from './textarea';
+import { Card } from './card';
+import { Button } from './button';
 
 export const components = {
+  Button,
   Checkbox,
+  Card,
   Container,
   Form,
   FormError,

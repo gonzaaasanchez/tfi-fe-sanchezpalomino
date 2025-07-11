@@ -20,7 +20,7 @@ declare module 'next-auth' {
         createdAt?: string;
         updatedAt?: string;
       };
-      accessToken: string;
+      token: string;
     };
   }
 
@@ -42,7 +42,7 @@ declare module 'next-auth' {
         createdAt?: string;
         updatedAt?: string;
       };
-      accessToken: string;
+      token: string;
     };
   }
 }

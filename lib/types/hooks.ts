@@ -8,6 +8,6 @@ export type UseGetAllType = {
 };
 
 export type UseGetOneByIdType = {
-  id: number;
+  id: number | string;
   enabled?: boolean;
 };

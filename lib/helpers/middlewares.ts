@@ -21,7 +21,7 @@ export const handlePublicRoute = async (req: Req, res: Res) => {
   }
 };
 
-export const handlePrivateRoute = async (req: Req, res: Res, path?: string) => {
+export const handlePrivateRoute = async (req: Req, res: Res) => {
   const session = await getServerSession(req, res, authOptions);
   
   // If no session, redirect to login
@@ -34,48 +34,73 @@ export const handlePrivateRoute = async (req: Req, res: Res, path?: string) => {
     };
   }
 
-  // If no path provided, just check authentication
-  if (!path) {
-    return null;
+  return null;
+};
+
+export const handlePermission = async (req: Req, res: Res, path: string) => {
+  const session = await getServerSession(req, res, authOptions);
+  
+  // If no session, redirect to login
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/auth/login',
+        permanent: false
+      }
+    };
   }
 
-  // Check specific permissions for certain routes
   const userPermissions = session.user?.role?.permissions || {};
   const isSuperAdmin = session.user?.role?.name === 'superadmin';
 
-  // Route to module and action mapping
-  const routePermissions: Record<string, { module: string; action: string }> = {
-    '/admins': { module: 'admins', action: 'getAll' },
-    '/roles': { module: 'roles', action: 'getAll' },
-    '/users': { module: 'users', action: 'getAll' },
-    '/pets': { module: 'pets', action: 'getAll' },
-    '/reservations': { module: 'reservations', action: 'getAll' },
-    '/reviews': { module: 'reviews', action: 'getAll' },
-    '/logs': { module: 'logs', action: 'getAll' },
-  };
+  // Super admin can access everything
+  if (isSuperAdmin) {
+    return null;
+  }
 
-  const requiredPermission = routePermissions[path];
+  // Parse path to determine module and action
+  const pathSegments = path.split('/').filter(Boolean);
+  
+  if (pathSegments.length === 0) {
+    return null;
+  }
 
-  if (requiredPermission) {
-    const { module, action } = requiredPermission;
+  const moduleName = pathSegments[0];
+  let action = 'getAll'; // Default action
 
-    // Super admin can access everything
-    if (isSuperAdmin) {
-      return null;
+  // Determine action based on path pattern
+  if (pathSegments.length === 1) {
+    // /:modulo -> getAll
+    action = 'getAll';
+  } else if (pathSegments.length === 2) {
+    if (pathSegments[1] === 'add') {
+      // /:modulo/add -> create
+      action = 'create';
+    } else {
+      // /:modulo/:id -> read (assuming it's a detail view)
+      action = 'read';
     }
-
-    // Check specific permissions
-    const hasPermission = userPermissions[module]?.[action] === true;
-
-    if (!hasPermission) {
-      // Redirect to dashboard if no permissions
-      return {
-        redirect: {
-          destination: '/dashboard',
-          permanent: false
-        }
-      };
+  } else if (pathSegments.length === 3) {
+    if (pathSegments[2] === 'detail') {
+      // /:modulo/:id/detail -> read
+      action = 'read';
+    } else if (pathSegments[2] === 'edit') {
+      // /:modulo/:id/edit -> edit
+      action = 'edit';
     }
+  }
+
+  // Check if user has the required permission
+  const hasPermission = userPermissions[moduleName]?.[action] === true;
+
+  if (!hasPermission) {
+    // Redirect to dashboard if no permissions
+    return {
+      redirect: {
+        destination: '/dashboard',
+        permanent: false
+      }
+    };
   }
 
   return null;

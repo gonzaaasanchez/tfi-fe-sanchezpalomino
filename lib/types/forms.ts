@@ -8,3 +8,11 @@ export type LoginFormType = {
   email: string;
   password: string;
 };
+
+export type AdminFormType = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: string;
+};
