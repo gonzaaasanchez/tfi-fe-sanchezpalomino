@@ -1,0 +1,234 @@
+import { ReactElement } from 'react';
+import { NextPageWithLayout } from 'pages/_app';
+import { NextSeo } from 'next-seo';
+import { 
+  Box, 
+  Heading, 
+  Text, 
+  VStack, 
+  Button, 
+  Tag,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Container,
+  HStack
+} from '@chakra-ui/react';
+import { ChevronRightIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
+import { PrivateLayout } from 'layouts/private';
+import { GetServerSideProps } from 'next';
+import { useTranslations } from 'next-intl';
+import { pick } from 'lodash';
+import { useRouter } from 'next/router';
+import { useGetUser } from 'lib/hooks';
+import { useRef } from 'react';
+
+interface ViewUserPageProps {
+  id: string;
+}
+
+const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
+  const t = useTranslations('pages.users.view');
+  const router = useRouter();
+  const { user, isPending } = useGetUser({ id });
+
+  const handleEdit = () => {
+    router.push(`/users/${id}/edit`);
+  };
+
+  const handleBack = () => {
+    router.push('/users');
+  };
+
+  if (isPending) {
+    return (
+      <Container maxW="container.lg" py={8}>
+        <Text>Cargando...</Text>
+      </Container>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Container maxW="container.lg" py={8}>
+        <Text>Usuario no encontrado</Text>
+      </Container>
+    );
+  }
+
+  return (
+    <>
+      <NextSeo
+        title={t('meta.title')}
+        description={t('meta.description')}
+      />
+
+      <Container maxW="container.lg" py={8}>
+        <VStack spacing={6} align="stretch">
+          {/* Breadcrumb */}
+          <Breadcrumb
+            spacing="8px"
+            separator={<ChevronRightIcon color="gray.500" />}
+            fontSize="sm"
+          >
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/dashboard" color="gray.500">
+                {t('breadcrumb.home')}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/users" color="gray.500">
+                {t('breadcrumb.users')}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem isCurrentPage>
+              <BreadcrumbLink color="brand1.700" fontWeight="medium">
+                {t('breadcrumb.view')}
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+          </Breadcrumb>
+
+          {/* Header */}
+          <Box>
+            <Heading size="lg" mb={2} color="gray.800">
+              {t('title')}
+            </Heading>
+            <Text color="gray.600">
+              {t('description')}
+            </Text>
+          </Box>
+
+          {/* User Details */}
+          <Box
+            bg="white"
+            border="1px"
+            borderColor="gray.200"
+            borderRadius="lg"
+            p={6}
+            shadow="sm"
+          >
+            <VStack spacing={4} align="stretch">
+              <HStack justify="space-between">
+                <Heading size="md" color="brand1.700">
+                  Información del Usuario
+                </Heading>
+                <HStack spacing={2}>
+                  <Button
+                    leftIcon={<ArrowBackIcon />}
+                    variant="outline"
+                    onClick={handleBack}
+                  >
+                    Volver
+                  </Button>
+                  <Button
+                    leftIcon={<EditIcon />}
+                    colorScheme="blue"
+                    onClick={handleEdit}
+                  >
+                    Editar
+                  </Button>
+                </HStack>
+              </HStack>
+
+              <Box>
+                <Text fontWeight="bold" color="gray.700">ID:</Text>
+                <Text color="gray.600">{user.id}</Text>
+              </Box>
+
+              <Box>
+                <Text fontWeight="bold" color="gray.700">Nombre:</Text>
+                <Text color="gray.600">{user.firstName}</Text>
+              </Box>
+
+              <Box>
+                <Text fontWeight="bold" color="gray.700">Apellido:</Text>
+                <Text color="gray.600">{user.lastName}</Text>
+              </Box>
+
+              <Box>
+                <Text fontWeight="bold" color="gray.700">Email:</Text>
+                <Text color="gray.600">{user.email}</Text>
+              </Box>
+
+              <Box>
+                <Text fontWeight="bold" color="gray.700">Rol:</Text>
+                <Tag
+                  colorScheme={user.role?.name === 'admin' ? 'orange' : 'blue'}
+                  variant="subtle"
+                  px={3}
+                  py={1}
+                >
+                  {user.role?.name || '-'}
+                </Tag>
+              </Box>
+
+              {user.phoneNumber && (
+                <Box>
+                  <Text fontWeight="bold" color="gray.700">Teléfono:</Text>
+                  <Text color="gray.600">{user.phoneNumber}</Text>
+                </Box>
+              )}
+
+              {user.createdAt && (
+                <Box>
+                  <Text fontWeight="bold" color="gray.700">Fecha de Creación:</Text>
+                  <Text color="gray.600">
+                    {new Date(user.createdAt).toLocaleDateString('es-ES', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </Text>
+                </Box>
+              )}
+
+              {user.updatedAt && (
+                <Box>
+                  <Text fontWeight="bold" color="gray.700">Última Actualización:</Text>
+                  <Text color="gray.600">
+                    {new Date(user.updatedAt).toLocaleDateString('es-ES', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
+                  </Text>
+                </Box>
+              )}
+            </VStack>
+          </Box>
+        </VStack>
+      </Container>
+    </>
+  );
+};
+
+ViewUserPage.getLayout = function getLayout(page: ReactElement) {
+  return <PrivateLayout>{page}</PrivateLayout>;
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+  locale = 'es',
+  params,
+  ...ctx
+}) => {
+  const id = params?.id as string;
+  
+  return {
+    props: {
+      id,
+      messages: pick(await import(`../../../message/${locale}.json`), [
+        'pages.users.view',
+        'pages.users.index',
+        'layouts.private.header',
+        'components.forms.user',
+        'general.form.errors'
+      ])
+    }
+  };
+};
+
+export default ViewUserPage; 

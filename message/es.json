@@ -37,6 +37,42 @@
           "passwordMinLength": "La contraseña debe tener al menos 8 caracteres"
         }
       },
+      "user": {
+        "cta": {
+          "create": "Crear Usuario",
+          "update": "Actualizar Usuario",
+          "cancel": "Cancelar"
+        },
+        "labels": {
+          "firstName": "Nombre",
+          "lastName": "Apellido",
+          "email": "Correo Electrónico",
+          "password": "Contraseña",
+          "confirmPassword": "Confirmar Contraseña",
+          "role": "Rol",
+          "phoneNumber": "Número de Teléfono",
+          "avatar": "Foto de Perfil"
+        },
+        "placeholders": {
+          "firstName": "Ingresa el nombre",
+          "lastName": "Ingresa el apellido",
+          "email": "ejemplo@gmail.com",
+          "password": "·················",
+          "confirmPassword": "·················",
+          "role": "Selecciona un rol",
+          "phoneNumber": "+1 (555) 123-4567"
+        },
+        "responses": {
+          "createSuccess": "Usuario creado exitosamente",
+          "updateSuccess": "Usuario actualizado exitosamente",
+          "createError": "Error al crear el usuario",
+          "updateError": "Error al actualizar el usuario"
+        },
+        "validation": {
+          "passwordMismatch": "Las contraseñas no coinciden",
+          "passwordMinLength": "La contraseña debe tener al menos 6 caracteres"
+        }
+      },
       "auth": {
         "forgotPassword": {
           "cta": {
@@ -234,6 +270,73 @@
           "role": "Rol",
           "createdAt": "Fecha de Creación",
           "updatedAt": "Última Actualización"
+        }
+      }
+    },
+    "users": {
+      "index": {
+        "actions": {
+          "edit": {
+            "label": "Editar",
+            "tooltip": "Editar usuario"
+          },
+          "delete": {
+            "label": "Eliminar",
+            "tooltip": "Eliminar usuario"
+          },
+          "view": {
+            "label": "Ver",
+            "tooltip": "Ver detalles del usuario"
+          }
+        },
+        "cta": {
+          "createUser": "Crear Usuario"
+        },
+        "description": "Gestión de usuarios del sistema",
+        "emptyText": "No hay usuarios disponibles",
+        "meta": {
+          "title": "Usuarios",
+          "description": "Gestión de usuarios del sistema"
+        },
+        "title": "Usuarios"
+      },
+      "create": {
+        "meta": {
+          "title": "Crear Usuario",
+          "description": "Crear un nuevo usuario en el sistema"
+        },
+        "title": "Crear Usuario",
+        "description": "Completa el formulario para crear un nuevo usuario",
+        "breadcrumb": {
+          "home": "Inicio",
+          "users": "Usuarios",
+          "create": "Crear"
+        }
+      },
+      "view": {
+        "meta": {
+          "title": "Ver Usuario",
+          "description": "Ver información del usuario"
+        },
+        "title": "Ver Usuario",
+        "description": "Información detallada del usuario",
+        "breadcrumb": {
+          "home": "Inicio",
+          "users": "Usuarios",
+          "view": "Ver"
+        }
+      },
+      "edit": {
+        "meta": {
+          "title": "Editar Usuario",
+          "description": "Editar información del usuario"
+        },
+        "title": "Editar Usuario",
+        "description": "Modifica la información del usuario",
+        "breadcrumb": {
+          "home": "Inicio",
+          "users": "Usuarios",
+          "edit": "Editar"
         }
       }
     },

@@ -96,6 +96,8 @@ const TableComponent: React.FC<TableProps> = ({
   pageSizeOptions = [10, 25, 50, 100],
   onPageSizeChange,
 }) => {
+  // Ensure rows is always an array
+  const safeRows = Array.isArray(rows) ? rows : [];
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const hoverBg = useColorModeValue('gray.50', 'gray.700');
@@ -235,13 +237,13 @@ const TableComponent: React.FC<TableProps> = ({
           </Tr>
         </Thead>
         <Tbody>
-          {rows.map((row, index) => (
+          {safeRows.map((row, index) => (
             <Tr
               key={index}
               _hover={{ bg: hoverBg }}
               className={getRowClass(row)}
-              borderBottom={index === rows.length - 1 ? 'none' : '1px solid'}
-              borderColor={index === rows.length - 1 ? 'transparent' : borderColor}
+              borderBottom={index === safeRows.length - 1 ? 'none' : '1px solid'}
+              borderColor={index === safeRows.length - 1 ? 'transparent' : borderColor}
             >
               {columns.map((column) => (
                 <Td
@@ -306,7 +308,7 @@ const TableComponent: React.FC<TableProps> = ({
     >
       {loading ? (
         renderLoadingState()
-      ) : rows.length === 0 && showEmpty ? (
+      ) : safeRows.length === 0 && showEmpty ? (
         renderEmptyState()
       ) : (
         <>

@@ -18,29 +18,28 @@ import {
 } from '@chakra-ui/react';
 import { ViewIcon, EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
-import { handlePermission } from '@helpers/middlewares';
 import { GetServerSideProps } from 'next';
 import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
 import { useRouter } from 'next/router';
 import { PermissionGuard } from 'components/shared/permission-guard';
-import { useGetAdmins, useDeleteAdmin } from 'lib/hooks';
-import { Admin } from 'lib/types/user';
+import { useGetUsers, useDeleteUser } from 'lib/hooks';
+import { User } from 'lib/types/user';
 import TableComponent, { Column, Action } from 'components/shared/table';
 import { useRef } from 'react';
 
-const AdminPage: NextPageWithLayout = () => {
-  const t = useTranslations('pages.admins.index');
+const UsersPage: NextPageWithLayout = () => {
+  const t = useTranslations('pages.users.index');
   const router = useRouter();
-  const { admins, search, setSearch, isPending } = useGetAdmins({ limit: 10 });
+  const { users, search, setSearch, isPending } = useGetUsers({ limit: 10 });
   
   // Estados para el modal de confirmación
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [adminToDelete, setAdminToDelete] = useState<Admin | null>(null);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
   
-  // Hook para eliminar administrador
-  const deleteAdminMutation = useDeleteAdmin();
+  // Hook para eliminar usuario
+  const deleteUserMutation = useDeleteUser();
 
   const columns: Column[] = [
     {
@@ -77,7 +76,7 @@ const AdminPage: NextPageWithLayout = () => {
       type: 'custom',
       renderCell: (item: any) => (
         <Tag
-          colorScheme={item.role?.name === 'superadmin' ? 'orange' : 'blue'}
+          colorScheme={item.role?.name === 'admin' ? 'orange' : 'blue'}
           variant="subtle"
           px={3}
           py={1}
@@ -97,7 +96,7 @@ const AdminPage: NextPageWithLayout = () => {
       variant: 'ghost' as const,
       size: 'sm' as const,
       tooltip: t('actions.view.tooltip'),
-      module: 'admins',
+      module: 'users',
       action: 'read'
     },
     {
@@ -108,7 +107,7 @@ const AdminPage: NextPageWithLayout = () => {
       variant: 'ghost' as const,
       size: 'sm' as const,
       tooltip: t('actions.edit.tooltip'),
-      module: 'admins',
+      module: 'users',
       action: 'update'
     },
     {
@@ -119,22 +118,21 @@ const AdminPage: NextPageWithLayout = () => {
       variant: 'ghost' as const,
       size: 'sm' as const,
       tooltip: t('actions.delete.tooltip'),
-      module: 'admins',
-      action: 'delete',
-      isDisabled: (item: Admin) => item.role?.name === 'superadmin'
+      module: 'users',
+      action: 'delete'
     }
   ];
 
-  const handleAction = (actionName: string, item: Admin) => {
+  const handleAction = (actionName: string, item: User) => {
     switch (actionName) {
       case 'view':
-        router.push(`/admins/${item.id}/view`);
+        router.push(`/users/${item.id}/view`);
         break;
       case 'edit':
-        router.push(`/admins/${item.id}/edit`);
+        router.push(`/users/${item.id}/edit`);
         break;
       case 'delete':
-        setAdminToDelete(item);
+        setUserToDelete(item);
         onOpen();
         break;
       default:
@@ -143,20 +141,20 @@ const AdminPage: NextPageWithLayout = () => {
   };
 
   const handleDeleteConfirm = async () => {
-    if (!adminToDelete) return;
+    if (!userToDelete || !userToDelete.id) return;
     
     try {
-      await deleteAdminMutation.mutateAsync(adminToDelete.id);
+      await deleteUserMutation.mutateAsync(userToDelete.id);
       onClose();
-      setAdminToDelete(null);
+      setUserToDelete(null);
     } catch (error) {
-      // El error ya se maneja en el hook useDeleteAdmin
+      // El error ya se maneja en el hook useDeleteUser
     }
   };
 
   const handleDeleteCancel = () => {
     onClose();
-    setAdminToDelete(null);
+    setUserToDelete(null);
   };
 
   return (
@@ -176,23 +174,23 @@ const AdminPage: NextPageWithLayout = () => {
           </Text>
         </Box>
 
-        {/* Create new administrator button */}
-        <PermissionGuard module="admins" action="create">
+        {/* Create new user button */}
+        <PermissionGuard module="users" action="create">
           <Box>
             <Button
               leftIcon={<AddIcon />}
               float="right"
-              onClick={() => router.push('/admins/create')}
+              onClick={() => router.push('/users/create')}
             >
-              {t('cta.createAdmin')}
+              {t('cta.createUser')}
             </Button>
           </Box>
         </PermissionGuard>
 
-        {/* Administrators table */}
-        <PermissionGuard module="admins" action="getAll">
+        {/* Users table */}
+        <PermissionGuard module="users" action="getAll">
           <TableComponent
-            rows={admins || []}
+            rows={users || []}
             columns={columns}
             actions={actions}
             loading={isPending}
@@ -218,8 +216,8 @@ const AdminPage: NextPageWithLayout = () => {
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              ¿Estás seguro de que deseas eliminar al administrador{' '}
-              <strong>{adminToDelete?.firstName} {adminToDelete?.lastName}</strong>?
+              ¿Estás seguro de que deseas eliminar al usuario{' '}
+              <strong>{userToDelete?.firstName} {userToDelete?.lastName}</strong>?
               <br />
               <br />
               Esta acción no se puede deshacer.
@@ -233,7 +231,7 @@ const AdminPage: NextPageWithLayout = () => {
                 colorScheme="red"
                 onClick={handleDeleteConfirm}
                 ml={3}
-                isLoading={deleteAdminMutation.isPending}
+                isLoading={deleteUserMutation.isPending}
                 loadingText="Eliminando..."
               >
                 Eliminar
@@ -246,7 +244,7 @@ const AdminPage: NextPageWithLayout = () => {
   );
 };
 
-AdminPage.getLayout = function getLayout(page: ReactElement) {
+UsersPage.getLayout = function getLayout(page: ReactElement) {
   return <PrivateLayout>{page}</PrivateLayout>;
 };
 
@@ -254,21 +252,16 @@ export const getServerSideProps: GetServerSideProps = async ({
   locale = 'es',
   ...ctx
 }) => {
-  const errors: any = await handlePermission(ctx.req, ctx.res, '/admins');
-  if (errors) {
-    return errors;
-  }
   return {
     props: {
       messages: pick(await import(`../../message/${locale}.json`), [
+        'pages.users.index',
         'layouts.private.header',
-        'pages.admins.index',
-        'pages.admins.create',
-        'components.forms.admin',
+        'components.forms.user',
         'general.form.errors'
       ])
     }
   };
-}
+};
 
-export default AdminPage;
+export default UsersPage; 

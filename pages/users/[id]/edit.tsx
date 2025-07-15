@@ -14,24 +14,55 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { pick } from 'lodash';
-import { AdminForm } from 'components/forms/admin';
+import { UserForm } from 'components/forms/user';
 import { useCustomToast } from '@hooks/use-custom-toast';
-import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
+import { useGetUser, useUpdateUser } from 'lib/hooks';
+import { UserFormType } from 'lib/types/forms';
 
-const CreateAdminPage: NextPage = () => {
-  const t = useTranslations('pages.admins.create');
+interface EditUserPageProps {
+  id: string;
+}
+
+const EditUserPage: NextPage<EditUserPageProps> = ({ id }) => {
+  const t = useTranslations('pages.users.edit');
   const router = useRouter();
   const { successToast } = useCustomToast();
+  const { user, isPending } = useGetUser({ id });
+  const updateUserMutation = useUpdateUser(id);
 
   const handleSuccess = () => {
-    successToast('Administrador creado exitosamente');
-    router.push('/admins');
+    successToast('Usuario actualizado exitosamente');
+    router.push('/users');
   };
 
   const handleCancel = () => {
-    router.push('/admins');
+    router.push('/users');
+  };
+
+  if (isPending) {
+    return (
+      <Container maxW="container.lg" py={8}>
+        <Text>Cargando...</Text>
+      </Container>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Container maxW="container.lg" py={8}>
+        <Text>Usuario no encontrado</Text>
+      </Container>
+    );
+  }
+
+  const defaultValues: UserFormType = {
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    password: '', // No mostrar contraseña actual
+    role: user.role?.id || 'user'
   };
 
   return (
@@ -55,13 +86,13 @@ const CreateAdminPage: NextPage = () => {
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/admins" color="gray.500">
-                {t('breadcrumb.admins')}
+              <BreadcrumbLink href="/users" color="gray.500">
+                {t('breadcrumb.users')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem isCurrentPage>
               <BreadcrumbLink color="brand1.700" fontWeight="medium">
-                {t('breadcrumb.create')}
+                {t('breadcrumb.edit')}
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
@@ -74,11 +105,13 @@ const CreateAdminPage: NextPage = () => {
           </Box>
 
           {/* Form */}
-          <AdminForm
-            mode="create"
+          <UserForm
+            mode="edit"
             title={t('title')}
+            defaultValues={defaultValues}
             onSuccess={handleSuccess}
             onCancel={handleCancel}
+            updateMutation={updateUserMutation}
           />
         </VStack>
       </Container>
@@ -88,23 +121,23 @@ const CreateAdminPage: NextPage = () => {
 
 export const getServerSideProps: GetServerSideProps = async ({
   locale = 'es',
+  params,
   ...ctx
 }) => {
-  const errors: any = await handlePermission(ctx.req, ctx.res, '/admins/create');
-  if (errors) {
-    return errors;
-  }
+  const id = params?.id as string;
+  
   return {
     props: {
-      messages: pick(await import(`../../message/${locale}.json`), [
+      id,
+      messages: pick(await import(`../../../message/${locale}.json`), [
+        'pages.users.edit',
+        'pages.users.index',
         'layouts.private.header',
-        'pages.admins.create',
-        'pages.admins.index',
-        'components.forms.admin',
+        'components.forms.user',
         'general.form.errors'
       ])
     }
   };
 };
 
-export default CreateAdminPage; 
+export default EditUserPage; 

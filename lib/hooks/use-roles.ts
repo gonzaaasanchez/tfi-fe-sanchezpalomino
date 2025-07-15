@@ -38,7 +38,7 @@ export function useGetRole({ id }: UseGetOneByIdType) {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     staleTime: 60000,
-    enabled: id > 0
+    enabled: Number(id) > 0
   });
 
   return { role: data || null, isPending };

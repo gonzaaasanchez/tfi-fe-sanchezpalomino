@@ -4,6 +4,8 @@ import { NextSeo } from 'next-seo';
 import { Box, Heading, Text, VStack, HStack, IconButton, Tooltip } from '@chakra-ui/react';
 import { ViewIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
+import { GetServerSideProps } from 'next';
+import { pick } from 'lodash';
 import { useGetRoles } from 'lib/hooks';
 import TableComponent, { Column, Action } from 'components/shared/table';
 import { Role } from 'lib/types/role';
@@ -134,6 +136,20 @@ const Roles: NextPageWithLayout = () => {
 
 Roles.getLayout = function getLayout(page: ReactElement) {
   return <PrivateLayout>{page}</PrivateLayout>;
+};
+
+export const getServerSideProps: GetServerSideProps = async ({
+  locale = 'es',
+  ...ctx
+}) => {
+  return {
+    props: {
+      messages: pick(await import(`../../message/${locale}.json`), [
+        'pages.roles',
+        'layouts.private.header'
+      ])
+    }
+  };
 };
 
 export default Roles; 

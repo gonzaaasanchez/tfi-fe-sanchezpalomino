@@ -186,3 +186,82 @@ export type AdminDeleteService = {
   };
   message?: string;
 };
+
+// User Services
+export type UserGetAllService = {
+  success: boolean;
+  data: {
+    items: Array<{
+      id: string;
+      firstName: string;
+      lastName: string;
+      email: string;
+      role: {
+        id: string;
+        name: string;
+        description?: string;
+      };
+      avatar?: string;
+      avatarContentType?: string;
+      createdAt?: string;
+      updatedAt?: string;
+    }>;
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+      hasNextPage: boolean;
+      hasPrevPage: boolean;
+    };
+  };
+  message?: string;
+};
+
+export type UserGetByIdService = {
+  success: boolean;
+  data: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: {
+      id: string;
+      name: string;
+      description?: string;
+    };
+    avatar?: string;
+    avatarContentType?: string;
+    createdAt?: string;
+    updatedAt?: string;
+  };
+  message?: string;
+};
+
+export type UserCreateService = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  role: string;
+};
+
+export type UserUpdateService = {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  password?: string;
+  roleId?: string;
+  phoneNumber?: string;
+  avatar?: File;
+};
+
+export type UserDeleteService = {
+  success: boolean;
+  data: {
+    id: string;
+    firstName: string;
+    lastName: string;
+  };
+  message?: string;
+};

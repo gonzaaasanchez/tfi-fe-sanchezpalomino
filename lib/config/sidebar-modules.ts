@@ -32,46 +32,46 @@ export const sidebarModules: SidebarModule[] = [
     module: 'admins',
     action: 'getAll'
   },
-  // {
-  //   name: 'Roles',
-  //   path: '/roles',
-  //   icon: LockIcon,
-  //   module: 'roles',
-  //   action: 'getAll'
-  // },
-  // {
-  //   name: 'Usuarios',
-  //   path: '/users',
-  //   icon: HamburgerIcon,
-  //   module: 'users',
-  //   action: 'getAll'
-  // },
-  // {
-  //   name: 'Mascotas',
-  //   path: '/pets',
-  //   icon: StarIcon,
-  //   module: 'pets',
-  //   action: 'getAll'
-  // },
-  // {
-  //   name: 'Reservas',
-  //   path: '/reservations',
-  //   icon: CalendarIcon,
-  //   module: 'reservations',
-  //   action: 'getAll'
-  // },
-  // {
-  //   name: 'Reseñas',
-  //   path: '/reviews',
-  //   icon: ChatIcon,
-  //   module: 'reviews',
-  //   action: 'getAll'
-  // },
-  // {
-  //   name: 'Logs',
-  //   path: '/logs',
-  //   icon: InfoIcon,
-  //   module: 'logs',
-  //   action: 'getAll'
-  // }
+  {
+    name: 'Roles',
+    path: '/roles',
+    icon: LockIcon,
+    module: 'roles',
+    action: 'getAll'
+  },
+  {
+    name: 'Usuarios',
+    path: '/users',
+    icon: HamburgerIcon,
+    module: 'users',
+    action: 'getAll'
+  },
+  {
+    name: 'Mascotas',
+    path: '/pets',
+    icon: StarIcon,
+    module: 'pets',
+    action: 'getAll'
+  },
+  {
+    name: 'Reservas',
+    path: '/reservations',
+    icon: CalendarIcon,
+    module: 'reservations',
+    action: 'getAll'
+  },
+  {
+    name: 'Reseñas',
+    path: '/reviews',
+    icon: ChatIcon,
+    module: 'reviews',
+    action: 'getAll'
+  },
+  {
+    name: 'Logs',
+    path: '/logs',
+    icon: InfoIcon,
+    module: 'logs',
+    action: 'getAll'
+  }
 ]; 

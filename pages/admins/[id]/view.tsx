@@ -228,7 +228,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   return {
     props: {
       messages: pick(await import(`../../../message/${locale}.json`), [
-        'layouts.private',
+        'layouts.private.header',
         'pages.admins.view',
         'pages.admins.index',
         'components.shared.permission-guard'
