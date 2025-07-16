@@ -3,17 +3,6 @@ import { ViewIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { Action } from '../../components/shared/table';
 
-// Pagination utilities
-export const createPaginationMetadata = (
-  page: number,
-  pageSize: number,
-  total: number
-): PaginationMetadata => ({
-  page,
-  pageSize,
-  pageCount: Math.ceil(total / pageSize),
-  total
-});
 
 export const getPageInfo = (metadata: PaginationMetadata) => {
   const startItem = (metadata.page - 1) * metadata.pageSize + 1;

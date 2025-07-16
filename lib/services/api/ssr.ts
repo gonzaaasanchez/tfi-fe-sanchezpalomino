@@ -10,7 +10,7 @@ const ClientApiSSR = async (
   url: string
 ) => {
   const session = await getServerSession(req, res, authOptions);
-  console.log(session)
+  console.log(session);
 
   const config: AxiosRequestConfig = {
     url,
@@ -19,7 +19,7 @@ const ClientApiSSR = async (
       'Content-Type': 'application/json',
       Authorization: session?.user?.token
         ? `Bearer ${session?.user?.token}`
-        : undefined
+        : undefined,
     },
   };
 

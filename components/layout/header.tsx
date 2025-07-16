@@ -55,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
           <Image
             src="/images/adaptive-icon.png"
             alt="Logo"
-            height="32px"
+            height="40px"
             width="auto"
             objectFit="contain"
           />
