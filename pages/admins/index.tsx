@@ -16,7 +16,7 @@ import {
   AlertDialogOverlay,
   useDisclosure
 } from '@chakra-ui/react';
-import { ViewIcon, EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
+import { AddIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
 import { handlePermission } from '@helpers/middlewares';
 import { GetServerSideProps } from 'next';
@@ -27,6 +27,7 @@ import { PermissionGuard } from 'components/shared/permission-guard';
 import { useGetAdmins, useDeleteAdmin } from 'lib/hooks';
 import { Admin } from 'lib/types/user';
 import TableComponent, { Column, Action } from 'components/shared/table';
+import { createStandardTableActions } from 'lib/helpers/table-utils';
 import { useRef } from 'react';
 
 const AdminPage: NextPageWithLayout = () => {
@@ -88,42 +89,17 @@ const AdminPage: NextPageWithLayout = () => {
     }
   ];
 
-  const actions: Action[] = [
-    {
-      name: 'view',
-      label: t('actions.view.label'),
-      icon: <ViewIcon />,
-      color: 'blue',
-      variant: 'ghost' as const,
-      size: 'sm' as const,
-      tooltip: t('actions.view.tooltip'),
-      module: 'admins',
-      action: 'read'
+  const actions: Action[] = createStandardTableActions({
+    module: 'admins',
+    translations: {
+      view: { label: t('actions.view.label'), tooltip: t('actions.view.tooltip') },
+      edit: { label: t('actions.edit.label'), tooltip: t('actions.edit.tooltip') },
+      delete: { label: t('actions.delete.label'), tooltip: t('actions.delete.tooltip') }
     },
-    {
-      name: 'edit',
-      label: t('actions.edit.label'),
-      icon: <EditIcon />,
-      color: 'orange',
-      variant: 'ghost' as const,
-      size: 'sm' as const,
-      tooltip: t('actions.edit.tooltip'),
-      module: 'admins',
-      action: 'update'
-    },
-    {
-      name: 'delete',
-      label: t('actions.delete.label'),
-      icon: <DeleteIcon />,
-      color: 'red',
-      variant: 'ghost' as const,
-      size: 'sm' as const,
-      tooltip: t('actions.delete.tooltip'),
-      module: 'admins',
-      action: 'delete',
-      isDisabled: (item: Admin) => item.role?.name === 'superadmin'
+    customDisabledRules: {
+      delete: (item: Admin) => item.role?.name === 'superadmin'
     }
-  ];
+  });
 
   const handleAction = (actionName: string, item: Admin) => {
     switch (actionName) {
@@ -146,7 +122,7 @@ const AdminPage: NextPageWithLayout = () => {
     if (!adminToDelete) return;
     
     try {
-      await deleteAdminMutation.mutateAsync(adminToDelete.id);
+      await deleteAdminMutation.mutateAsync(adminToDelete.id ?? '');
       onClose();
       setAdminToDelete(null);
     } catch (error) {

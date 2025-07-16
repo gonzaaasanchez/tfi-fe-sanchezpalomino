@@ -1,20 +1,20 @@
 import { ReactElement, useState } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 import { NextSeo } from 'next-seo';
-import { Box, Heading, Text, VStack, HStack, IconButton, Tooltip } from '@chakra-ui/react';
-import { ViewIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import { Box, Heading, Text, VStack} from '@chakra-ui/react';
 import { PrivateLayout } from 'layouts/private';
 import { GetServerSideProps } from 'next';
 import { pick } from 'lodash';
 import { useGetRoles } from 'lib/hooks';
 import TableComponent, { Column, Action } from 'components/shared/table';
+import { createStandardTableActions } from 'lib/helpers/table-utils';
 import { Role } from 'lib/types/role';
 import { useTranslations } from 'next-intl';
 
 const Roles: NextPageWithLayout = () => {
   const t = useTranslations('pages.roles');
   const [currentPage, setCurrentPage] = useState(1);
-  const { roles, pagination, search, setSearch, isPending } = useGetRoles({ limit: 10 });
+  const { roles, isPending } = useGetRoles({ limit: 10 });
 
   const columns: Column[] = [
     {
@@ -39,41 +39,14 @@ const Roles: NextPageWithLayout = () => {
     }
   ];
 
-  const actions: Action[] = [
-    {
-      name: 'view',
-      label: t('actions.view'),
-      icon: <ViewIcon />,
-      color: 'blue',
-      variant: 'ghost' as const,
-      size: 'sm' as const,
-      tooltip: t('tooltips.view'),
-      module: 'roles',
-      action: 'read'
-    },
-    {
-      name: 'edit',
-      label: t('actions.edit'),
-      icon: <EditIcon />,
-      color: 'orange',
-      variant: 'ghost' as const,
-      size: 'sm' as const,
-      tooltip: t('tooltips.edit'),
-      module: 'roles',
-      action: 'update'
-    },
-    {
-      name: 'delete',
-      label: t('actions.delete'),
-      icon: <DeleteIcon />,
-      color: 'red',
-      variant: 'ghost' as const,
-      size: 'sm' as const,
-      tooltip: t('tooltips.delete'),
-      module: 'roles',
-      action: 'delete'
+  const actions: Action[] = createStandardTableActions({
+    module: 'roles',
+    translations: {
+      view: { label: t('actions.view'), tooltip: t('tooltips.view') },
+      edit: { label: t('actions.edit'), tooltip: t('tooltips.edit') },
+      delete: { label: t('actions.delete'), tooltip: t('tooltips.delete') }
     }
-  ];
+  });
 
   const handleAction = (actionName: string, item: Role) => {
     switch (actionName) {
@@ -130,7 +103,6 @@ const Roles: NextPageWithLayout = () => {
           onAction={handleAction}
           onChangePage={handlePageChange}
           onSort={handleSort}
-          metadata={pagination}
         />
       </VStack>
     </>

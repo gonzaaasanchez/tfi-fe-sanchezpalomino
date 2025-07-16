@@ -16,7 +16,7 @@ import {
   AlertDialogOverlay,
   useDisclosure,
 } from '@chakra-ui/react';
-import { ViewIcon, EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
+import { AddIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
 import { handlePermission } from '@helpers/middlewares';
 import { GetServerSideProps } from 'next';
@@ -27,6 +27,7 @@ import { PermissionGuard } from 'components/shared/permission-guard';
 import { useGetUsers, useDeleteUser } from 'lib/hooks';
 import { User } from 'lib/types/user';
 import TableComponent, { Column, Action } from 'components/shared/table';
+import { createStandardTableActions } from 'lib/helpers/table-utils';
 import { useRef } from 'react';
 
 const UsersPage: NextPageWithLayout = () => {
@@ -96,41 +97,14 @@ const UsersPage: NextPageWithLayout = () => {
     },
   ];
 
-  const actions: Action[] = [
-    {
-      name: 'view',
-      label: t('actions.view.label'),
-      icon: <ViewIcon />,
-      color: 'blue',
-      variant: 'ghost' as const,
-      size: 'sm' as const,
-      tooltip: t('actions.view.tooltip'),
-      module: 'users',
-      action: 'read',
-    },
-    {
-      name: 'edit',
-      label: t('actions.edit.label'),
-      icon: <EditIcon />,
-      color: 'orange',
-      variant: 'ghost' as const,
-      size: 'sm' as const,
-      tooltip: t('actions.edit.tooltip'),
-      module: 'users',
-      action: 'update',
-    },
-    {
-      name: 'delete',
-      label: t('actions.delete.label'),
-      icon: <DeleteIcon />,
-      color: 'red',
-      variant: 'ghost' as const,
-      size: 'sm' as const,
-      tooltip: t('actions.delete.tooltip'),
-      module: 'users',
-      action: 'delete',
-    },
-  ];
+  const actions: Action[] = createStandardTableActions({
+    module: 'users',
+    translations: {
+      view: { label: t('actions.view.label'), tooltip: t('actions.view.tooltip') },
+      edit: { label: t('actions.edit.label'), tooltip: t('actions.edit.tooltip') },
+      delete: { label: t('actions.delete.label'), tooltip: t('actions.delete.tooltip') }
+    }
+  });
 
   const handleAction = (actionName: string, item: User) => {
     switch (actionName) {

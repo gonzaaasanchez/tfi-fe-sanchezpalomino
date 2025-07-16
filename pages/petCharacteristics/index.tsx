@@ -7,7 +7,6 @@ import {
   Text, 
   VStack, 
   Button, 
-  Tag,
   AlertDialog,
   AlertDialogBody,
   AlertDialogFooter,
@@ -16,7 +15,7 @@ import {
   AlertDialogOverlay,
   useDisclosure
 } from '@chakra-ui/react';
-import { ViewIcon, EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
+import { AddIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
 import { handlePermission } from '@helpers/middlewares';
 import { GetServerSideProps } from 'next';
@@ -25,6 +24,7 @@ import { pick } from 'lodash';
 import { useRouter } from 'next/router';
 import { PermissionGuard } from 'components/shared/permission-guard';
 import TableComponent, { Column, Action } from 'components/shared/table';
+import { createStandardTableActions } from 'lib/helpers/table-utils';
 import { useRef } from 'react';
 import { useGetPetCharacteristics, useDeletePetCharacteristic } from 'lib/hooks';
 import { PetCharacteristic } from 'lib/types/petCharacteristic';
@@ -71,41 +71,14 @@ const PetCharacteristicsPage: NextPageWithLayout = () => {
     }
   ];
 
-  const actions: Action[] = [
-    {
-      name: 'view',
-      label: t('actions.view.label'),
-      icon: <ViewIcon />,
-      color: 'blue',
-      variant: 'ghost' as const,
-      size: 'sm' as const,
-      tooltip: t('actions.view.tooltip'),
-      module: 'petCharacteristics',
-      action: 'read'
-    },
-    {
-      name: 'edit',
-      label: t('actions.edit.label'),
-      icon: <EditIcon />,
-      color: 'orange',
-      variant: 'ghost' as const,
-      size: 'sm' as const,
-      tooltip: t('actions.edit.tooltip'),
-      module: 'petCharacteristics',
-      action: 'update'
-    },
-    {
-      name: 'delete',
-      label: t('actions.delete.label'),
-      icon: <DeleteIcon />,
-      color: 'red',
-      variant: 'ghost' as const,
-      size: 'sm' as const,
-      tooltip: t('actions.delete.tooltip'),
-      module: 'petCharacteristics',
-      action: 'delete'
+  const actions: Action[] = createStandardTableActions({
+    module: 'petCharacteristics',
+    translations: {
+      view: { label: t('actions.view.label'), tooltip: t('actions.view.tooltip') },
+      edit: { label: t('actions.edit.label'), tooltip: t('actions.edit.tooltip') },
+      delete: { label: t('actions.delete.label'), tooltip: t('actions.delete.tooltip') }
     }
-  ];
+  });
 
   const handleAction = (actionName: string, item: PetCharacteristic) => {
     switch (actionName) {

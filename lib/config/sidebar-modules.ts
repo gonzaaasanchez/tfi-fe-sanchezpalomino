@@ -8,7 +8,7 @@ import {
   CheckCircleIcon,
   HamburgerIcon,
   AtSignIcon,
-  LockIcon
+  LockIcon,
 } from '@chakra-ui/icons';
 
 export interface SidebarModule {
@@ -23,69 +23,69 @@ export const sidebarModules: SidebarModule[] = [
   {
     name: 'Dashboard',
     path: '/dashboard',
-    icon: ViewIcon
+    icon: ViewIcon,
   },
   {
     name: 'Admins',
     path: '/admins',
     icon: AtSignIcon,
     module: 'admins',
-    action: 'getAll'
+    action: 'getAll',
   },
   {
     name: 'Roles',
     path: '/roles',
     icon: LockIcon,
     module: 'roles',
-    action: 'getAll'
+    action: 'getAll',
   },
   {
     name: 'Usuarios',
     path: '/users',
     icon: HamburgerIcon,
     module: 'users',
-    action: 'getAll'
-  },
-  {
-    name: 'Mascotas',
-    path: '/pets',
-    icon: StarIcon,
-    module: 'pets',
-    action: 'getAll'
+    action: 'getAll',
   },
   {
     name: 'Tipos de mascota',
     path: '/petTypes',
     icon: CheckCircleIcon,
     module: 'petTypes',
-    action: 'getAll'
+    action: 'getAll',
   },
   {
     name: 'Características de mascotas',
     path: '/petCharacteristics',
     icon: CheckCircleIcon,
     module: 'petCharacteristics',
-    action: 'getAll'
+    action: 'getAll',
+  },
+  {
+    name: 'Mascotas',
+    path: '/pets',
+    icon: StarIcon,
+    module: 'pets',
+    action: 'getAll',
   },
   {
     name: 'Reservas',
     path: '/reservations',
     icon: CalendarIcon,
     module: 'reservations',
-    action: 'getAll'
+    action: 'getAll',
   },
   {
     name: 'Reseñas',
     path: '/reviews',
     icon: ChatIcon,
     module: 'reviews',
-    action: 'getAll'
+    action: 'getAll',
   },
   {
     name: 'Logs',
     path: '/logs',
     icon: InfoIcon,
     module: 'logs',
-    action: 'getAll'
-  }
-]; 
+    action: 'getAll',
+  },
+];

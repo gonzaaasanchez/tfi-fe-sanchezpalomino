@@ -1,4 +1,7 @@
 import { PaginationMetadata } from '../types/table';
+import { ViewIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
+import React from 'react';
+import { Action } from '../../components/shared/table';
 
 // Pagination utilities
 export const createPaginationMetadata = (
@@ -89,4 +92,73 @@ export const createRowClassFn = (config: {
     
     return classes.join(' ');
   };
+}; 
+
+// Table actions utilities
+export interface StandardActionConfig {
+  module: string;
+  translations: {
+    view: { label: string; tooltip: string };
+    edit: { label: string; tooltip: string };
+    delete: { label: string; tooltip: string };
+  };
+  includeView?: boolean;
+  includeEdit?: boolean;
+  includeDelete?: boolean;
+  customDisabledRules?: {
+    delete?: (item: any) => boolean;
+    edit?: (item: any) => boolean;
+    view?: (item: any) => boolean;
+  };
+}
+
+export const createStandardTableActions = (config: StandardActionConfig): Action[] => {
+  const actions: Action[] = [];
+  
+  if (config.includeView !== false) {
+    actions.push({
+      name: 'view',
+      label: config.translations.view.label,
+      icon: <ViewIcon />,
+      color: 'blue',
+      variant: 'ghost' as const,
+      size: 'sm' as const,
+      tooltip: config.translations.view.tooltip,
+      module: config.module,
+      action: 'read',
+      isDisabled: config.customDisabledRules?.view
+    });
+  }
+  
+  if (config.includeEdit !== false) {
+    actions.push({
+      name: 'edit',
+      label: config.translations.edit.label,
+      icon: <EditIcon />,
+      color: 'orange',
+      variant: 'ghost' as const,
+      size: 'sm' as const,
+      tooltip: config.translations.edit.tooltip,
+      module: config.module,
+      action: 'update',
+      isDisabled: config.customDisabledRules?.edit
+    });
+  }
+  
+  if (config.includeDelete !== false) {
+    actions.push({
+      name: 'delete',
+      label: config.translations.delete.label,
+      icon: <DeleteIcon />,
+      color: 'red',
+      variant: 'ghost' as const,
+      size: 'sm' as const,
+      tooltip: config.translations.delete.tooltip,
+      module: config.module,
+      action: 'delete',
+      isDisabled: config.customDisabledRules?.delete
+    });
+  }
+  
+  return actions;
 }; 
