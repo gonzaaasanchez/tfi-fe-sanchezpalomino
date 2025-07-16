@@ -1,12 +1,12 @@
 import { ReactElement, useState } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 import { NextSeo } from 'next-seo';
-import { 
-  Box, 
-  Heading, 
-  Text, 
-  VStack, 
-  Button, 
+import {
+  Box,
+  Heading,
+  Text,
+  VStack,
+  Button,
   Tag,
   AlertDialog,
   AlertDialogBody,
@@ -14,7 +14,7 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  useDisclosure
+  useDisclosure,
 } from '@chakra-ui/react';
 import { ViewIcon, EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
@@ -32,13 +32,21 @@ import { useRef } from 'react';
 const UsersPage: NextPageWithLayout = () => {
   const t = useTranslations('pages.users.index');
   const router = useRouter();
-  const { users, pagination, search, setSearch, currentPage, setCurrentPage, isPending } = useGetUsers({ limit: 10 });
-  
+  const {
+    users,
+    pagination,
+    search,
+    setSearch,
+    currentPage,
+    setCurrentPage,
+    isPending,
+  } = useGetUsers({ limit: 10 });
+
   // Estados para el modal de confirmación
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [userToDelete, setUserToDelete] = useState<User | null>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
-  
+
   // Hook para eliminar usuario
   const deleteUserMutation = useDeleteUser();
 
@@ -49,25 +57,25 @@ const UsersPage: NextPageWithLayout = () => {
       width: '80px',
       align: 'center' as const,
       sortable: true,
-      sortKey: 'id'
+      sortKey: 'id',
     },
     {
       key: 'firstName',
       label: t('columns.firstName'),
       sortable: true,
-      sortKey: 'firstName'
+      sortKey: 'firstName',
     },
     {
       key: 'lastName',
       label: t('columns.lastName'),
       sortable: true,
-      sortKey: 'lastName'
+      sortKey: 'lastName',
     },
     {
       key: 'email',
       label: t('columns.email'),
       sortable: true,
-      sortKey: 'email'
+      sortKey: 'email',
     },
     {
       key: 'role.name',
@@ -84,8 +92,8 @@ const UsersPage: NextPageWithLayout = () => {
         >
           {item.role?.name || '-'}
         </Tag>
-      )
-    }
+      ),
+    },
   ];
 
   const actions: Action[] = [
@@ -98,7 +106,7 @@ const UsersPage: NextPageWithLayout = () => {
       size: 'sm' as const,
       tooltip: t('actions.view.tooltip'),
       module: 'users',
-      action: 'read'
+      action: 'read',
     },
     {
       name: 'edit',
@@ -109,7 +117,7 @@ const UsersPage: NextPageWithLayout = () => {
       size: 'sm' as const,
       tooltip: t('actions.edit.tooltip'),
       module: 'users',
-      action: 'update'
+      action: 'update',
     },
     {
       name: 'delete',
@@ -120,8 +128,8 @@ const UsersPage: NextPageWithLayout = () => {
       size: 'sm' as const,
       tooltip: t('actions.delete.tooltip'),
       module: 'users',
-      action: 'delete'
-    }
+      action: 'delete',
+    },
   ];
 
   const handleAction = (actionName: string, item: User) => {
@@ -147,7 +155,7 @@ const UsersPage: NextPageWithLayout = () => {
 
   const handleDeleteConfirm = async () => {
     if (!userToDelete || !userToDelete.id) return;
-    
+
     try {
       await deleteUserMutation.mutateAsync(userToDelete.id);
       onClose();
@@ -168,19 +176,28 @@ const UsersPage: NextPageWithLayout = () => {
         title={t('meta.title')}
         description={t('meta.description')}
       />
-      
-      <VStack spacing={6} align="stretch" p={6}>
+
+      <VStack
+        spacing={6}
+        align="stretch"
+        p={6}
+      >
         <Box>
-          <Heading size="lg" mb={2} color="gray.800">
+          <Heading
+            size="lg"
+            mb={2}
+            color="gray.800"
+          >
             {t('title')}
           </Heading>
-          <Text color="gray.800">
-            {t('description')}
-          </Text>
+          <Text color="gray.800">{t('description')}</Text>
         </Box>
 
         {/* Create new user button */}
-        <PermissionGuard module="users" action="create">
+        <PermissionGuard
+          module="users"
+          action="create"
+        >
           <Box>
             <Button
               leftIcon={<AddIcon />}
@@ -193,7 +210,10 @@ const UsersPage: NextPageWithLayout = () => {
         </PermissionGuard>
 
         {/* Users table */}
-        <PermissionGuard module="users" action="getAll">
+        <PermissionGuard
+          module="users"
+          action="getAll"
+        >
           <TableComponent
             rows={users || []}
             columns={columns}
@@ -217,14 +237,17 @@ const UsersPage: NextPageWithLayout = () => {
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+            <AlertDialogHeader
+              fontSize="lg"
+              fontWeight="bold"
+            >
               {t('deleteDialog.title')}
             </AlertDialogHeader>
 
             <AlertDialogBody>
               {t('deleteDialog.message', {
                 firstName: userToDelete?.firstName || '',
-                lastName: userToDelete?.lastName || ''
+                lastName: userToDelete?.lastName || '',
               })}
               <br />
               <br />
@@ -232,7 +255,10 @@ const UsersPage: NextPageWithLayout = () => {
             </AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={handleDeleteCancel}>
+              <Button
+                ref={cancelRef}
+                onClick={handleDeleteCancel}
+              >
                 {t('deleteDialog.cancel')}
               </Button>
               <Button
@@ -272,10 +298,10 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.shared.permission-guard',
         'components.shared.pagination',
         'components.shared.table',
-        'general.common'
-      ])
-    }
+        'general.common',
+      ]),
+    },
   };
 };
 
-export default UsersPage; 
+export default UsersPage;

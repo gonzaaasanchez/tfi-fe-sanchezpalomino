@@ -9,12 +9,13 @@ import {
 } from '../types/services';
 import { UseGetAllType, UseGetOneByIdType } from '../types/hooks';
 import { DEFAULT_PARAM_LIMIT } from '../constants/params';
+import { PaginatedResponse } from '../types/response';
 
 export function useGetPetTypes(params?: UseGetAllType) {
   const [search, setSearch] = useState<string>(params?.initialSearch || '');
   const [currentPage, setCurrentPage] = useState<number>(params?.page || 1);
 
-  const { data, isPending } = useQuery({
+  const { data, isPending } = useQuery<PaginatedResponse<PetType>>({
     queryKey: ['/pet-types', search, currentPage],
     queryFn: () =>
       PetTypeService.getPetTypes({ 
@@ -29,7 +30,7 @@ export function useGetPetTypes(params?: UseGetAllType) {
   });
 
   return { 
-    petTypes: data?.data as PetType[], 
+    petTypes: data?.items, 
     pagination: data?.pagination,
     search, 
     setSearch, 

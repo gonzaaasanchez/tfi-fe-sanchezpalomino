@@ -23,6 +23,7 @@ import Pagination from './pagination';
 import { usePermissions } from '@hooks/use-permissions';
 import { useTranslations } from 'next-intl';
 import Loader from './loader';
+import { PaginationMetadata } from '../../lib/types/response';
 
 // Data types
 export interface Column {
@@ -52,13 +53,6 @@ export interface Action {
   module?: string; // Module for permission validation
   visible?: (item: any) => boolean; // To show/hide actions
   loading?: (item: any) => boolean; // To show loading for specific actions
-}
-
-export interface PaginationMetadata {
-  page: number;
-  pageCount: number;
-  pageSize: number;
-  total: number;
 }
 
 export interface TableProps {
@@ -179,7 +173,10 @@ const TableComponent: React.FC<TableProps> = ({
   // Loading and empty states
   const renderEmptyState = () => (
     <Center py={12}>
-      <Text color="gray.500" fontSize="lg">
+      <Text
+        color="gray.500"
+        fontSize="lg"
+      >
         {emptyText}
       </Text>
     </Center>
@@ -193,16 +190,16 @@ const TableComponent: React.FC<TableProps> = ({
   // Pagination
   const renderPagination = () => {
     if (!metadata || !onChangePage) return null;
-    
+
     const paginationTranslations = {
-      showingResults: t('showingResults', { 
-        startItem: (metadata.page - 1) * metadata.pageSize + 1,
-        endItem: Math.min(metadata.page * metadata.pageSize, metadata.total),
-        total: metadata.total
+      showingResults: t('showingResults', {
+        startItem: (metadata.page - 1) * metadata.limit + 1,
+        endItem: Math.min(metadata.page * metadata.limit, metadata.total),
+        total: metadata.total,
       }),
       perPage: t('perPage'),
       previousPage: t('previousPage'),
-      nextPage: t('nextPage')
+      nextPage: t('nextPage'),
     };
 
     return (
@@ -219,7 +216,10 @@ const TableComponent: React.FC<TableProps> = ({
   // Table rendering
   const tableContent = (
     <TableContainer p={4}>
-      <Table variant='base' size="md">
+      <Table
+        variant="base"
+        size="md"
+      >
         <Thead>
           <Tr>
             {columns.map((column) => (
@@ -231,14 +231,26 @@ const TableComponent: React.FC<TableProps> = ({
                 w={column.width}
                 className={column.className}
               >
-                <Flex align="center" justify={column.align || 'flex-start'}>
+                <Flex
+                  align="center"
+                  justify={column.align || 'flex-start'}
+                >
                   {column.label}
                   {column.sortable && column.sortDirection && (
-                    <Box ml={2} as="span">
+                    <Box
+                      ml={2}
+                      as="span"
+                    >
                       {column.sortDirection === 'ASC' ? (
-                        <ChevronUpIcon boxSize={4} color="brand1.500" />
+                        <ChevronUpIcon
+                          boxSize={4}
+                          color="brand1.500"
+                        />
                       ) : (
-                        <ChevronDownIcon boxSize={4} color="brand1.500" />
+                        <ChevronDownIcon
+                          boxSize={4}
+                          color="brand1.500"
+                        />
                       )}
                     </Box>
                   )}
@@ -246,7 +258,10 @@ const TableComponent: React.FC<TableProps> = ({
               </Th>
             ))}
             {actions.length > 0 && (
-              <Th textAlign="center" w="120px">
+              <Th
+                textAlign="center"
+                w="120px"
+              >
                 {tTable('actions')}
               </Th>
             )}
@@ -258,8 +273,12 @@ const TableComponent: React.FC<TableProps> = ({
               key={index}
               _hover={{ bg: hoverBg }}
               className={getRowClass(row)}
-              borderBottom={index === safeRows.length - 1 ? 'none' : '1px solid'}
-              borderColor={index === safeRows.length - 1 ? 'transparent' : borderColor}
+              borderBottom={
+                index === safeRows.length - 1 ? 'none' : '1px solid'
+              }
+              borderColor={
+                index === safeRows.length - 1 ? 'transparent' : borderColor
+              }
             >
               {columns.map((column) => (
                 <Td
@@ -271,10 +290,18 @@ const TableComponent: React.FC<TableProps> = ({
                 </Td>
               ))}
               {actions.length > 0 && (
-                <Td textAlign="center" minW="150px">
-                  <HStack spacing={1} justify="center">
+                <Td
+                  textAlign="center"
+                  minW="150px"
+                >
+                  <HStack
+                    spacing={1}
+                    justify="center"
+                  >
                     {actions.map((action, idx) => {
-                      const isDisabled = action.isDisabled ? action.isDisabled(row) : false;
+                      const isDisabled = action.isDisabled
+                        ? action.isDisabled(row)
+                        : false;
                       const isVisible = showAction(action, row);
                       const isLoading = showLoading(action, row);
                       if (!isVisible) return null;
@@ -330,7 +357,10 @@ const TableComponent: React.FC<TableProps> = ({
         <>
           {title && (
             <Box p={4}>
-              <Text fontSize="md" fontWeight="bold">
+              <Text
+                fontSize="md"
+                fontWeight="bold"
+              >
                 {title}
               </Text>
             </Box>
@@ -343,4 +373,4 @@ const TableComponent: React.FC<TableProps> = ({
   );
 };
 
-export default TableComponent; 
+export default TableComponent;

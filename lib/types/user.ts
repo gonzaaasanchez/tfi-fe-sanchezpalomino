@@ -14,16 +14,12 @@ export interface User {
 }
 
 export interface Admin {
-  id: string;
+  id?: string;
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber?: string;
-  role: {
-    id: string;
-    name: string;
-    description?: string;
-  };
+  role: Role;
   avatar?: string;
   avatarContentType?: string;
   createdAt?: string;

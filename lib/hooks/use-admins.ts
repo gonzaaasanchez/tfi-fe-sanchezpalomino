@@ -3,28 +3,28 @@ import { useState } from 'react';
 import { AdminService } from '../services/admin';
 import { useCustomToast } from './use-custom-toast';
 import { Admin } from '../types/user';
-import { 
-  AdminCreateService, 
-  AdminUpdateService 
-} from '../types/services';
+import { AdminCreateService, AdminUpdateService } from '../types/services';
 import { UseGetAllType, UseGetOneByIdType } from '../types/hooks';
 import { DEFAULT_PARAM_LIMIT } from '../constants/params';
-import { PaginatedResponse } from '../types/response';
+
 
 export function useGetAdmins(params?: UseGetAllType) {
   const [search, setSearch] = useState<string>(params?.initialSearch || '');
 
-  const { data, isPending } = useQuery<PaginatedResponse<Admin>>({
+  const { data, isPending } = useQuery<Admin[]>({
     queryKey: ['/admins', search],
     queryFn: () =>
-      AdminService.getAdmins({ search, limit: params?.limit || DEFAULT_PARAM_LIMIT }),
+      AdminService.getAdmins({
+        search,
+        limit: params?.limit || DEFAULT_PARAM_LIMIT,
+      }),
     retry: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    staleTime: 60000
+    staleTime: 60000,
   });
 
-  return { admins: data?.data as Admin[], search, setSearch, isPending };
+  return { admins: data, search, setSearch, isPending };
 }
 
 export function useGetAdmin({ id }: UseGetOneByIdType) {
@@ -35,7 +35,7 @@ export function useGetAdmin({ id }: UseGetOneByIdType) {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     staleTime: 60000,
-    enabled: !!id
+    enabled: !!id,
   });
 
   return { admin: data || null, isPending };
@@ -46,12 +46,14 @@ export const useCreateAdmin = () => {
   const { errorToast } = useCustomToast();
 
   return useMutation({
-    mutationFn: (adminData: AdminCreateService) => AdminService.createAdmin(adminData),
+    mutationFn: (adminData: AdminCreateService) =>
+      AdminService.createAdmin(adminData),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/admins'] });
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || 'Error al crear el operador';
+      const message =
+        error.response?.data?.message || 'Error al crear el operador';
       errorToast(message);
     },
   });
@@ -62,10 +64,11 @@ export function useUpdateAdmin(id: string) {
   const { errorToast } = useCustomToast();
 
   return useMutation({
-    mutationFn: (adminData: AdminUpdateService) => AdminService.updateAdmin(id, adminData),
+    mutationFn: (adminData: AdminUpdateService) =>
+      AdminService.updateAdmin(id, adminData),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [`/admins/${id}`]
+        queryKey: [`/admins/${id}`],
       });
       queryClient.invalidateQueries({ queryKey: ['/admins'] });
     },
@@ -86,8 +89,9 @@ export const useDeleteAdmin = () => {
       queryClient.invalidateQueries({ queryKey: ['/admins'] });
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || 'Error al eliminar el administrador';
+      const message =
+        error.response?.data?.message || 'Error al eliminar el administrador';
       errorToast(message);
     },
   });
-}; 
+};

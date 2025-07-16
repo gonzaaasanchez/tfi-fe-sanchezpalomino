@@ -12,12 +12,11 @@ import {
   Card,
   CardBody,
   Badge,
-  Divider
+  Divider,
 } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { useTranslations } from 'next-intl';
-import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { pick } from 'lodash';
@@ -27,14 +26,19 @@ import { NextSeo } from 'next-seo';
 import { useGetAdmin } from '@hooks/use-admins';
 import { PermissionGuard } from 'components/shared/permission-guard';
 import { Loader } from 'components/shared';
+import { ReactElement } from 'react';
+import { NextPageWithLayout } from 'pages/_app';
 
-const ViewAdminPage: NextPage = () => {
+interface ViewAdminPageProps {
+  id: string;
+}
+
+const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
   const t = useTranslations('pages.admins.view');
   const router = useRouter();
-  const { id } = router.query;
-  
-  const { admin, isPending: isLoadingAdmin } = useGetAdmin({ 
-    id: id as string 
+
+  const { admin, isPending: isLoadingAdmin } = useGetAdmin({
+    id: id as string,
   });
 
   const handleEdit = () => {
@@ -56,14 +60,20 @@ const ViewAdminPage: NextPage = () => {
   }
 
   return (
-    <PrivateLayout>
+    <>
       <NextSeo
         title={t('meta.title')}
         description={t('meta.description')}
       />
 
-      <Container maxW="container.lg" py={8}>
-        <VStack spacing={6} align="stretch">
+      <Container
+        maxW="container.lg"
+        py={8}
+      >
+        <VStack
+          spacing={6}
+          align="stretch"
+        >
           {/* Breadcrumb */}
           <Breadcrumb
             spacing="8px"
@@ -71,17 +81,26 @@ const ViewAdminPage: NextPage = () => {
             fontSize="sm"
           >
             <BreadcrumbItem>
-              <BreadcrumbLink href="/dashboard" color="gray.500">
+              <BreadcrumbLink
+                href="/dashboard"
+                color="gray.500"
+              >
                 {t('breadcrumb.home')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/admins" color="gray.500">
+              <BreadcrumbLink
+                href="/admins"
+                color="gray.500"
+              >
                 {t('breadcrumb.admins')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink color="brand1.700" fontWeight="medium">
+              <BreadcrumbLink
+                color="brand1.700"
+                fontWeight="medium"
+              >
                 {t('breadcrumb.view')}
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -89,17 +108,30 @@ const ViewAdminPage: NextPage = () => {
 
           {/* Header */}
           <Box>
-            <HStack justify="space-between" align="flex-start">
+            <HStack
+              justify="space-between"
+              align="flex-start"
+            >
               <Box>
-              <Heading size="lg" mb={2} color="gray.800">
+                <Heading
+                  size="lg"
+                  mb={2}
+                  color="gray.800"
+                >
                   {t('title')}
                 </Heading>
-                <Text color="gray.600" fontSize="sm">
+                <Text
+                  color="gray.600"
+                  fontSize="sm"
+                >
                   {t('description')}
                 </Text>
               </Box>
               <HStack spacing={3}>
-                <PermissionGuard module="admins" action="update">
+                <PermissionGuard
+                  module="admins"
+                  action="update"
+                >
                   <Button
                     leftIcon={<EditIcon />}
                     onClick={handleEdit}
@@ -114,43 +146,70 @@ const ViewAdminPage: NextPage = () => {
           {/* Admin Details Card */}
           <Card>
             <CardBody>
-              <VStack spacing={6} align="stretch">
+              <VStack
+                spacing={6}
+                align="stretch"
+              >
                 {/* Basic Information */}
                 <Box>
-                  <Heading size="sm" color="brand1.700" mb={4}>
+                  <Heading
+                    size="sm"
+                    color="brand1.700"
+                    mb={4}
+                  >
                     {t('sections.basicInfo')}
                   </Heading>
-                  <VStack spacing={4} align="stretch">
+                  <VStack
+                    spacing={4}
+                    align="stretch"
+                  >
                     <HStack justify="space-between">
-                      <Text fontWeight="medium" color="gray.700">
+                      <Text
+                        fontWeight="medium"
+                        color="gray.700"
+                      >
                         {t('fields.id')}:
                       </Text>
                       <Text color="gray.600">{admin.id}</Text>
                     </HStack>
                     <HStack justify="space-between">
-                      <Text fontWeight="medium" color="gray.700">
+                      <Text
+                        fontWeight="medium"
+                        color="gray.700"
+                      >
                         {t('fields.firstName')}:
                       </Text>
                       <Text color="gray.600">{admin.firstName}</Text>
                     </HStack>
                     <HStack justify="space-between">
-                      <Text fontWeight="medium" color="gray.700">
+                      <Text
+                        fontWeight="medium"
+                        color="gray.700"
+                      >
                         {t('fields.lastName')}:
                       </Text>
                       <Text color="gray.600">{admin.lastName}</Text>
                     </HStack>
                     <HStack justify="space-between">
-                      <Text fontWeight="medium" color="gray.700">
+                      <Text
+                        fontWeight="medium"
+                        color="gray.700"
+                      >
                         {t('fields.email')}:
                       </Text>
                       <Text color="gray.600">{admin.email}</Text>
                     </HStack>
                     <HStack justify="space-between">
-                      <Text fontWeight="medium" color="gray.700">
+                      <Text
+                        fontWeight="medium"
+                        color="gray.700"
+                      >
                         {t('fields.role')}:
                       </Text>
                       <Badge
-                        colorScheme={admin.role?.name === 'superadmin' ? 'orange' : 'blue'}
+                        colorScheme={
+                          admin.role?.name === 'superadmin' ? 'orange' : 'blue'
+                        }
                         variant="subtle"
                         px={3}
                         py={1}
@@ -165,24 +224,45 @@ const ViewAdminPage: NextPage = () => {
 
                 {/* Additional Information */}
                 <Box>
-                  <Heading size="sm" color="brand1.700" mb={4}>
+                  <Heading
+                    size="sm"
+                    color="brand1.700"
+                    mb={4}
+                  >
                     {t('sections.additionalInfo')}
                   </Heading>
-                  <VStack spacing={4} align="stretch">
+                  <VStack
+                    spacing={4}
+                    align="stretch"
+                  >
                     <HStack justify="space-between">
-                      <Text fontWeight="medium" color="gray.700">
+                      <Text
+                        fontWeight="medium"
+                        color="gray.700"
+                      >
                         {t('fields.createdAt')}:
                       </Text>
                       <Text color="gray.600">
-                        {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString('es-ES') : '-'}
+                        {admin.createdAt
+                          ? new Date(admin.createdAt).toLocaleDateString(
+                              'es-ES'
+                            )
+                          : '-'}
                       </Text>
                     </HStack>
                     <HStack justify="space-between">
-                      <Text fontWeight="medium" color="gray.700">
+                      <Text
+                        fontWeight="medium"
+                        color="gray.700"
+                      >
                         {t('fields.updatedAt')}:
                       </Text>
                       <Text color="gray.600">
-                        {admin.updatedAt ? new Date(admin.updatedAt).toLocaleDateString('es-ES') : '-'}
+                        {admin.updatedAt
+                          ? new Date(admin.updatedAt).toLocaleDateString(
+                              'es-ES'
+                            )
+                          : '-'}
                       </Text>
                     </HStack>
                   </VStack>
@@ -201,8 +281,12 @@ const ViewAdminPage: NextPage = () => {
           </Button>
         </Box>
       </Container>
-    </PrivateLayout>
+    </>
   );
+};
+
+ViewAdminPage.getLayout = function getLayout(page: ReactElement) {
+  return <PrivateLayout>{page}</PrivateLayout>;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
@@ -214,18 +298,21 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (errors) {
     return errors;
   }
-  
+
+  const id = params?.id as string;
+
   return {
     props: {
+      id,
       messages: pick(await import(`../../../message/${locale}.json`), [
         'layouts.private.header',
         'pages.admins.view',
         'pages.admins.index',
         'components.shared.permission-guard',
-        'general.common'
-      ])
-    }
+        'general.common',
+      ]),
+    },
   };
 };
 
-export default ViewAdminPage; 
+export default ViewAdminPage;

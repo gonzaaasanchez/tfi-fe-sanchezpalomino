@@ -3,30 +3,28 @@ import { useState } from 'react';
 import { RoleService } from '../services/role';
 import { useCustomToast } from './use-custom-toast';
 import { Role } from '../types/role';
-import { 
-  RoleCreateService, 
-  RoleUpdateService 
-} from '../types/services';
+import { RoleCreateService, RoleUpdateService } from '../types/services';
 import { UseGetAllType, UseGetOneByIdType } from '../types/hooks';
 import { DEFAULT_PARAM_LIMIT } from '../constants/params';
-import { PaginatedResponse } from '../types/response';
+import { BaseResponse } from '../types/response';
 
 export function useGetRoles(params?: UseGetAllType) {
   const [search, setSearch] = useState<string>(params?.initialSearch || '');
 
-  const { data, isPending } = useQuery<PaginatedResponse<Role>>({
-    queryKey: [
-      '/roles'
-    ],
+  const { data, isPending } = useQuery<BaseResponse<Role[]>>({
+    queryKey: ['/roles'],
     queryFn: () =>
-      RoleService.getRoles({ search, limit: params?.limit || DEFAULT_PARAM_LIMIT }),
+      RoleService.getRoles({
+        search,
+        limit: params?.limit || DEFAULT_PARAM_LIMIT,
+      }),
     retry: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    staleTime: 60000
+    staleTime: 60000,
   });
 
-  return { roles: data?.data as Role[], search, setSearch, isPending };
+  return { roles: data?.data, search, setSearch, isPending };
 }
 
 export function useGetRole({ id }: UseGetOneByIdType) {
@@ -37,7 +35,7 @@ export function useGetRole({ id }: UseGetOneByIdType) {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     staleTime: 60000,
-    enabled: Number(id) > 0
+    enabled: Number(id) > 0,
   });
 
   return { role: data || null, isPending };
@@ -48,12 +46,11 @@ export const useCreateRole = () => {
   const { successToast, errorToast } = useCustomToast();
 
   return useMutation({
-    mutationFn: (roleData: RoleCreateService) => RoleService.createRole(roleData),
+    mutationFn: (roleData: RoleCreateService) =>
+      RoleService.createRole(roleData),
     onSuccess: (data) => {
       successToast('Rol creado exitosamente');
-      queryClient.invalidateQueries({ queryKey: [
-        '/roles'
-      ], });
+      queryClient.invalidateQueries({ queryKey: ['/roles'] });
     },
     onError: (error: any) => {
       const message = error.response?.data?.message || 'Error al crear el rol';
@@ -66,13 +63,14 @@ export function useUpdateRole(id: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (roleData: RoleUpdateService) => RoleService.updateRole(id, roleData),
+    mutationFn: (roleData: RoleUpdateService) =>
+      RoleService.updateRole(id, roleData),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [`/roles/${id}`]
+        queryKey: [`/roles/${id}`],
       });
       queryClient.invalidateQueries({ queryKey: ['/roles'] });
-    }
+    },
   });
 }
 
@@ -87,13 +85,12 @@ export const useDeleteRole = () => {
     mutationFn: (id: string) => RoleService.deleteRole(id),
     onSuccess: (data, id) => {
       successToast('Rol eliminado exitosamente');
-      queryClient.invalidateQueries({ queryKey: [
-        '/roles'
-      ], });
+      queryClient.invalidateQueries({ queryKey: ['/roles'] });
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || 'Error al eliminar el rol';
+      const message =
+        error.response?.data?.message || 'Error al eliminar el rol';
       errorToast(message);
     },
   });
-}; 
+};

@@ -3,10 +3,7 @@ import { useState } from 'react';
 import { UserService } from '../services/user';
 import { useCustomToast } from './use-custom-toast';
 import { User } from '../types/user';
-import { 
-  UserCreateService, 
-  UserUpdateService
-} from '../types/services';
+import { UserCreateService, UserUpdateService } from '../types/services';
 import { UseGetAllType, UseGetOneByIdType } from '../types/hooks';
 import { DEFAULT_PARAM_LIMIT } from '../constants/params';
 
@@ -17,25 +14,25 @@ export function useGetUsers(params?: UseGetAllType) {
   const { data, isPending } = useQuery({
     queryKey: ['/users', search, currentPage],
     queryFn: () =>
-      UserService.getUsers({ 
-        search, 
+      UserService.getUsers({
+        search,
         limit: params?.limit || DEFAULT_PARAM_LIMIT,
-        page: currentPage
+        page: currentPage,
       }),
     retry: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    staleTime: 60000
+    staleTime: 60000,
   });
 
-  return { 
-    users: data?.data as User[], 
+  return {
+    users: data?.items as User[],
     pagination: data?.pagination,
-    search, 
-    setSearch, 
+    search,
+    setSearch,
     currentPage,
     setCurrentPage,
-    isPending 
+    isPending,
   };
 }
 
@@ -47,7 +44,7 @@ export function useGetUser({ id }: UseGetOneByIdType) {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     staleTime: 60000,
-    enabled: !!id
+    enabled: !!id,
   });
 
   return { user: data as User | undefined, isPending };
@@ -58,12 +55,14 @@ export const useCreateUser = () => {
   const { errorToast } = useCustomToast();
 
   return useMutation({
-    mutationFn: (userData: UserCreateService) => UserService.createUser(userData),
+    mutationFn: (userData: UserCreateService) =>
+      UserService.createUser(userData),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['/users'] });
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || 'Error al crear el usuario';
+      const message =
+        error.response?.data?.message || 'Error al crear el usuario';
       errorToast(message);
     },
   });
@@ -74,10 +73,11 @@ export function useUpdateUser(id: string) {
   const { errorToast } = useCustomToast();
 
   return useMutation({
-    mutationFn: (userData: UserUpdateService) => UserService.updateUser(id, userData),
+    mutationFn: (userData: UserUpdateService) =>
+      UserService.updateUser(id, userData),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [`/users/${id}`]
+        queryKey: [`/users/${id}`],
       });
       queryClient.invalidateQueries({ queryKey: ['/users'] });
     },
@@ -86,7 +86,7 @@ export function useUpdateUser(id: string) {
       errorToast(message);
     },
   });
-};
+}
 
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
@@ -98,8 +98,9 @@ export const useDeleteUser = () => {
       queryClient.invalidateQueries({ queryKey: ['/users'] });
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || 'Error al eliminar el usuario';
+      const message =
+        error.response?.data?.message || 'Error al eliminar el usuario';
       errorToast(message);
     },
   });
-}; 
+};

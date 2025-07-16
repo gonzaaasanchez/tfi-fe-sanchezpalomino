@@ -54,7 +54,8 @@
           "name": "Nombre"
         },
         "placeholders": {
-          "name": "Ej: Perro, Gato, Ave..."        },
+          "name": "Ej: Perro, Gato, Ave..."
+        },
         "responses": {
           "createSuccess": "Tipo de mascota creado exitosamente",
           "updateSuccess": "Tipo de mascota actualizado exitosamente",
@@ -100,6 +101,29 @@
         "validation": {
           "passwordMismatch": "Las contraseñas no coinciden",
           "passwordMinLength": "La contraseña debe tener al menos 6 caracteres"
+        },
+        "loading": {
+          "creating": "Creando...",
+          "updating": "Actualizando..."
+        }
+      },
+      "petCharacteristic": {
+        "cta": {
+          "create": "Crear Característica de Mascota",
+          "update": "Actualizar Característica de Mascota",
+          "cancel": "Cancelar"
+        },
+        "labels": {
+          "name": "Nombre"
+        },
+        "placeholders": {
+          "name": "Ej: Tamaño, Edad, Color..."
+        },
+        "responses": {
+          "createSuccess": "Característica de mascota creada exitosamente",
+          "updateSuccess": "Característica de mascota actualizada exitosamente",
+          "createError": "Error al crear la característica de mascota",
+          "updateError": "Error al actualizar la característica de mascota"
         },
         "loading": {
           "creating": "Creando...",
@@ -229,7 +253,8 @@
     "private": {
       "header": {
         "signOut": "Cerrar Sesión",
-        "profile": "Perfil"
+        "profile": "Perfil",
+        "toggleSidebar": "Alternar barra lateral"
       }
     }
   },
@@ -371,6 +396,14 @@
           "lastName": "Apellido",
           "email": "Email",
           "role": "Rol"
+        },
+        "deleteDialog": {
+          "title": "Confirmar eliminación",
+          "message": "¿Estás seguro de que deseas eliminar al usuario {firstName} {lastName}?",
+          "warning": "Esta acción no se puede deshacer.",
+          "cancel": "Cancelar",
+          "confirm": "Eliminar",
+          "loading": "Eliminando..."
         }
       },
       "create": {
@@ -430,11 +463,6 @@
           "edit": "Editar"
         },
         "notFound": "Usuario no encontrado"
-      },
-      "deleteDialog": {
-        "title": "Confirmar eliminación",
-        "message": "¿Estás seguro de que deseas eliminar al usuario {firstName} {lastName}?",
-        "warning": "Esta acción no se puede deshacer."
       }
     },
     "petTypes": {
@@ -538,6 +566,102 @@
         }
       }
     },
+    "petCharacteristics": {
+      "index": {
+        "actions": {
+          "edit": {
+            "label": "Editar",
+            "tooltip": "Editar característica de mascota"
+          },
+          "delete": {
+            "label": "Eliminar",
+            "tooltip": "Eliminar característica de mascota"
+          },
+          "view": {
+            "label": "Ver",
+            "tooltip": "Ver detalles de la característica de mascota"
+          }
+        },
+        "cta": {
+          "createPetCharacteristic": "Crear Característica de Mascota"
+        },
+        "description": "Gestión de características de mascotas del sistema",
+        "emptyText": "No hay características de mascotas disponibles",
+        "meta": {
+          "title": "Características de Mascotas",
+          "description": "Gestión de características de mascotas del sistema"
+        },
+        "title": "Características de Mascotas",
+        "columns": {
+          "id": "ID",
+          "name": "Nombre",
+          "createdAt": "Fecha de Creación"
+        },
+        "deleteDialog": {
+          "title": "Confirmar eliminación",
+          "message": "¿Estás seguro de que deseas eliminar la característica de mascota {name}?",
+          "warning": "Esta acción no se puede deshacer.",
+          "cancel": "Cancelar",
+          "confirm": "Eliminar",
+          "loading": "Eliminando..."
+        }
+      },
+      "create": {
+        "meta": {
+          "title": "Crear Característica de Mascota",
+          "description": "Crear una nueva característica de mascota en el sistema"
+        },
+        "title": "Crear Característica de Mascota",
+        "description": "Completa el formulario para crear una nueva característica de mascota",
+        "breadcrumb": {
+          "home": "Inicio",
+          "petCharacteristics": "Características de Mascotas",
+          "create": "Crear"
+        }
+      },
+      "edit": {
+        "meta": {
+          "title": "Editar Característica de Mascota",
+          "description": "Editar información de la característica de mascota"
+        },
+        "title": "Editar Característica de Mascota",
+        "description": "Modifica la información de la característica de mascota",
+        "breadcrumb": {
+          "home": "Inicio",
+          "petCharacteristics": "Características de Mascotas",
+          "edit": "Editar"
+        }
+      },
+      "view": {
+        "meta": {
+          "title": "Ver Característica de Mascota",
+          "description": "Ver detalles de la característica de mascota"
+        },
+        "title": "Detalles de la Característica de Mascota",
+        "description": "Información completa de la característica de mascota",
+        "breadcrumb": {
+          "home": "Inicio",
+          "petCharacteristics": "Características de Mascotas",
+          "view": "Ver"
+        },
+        "actions": {
+          "back": "Volver",
+          "edit": "Editar"
+        },
+        "sections": {
+          "basicInfo": "Información Básica",
+          "additionalInfo": "Información Adicional",
+          "petCharacteristicInfo": "Información de la Característica de Mascota"
+        },
+        "fields": {
+          "id": "ID",
+          "name": "Nombre",
+          "createdAt": "Fecha de Creación",
+          "updatedAt": "Última Actualización"
+        },
+        "notFound": "Característica de mascota no encontrada"
+      }
+    },
     "auth": {
       "login": {
         "meta": {
@@ -590,4 +714,4 @@
       "empty": "No hay roles disponibles"
     }
   }
-} 
+}

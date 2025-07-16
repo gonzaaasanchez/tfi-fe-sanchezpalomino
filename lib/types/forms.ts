@@ -24,3 +24,7 @@ export type UserFormType = {
   phoneNumber?: string;
   password?: string; // Opcional para edición, requerido para creación
 };
+
+export type PetCharacteristicFormType = {
+  name: string;
+};

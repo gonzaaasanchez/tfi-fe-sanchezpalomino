@@ -5,11 +5,10 @@ import {
   BreadcrumbLink,
   Container,
   Text,
-  VStack
+  VStack,
 } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { useTranslations } from 'next-intl';
-import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { pick } from 'lodash';
@@ -18,8 +17,9 @@ import { useCustomToast } from '@hooks/use-custom-toast';
 import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
+import { NextPageWithLayout } from 'pages/_app';
 
-const CreatePetTypePage: NextPage = () => {
+const CreatePetTypePage: NextPageWithLayout = () => {
   const t = useTranslations('pages.petTypes.create');
   const tForm = useTranslations('components.forms.petType');
   const router = useRouter();
@@ -41,8 +41,14 @@ const CreatePetTypePage: NextPage = () => {
         description={t('meta.description')}
       />
 
-      <Container maxW="container.lg" py={8}>
-        <VStack spacing={6} align="stretch">
+      <Container
+        maxW="container.lg"
+        py={8}
+      >
+        <VStack
+          spacing={6}
+          align="stretch"
+        >
           {/* Breadcrumb */}
           <Breadcrumb
             spacing="8px"
@@ -50,17 +56,26 @@ const CreatePetTypePage: NextPage = () => {
             fontSize="sm"
           >
             <BreadcrumbItem>
-              <BreadcrumbLink href="/dashboard" color="gray.500">
+              <BreadcrumbLink
+                href="/dashboard"
+                color="gray.500"
+              >
                 {t('breadcrumb.home')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/petTypes" color="gray.500">
+              <BreadcrumbLink
+                href="/petTypes"
+                color="gray.500"
+              >
                 {t('breadcrumb.petTypes')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink color="brand1.700" fontWeight="medium">
+              <BreadcrumbLink
+                color="brand1.700"
+                fontWeight="medium"
+              >
                 {t('breadcrumb.create')}
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -68,7 +83,10 @@ const CreatePetTypePage: NextPage = () => {
 
           {/* Header */}
           <Box>
-            <Text color="gray.600" fontSize="lg">
+            <Text
+              color="gray.600"
+              fontSize="lg"
+            >
               {t('description')}
             </Text>
           </Box>
@@ -90,7 +108,11 @@ export const getServerSideProps: GetServerSideProps = async ({
   locale = 'es',
   ...ctx
 }) => {
-  const errors: any = await handlePermission(ctx.req, ctx.res, '/petTypes/create');
+  const errors: any = await handlePermission(
+    ctx.req,
+    ctx.res,
+    '/petTypes/create'
+  );
   if (errors) {
     return errors;
   }
@@ -102,10 +124,10 @@ export const getServerSideProps: GetServerSideProps = async ({
         'layouts.private.header',
         'components.forms.petType',
         'general.form.errors',
-        'general.common'
-      ])
-    }
+        'general.common',
+      ]),
+    },
   };
 };
 
-export default CreatePetTypePage; 
+export default CreatePetTypePage;

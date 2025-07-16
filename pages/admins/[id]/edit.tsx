@@ -6,11 +6,10 @@ import {
   Container,
   Heading,
   Text,
-  VStack
+  VStack,
 } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { useTranslations } from 'next-intl';
-import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { pick } from 'lodash';
@@ -21,16 +20,21 @@ import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
 import { useGetAdmin } from '@hooks/use-admins';
 import { Loader } from 'components/shared';
+import { ReactElement } from 'react';
+import { NextPageWithLayout } from 'pages/_app';
 
-const EditAdminPage: NextPage = () => {
+interface EditAdminPageProps {
+  id: string;
+}
+
+const EditAdminPage: NextPageWithLayout<EditAdminPageProps> = ({ id }) => {
   const t = useTranslations('pages.admins.edit');
   const tForm = useTranslations('components.forms.admin');
   const router = useRouter();
-  const { id } = router.query;
   const { successToast } = useCustomToast();
-  
-  const { admin, isPending: isLoadingAdmin } = useGetAdmin({ 
-    id: id as string 
+
+  const { admin, isPending: isLoadingAdmin } = useGetAdmin({
+    id: id as string,
   });
 
   const handleSuccess = () => {
@@ -53,14 +57,20 @@ const EditAdminPage: NextPage = () => {
   }
 
   return (
-    <PrivateLayout>
+    <>
       <NextSeo
         title={t('meta.title')}
         description={t('meta.description')}
       />
 
-      <Container maxW="container.lg" py={8}>
-        <VStack spacing={6} align="stretch">
+      <Container
+        maxW="container.lg"
+        py={8}
+      >
+        <VStack
+          spacing={6}
+          align="stretch"
+        >
           {/* Breadcrumb */}
           <Breadcrumb
             spacing="8px"
@@ -68,17 +78,26 @@ const EditAdminPage: NextPage = () => {
             fontSize="sm"
           >
             <BreadcrumbItem>
-              <BreadcrumbLink href="/dashboard" color="gray.500">
+              <BreadcrumbLink
+                href="/dashboard"
+                color="gray.500"
+              >
                 {t('breadcrumb.home')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/admins" color="gray.500">
+              <BreadcrumbLink
+                href="/admins"
+                color="gray.500"
+              >
                 {t('breadcrumb.admins')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink color="brand1.700" fontWeight="medium">
+              <BreadcrumbLink
+                color="brand1.700"
+                fontWeight="medium"
+              >
                 {t('breadcrumb.edit')}
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -86,10 +105,18 @@ const EditAdminPage: NextPage = () => {
 
           {/* Header */}
           <Box>
-            <Heading as="h1" size="h1" color="brand1.700" mb={2}>
+            <Heading
+              as="h1"
+              size="h1"
+              color="brand1.700"
+              mb={2}
+            >
               {t('title')}
             </Heading>
-            <Text color="gray.600" fontSize="lg">
+            <Text
+              color="gray.600"
+              fontSize="lg"
+            >
               {t('description')}
             </Text>
           </Box>
@@ -105,14 +132,18 @@ const EditAdminPage: NextPage = () => {
               lastName: admin.lastName,
               email: admin.email,
               password: '',
-              role: admin.role?.id || 'admin'
+              role: admin.role?.id || 'admin',
             }}
             id={id as string}
           />
         </VStack>
       </Container>
-    </PrivateLayout>
+    </>
   );
+};
+
+EditAdminPage.getLayout = function getLayout(page: ReactElement) {
+  return <PrivateLayout>{page}</PrivateLayout>;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
@@ -124,19 +155,22 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (errors) {
     return errors;
   }
-  
+
+  const id = params?.id as string;
+
   return {
     props: {
+      id,
       messages: pick(await import(`../../../message/${locale}.json`), [
         'layouts.private.header',
         'pages.admins.edit',
         'pages.admins.index',
         'components.forms.admin',
         'general.form.errors',
-        'general.common'
-      ])
-    }
+        'general.common',
+      ]),
+    },
   };
 };
 
-export default EditAdminPage; 
+export default EditAdminPage;

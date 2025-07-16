@@ -1,41 +1,36 @@
 import { ClientApi } from '@services/api/ssc';
-import { 
-  AdminSignInService, 
+import {
+  AdminSignInService,
   AdminLoginResponse,
-  AdminGetAllService,
-  AdminGetByIdService,
   AdminCreateService,
   AdminUpdateService,
-  AdminDeleteService
 } from '@interfaces/services';
 import { Admin } from '@interfaces/user';
-import { PaginatedResponse } from '@interfaces/response';
+import { BaseResponse, PaginatedResponse } from '@interfaces/response';
 
 export const login = async (body: AdminSignInService) => {
-  return await ClientApi.post<AdminLoginResponse>('admins/login', body);
+  return await ClientApi.post<BaseResponse<AdminLoginResponse>>('admins/login', body);
 };
 
 export class AdminService {
   private static readonly BASE_URL = '/admins';
 
-  static async getAdmins(params: { search: string; limit: number }): Promise<PaginatedResponse<Admin>> {
+  static async getAdmins(params: {
+    search: string;
+    limit: number;
+  }): Promise<Admin[]> {
     try {
-      const response = await ClientApi.get<AdminGetAllService>(this.BASE_URL, {
-        params: {
-          search: params.search,
-          limit: params.limit
+      const response = await ClientApi.get<BaseResponse<Admin[]>>(
+        this.BASE_URL,
+        {
+          params: {
+            search: params.search,
+            limit: params.limit,
+          },
         }
-      });
-      
-      return {
-        data: response.data.data as Admin[],
-        pagination: response.data.pagination || {
-          page: 1,
-          pageCount: 1,
-          pageSize: params.limit,
-          total: response.data.data.length
-        }
-      };
+      );
+
+      return response.data.data;
     } catch (error) {
       throw error;
     }
@@ -43,34 +38,49 @@ export class AdminService {
 
   static async getAdmin(id: string): Promise<Admin> {
     try {
-      const response = await ClientApi.get<AdminGetByIdService>(`${this.BASE_URL}/${id}`);
-      return response.data.data as Admin;
+      const response = await ClientApi.get<BaseResponse<Admin>>(
+        `${this.BASE_URL}/${id}`
+      );
+      return response.data.data;
     } catch (error) {
       throw error;
     }
   }
 
-  static async createAdmin(adminData: AdminCreateService): Promise<AdminGetByIdService> {
+  static async createAdmin(
+    adminData: AdminCreateService
+  ): Promise<BaseResponse<Admin>> {
     try {
-      const response = await ClientApi.post<AdminGetByIdService>(this.BASE_URL, adminData);
+      const response = await ClientApi.post<BaseResponse<Admin>>(
+        this.BASE_URL,
+        adminData
+      );
       return response.data;
     } catch (error) {
       throw error;
     }
   }
 
-  static async updateAdmin(id: string, adminData: AdminUpdateService): Promise<AdminGetByIdService> {
+  static async updateAdmin(
+    id: string,
+    adminData: AdminUpdateService
+  ): Promise<BaseResponse<Admin>> {
     try {
-      const response = await ClientApi.put<AdminGetByIdService>(`${this.BASE_URL}/${id}`, adminData);
+      const response = await ClientApi.put<BaseResponse<Admin>>(
+        `${this.BASE_URL}/${id}`,
+        adminData
+      );
       return response.data;
     } catch (error) {
       throw error;
     }
   }
 
-  static async deleteAdmin(id: string): Promise<AdminDeleteService> {
+  static async deleteAdmin(id: string): Promise<BaseResponse<Admin>> {
     try {
-      const response = await ClientApi.delete<AdminDeleteService>(`${this.BASE_URL}/${id}`);
+      const response = await ClientApi.delete<BaseResponse<Admin>>(
+        `${this.BASE_URL}/${id}`
+      );
       return response.data;
     } catch (error) {
       throw error;

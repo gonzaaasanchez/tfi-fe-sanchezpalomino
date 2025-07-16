@@ -4,13 +4,11 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Container,
-  Heading,
   Text,
   VStack
 } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { useTranslations } from 'next-intl';
-import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { pick } from 'lodash';
@@ -19,8 +17,9 @@ import { useCustomToast } from '@hooks/use-custom-toast';
 import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
+import { NextPageWithLayout } from 'pages/_app';
 
-const CreateAdminPage: NextPage = () => {
+const CreateAdminPage: NextPageWithLayout = () => {
   const t = useTranslations('pages.admins.create');
   const tForm = useTranslations('components.forms.admin');
   const router = useRouter();

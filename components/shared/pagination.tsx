@@ -9,13 +9,8 @@ import {
   useColorModeValue
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { PaginationMetadata } from '@interfaces/response';
 
-export interface PaginationMetadata {
-  page: number;
-  pageCount: number;
-  pageSize: number;
-  total: number;
-}
 
 export interface PaginationProps {
   metadata: PaginationMetadata;
@@ -37,9 +32,9 @@ const Pagination: React.FC<PaginationProps> = ({
   onPageSizeChange,
   translations
 }) => {
-  const { page, pageCount, total } = metadata;
-  const startItem = (page - 1) * metadata.pageSize + 1;
-  const endItem = Math.min(page * metadata.pageSize, total);
+  const { page, limit, total } = metadata;
+  const startItem = (page - 1) * limit + 1;
+  const endItem = Math.min(page * limit, total);
   
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const bgColor = useColorModeValue('white', 'gray.800');
@@ -77,7 +72,7 @@ const Pagination: React.FC<PaginationProps> = ({
             <Select
               size="sm"
               w="70px"
-              value={metadata.pageSize}
+              value={metadata.limit}
               onChange={(e) => onPageSizeChange(Number(e.target.value))}
             >
               {pageSizeOptions.map((size) => (
@@ -99,14 +94,14 @@ const Pagination: React.FC<PaginationProps> = ({
             variant="ghost"
           />
           
-          {Array.from({ length: Math.min(5, pageCount) }, (_, i) => {
+          {Array.from({ length: Math.min(5, metadata.totalPages) }, (_, i) => {
             let pageNum: number;
-            if (pageCount <= 5) {
+            if (metadata.totalPages <= 5) {
               pageNum = i + 1;
             } else if (page <= 3) {
               pageNum = i + 1;
-            } else if (page >= pageCount - 2) {
-              pageNum = pageCount - 4 + i;
+            } else if (page >= metadata.totalPages - 2) {
+              pageNum = metadata.totalPages - 4 + i;
             } else {
               pageNum = page - 2 + i;
             }
@@ -129,7 +124,7 @@ const Pagination: React.FC<PaginationProps> = ({
             size="sm"
             icon={<ChevronRightIcon />}
             aria-label={t.nextPage}
-            isDisabled={page >= pageCount}
+            isDisabled={page >= metadata.totalPages}
             onClick={() => onPageChange(page + 1)}
             variant="ghost"
           />

@@ -8,7 +8,7 @@ import {
   MenuItem,
   MenuList,
   IconButton,
-  Image
+  Image,
 } from '@chakra-ui/react';
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { useSession, signOut } from 'next-auth/react';
@@ -19,11 +19,13 @@ interface HeaderProps {
   isSidebarOpen: boolean;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }) => {
+export const Header: React.FC<HeaderProps> = ({
+  onToggleSidebar,
+  isSidebarOpen,
+}) => {
   const { data: session } = useSession();
   const t = useTranslations('layouts.private.header');
-  const tLayout = useTranslations('components.layout.header');
-  
+
   const bgColor = 'brand1.700';
 
   const getUserFullName = () => {
@@ -41,9 +43,15 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }
       zIndex={999}
       width="100%"
     >
-      <Flex justify="space-between" align="center">
+      <Flex
+        justify="space-between"
+        align="center"
+      >
         {/* Logo - Siempre visible */}
-        <Box display="flex" alignItems="center">
+        <Box
+          display="flex"
+          alignItems="center"
+        >
           <Image
             src="/images/adaptive-icon.png"
             alt="Logo"
@@ -52,12 +60,15 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }
             objectFit="contain"
           />
         </Box>
-        
+
         {/* Controles de usuario a la derecha */}
-        <Flex align="center" gap={2}>
+        <Flex
+          align="center"
+          gap={2}
+        >
           {/* Botón hamburguesa - Solo visible en mobile */}
           <IconButton
-            aria-label={tLayout('toggleSidebar')}
+            aria-label={t('toggleSidebar')}
             icon={<HamburgerIcon />}
             variant="ghost"
             color="white"
@@ -66,7 +77,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }
             _hover={{ bg: 'brand1.600' }}
             _active={{ bg: 'brand1.600' }}
           />
-          
+
           <Menu>
             <MenuButton
               as={Button}
@@ -87,7 +98,11 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }
               />
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={() => signOut({ callbackUrl: '/auth/login' })} color="gray.900" justifyContent="center">
+              <MenuItem
+                onClick={() => signOut({ callbackUrl: '/auth/login' })}
+                color="gray.900"
+                justifyContent="center"
+              >
                 {t('signOut')}
               </MenuItem>
             </MenuList>

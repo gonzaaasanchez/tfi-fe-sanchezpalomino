@@ -1,33 +1,17 @@
+import { PetCharacteristic } from './petCharacteristic';
+import { User, Admin } from './user';
+import { PetType } from './petType';
+import { Role } from './role';
+import { PaginationMetadata } from './response';
+
 // Admin Services
 export type AdminSignInService =
   | Record<'email' | 'password', string>
   | undefined;
 
 export type AdminLoginResponse = {
-  success: boolean;
-  data: {
-    admin: {
-      id: string;
-      firstName: string;
-      lastName: string;
-      email: string;
-      role: {
-        _id: string;
-        name: string;
-        description?: string;
-        permissions: Record<string, any>;
-        isSystem?: boolean;
-        createdAt?: string;
-        updatedAt?: string;
-      };
-      avatar?: string;
-      avatarContentType?: string;
-      createdAt?: string;
-      updatedAt?: string;
-    };
-    token: string;
-  };
-  message?: string;
+  admin: Admin;
+  token: string;
 };
 
 // Auth Services
@@ -40,41 +24,10 @@ export type AuthForgotPasswordService = {
 export type AuthResetPasswordService = {
   password: string;
   code: string;
-  newPassword:string;
+  newPassword: string;
 };
 
 // Role Services
-export type RoleGetAllService = {
-  success: boolean;
-  data: Array<{
-    id: string;
-    name: string;
-    description?: string;
-    permissions: Record<string, any>;
-    createdAt?: string;
-    updatedAt?: string;
-  }>;
-  message?: string;
-  pagination?: {
-    page: number;
-    pageCount: number;
-    pageSize: number;
-    total: number;
-  };
-};
-
-export type RoleGetByIdService = {
-  success: boolean;
-  data: {
-    id: string;
-    name: string;
-    description?: string;
-    permissions: Record<string, any>;
-    createdAt?: string;
-    updatedAt?: string;
-  };
-  message?: string;
-};
 
 export type RoleCreateService = {
   name: string;
@@ -97,15 +50,6 @@ export type RoleUpdateService = {
   permissions?: Partial<RoleCreateService['permissions']>;
 };
 
-export type RoleDeleteService = {
-  success: boolean;
-  data: {
-    id: string;
-    name: string;
-  };
-  message?: string;
-};
-
 export type RoleSearchService = {
   search?: string;
   page?: number;
@@ -113,51 +57,6 @@ export type RoleSearchService = {
 };
 
 // Admin Services
-export type AdminGetAllService = {
-  success: boolean;
-  data: Array<{
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: {
-      id: string;
-      name: string;
-      description?: string;
-    };
-    avatar?: string;
-    avatarContentType?: string;
-    createdAt?: string;
-    updatedAt?: string;
-  }>;
-  message?: string;
-  pagination?: {
-    page: number;
-    pageCount: number;
-    pageSize: number;
-    total: number;
-  };
-};
-
-export type AdminGetByIdService = {
-  success: boolean;
-  data: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: {
-      id: string;
-      name: string;
-      description?: string;
-    };
-    avatar?: string;
-    avatarContentType?: string;
-    createdAt?: string;
-    updatedAt?: string;
-  };
-  message?: string;
-};
 
 export type AdminCreateService = {
   firstName: string;
@@ -177,66 +76,7 @@ export type AdminUpdateService = {
   avatar?: File;
 };
 
-export type AdminDeleteService = {
-  success: boolean;
-  data: {
-    id: string;
-    firstName: string;
-    lastName: string;
-  };
-  message?: string;
-};
-
 // User Services
-export type UserGetAllService = {
-  success: boolean;
-  data: {
-    items: Array<{
-      id: string;
-      firstName: string;
-      lastName: string;
-      email: string;
-      role: {
-        id: string;
-        name: string;
-        description?: string;
-      };
-      avatar?: string;
-      avatarContentType?: string;
-      createdAt?: string;
-      updatedAt?: string;
-    }>;
-    pagination: {
-      page: number;
-      limit: number;
-      total: number;
-      totalPages: number;
-      hasNextPage: boolean;
-      hasPrevPage: boolean;
-    };
-  };
-  message?: string;
-};
-
-export type UserGetByIdService = {
-  success: boolean;
-  data: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: {
-      id: string;
-      name: string;
-      description?: string;
-    };
-    avatar?: string;
-    avatarContentType?: string;
-    createdAt?: string;
-    updatedAt?: string;
-  };
-  message?: string;
-};
 
 export type UserCreateService = {
   firstName: string;
@@ -255,48 +95,7 @@ export type UserUpdateService = {
   avatar?: File;
 };
 
-export type UserDeleteService = {
-  success: boolean;
-  data: {
-    id: string;
-    firstName: string;
-    lastName: string;
-  };
-  message?: string;
-};
-
 // PetType Services
-export type PetTypeGetAllService = {
-  success: boolean;
-  data: {
-    items: Array<{
-      id: string;
-      name: string;
-      createdAt: string;
-      updatedAt: string;
-    }>;
-    pagination: {
-      page: number;
-      limit: number;
-      total: number;
-      totalPages: number;
-      hasNextPage: boolean;
-      hasPrevPage: boolean;
-    };
-  };
-  message?: string;
-};
-
-export type PetTypeGetByIdService = {
-  success: boolean;
-  data: {
-    id: string;
-    name: string;
-    createdAt: string;
-    updatedAt: string;
-  };
-  message?: string;
-};
 
 export type PetTypeCreateService = {
   name: string;
@@ -306,11 +105,12 @@ export type PetTypeUpdateService = {
   name: string;
 };
 
-export type PetTypeDeleteService = {
-  success: boolean;
-  data: {
-    id: string;
-    name: string;
-  };
-  message?: string;
+// Pet Characteristic Services
+
+export type PetCharacteristicCreateService = {
+  name: string;
+};
+
+export type PetCharacteristicUpdateService = {
+  name: string;
 };

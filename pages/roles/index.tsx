@@ -14,7 +14,7 @@ import { useTranslations } from 'next-intl';
 const Roles: NextPageWithLayout = () => {
   const t = useTranslations('pages.roles');
   const [currentPage, setCurrentPage] = useState(1);
-  const { roles, search, setSearch, isPending } = useGetRoles({ limit: 10 });
+  const { roles, pagination, search, setSearch, isPending } = useGetRoles({ limit: 10 });
 
   const columns: Column[] = [
     {
@@ -130,6 +130,7 @@ const Roles: NextPageWithLayout = () => {
           onAction={handleAction}
           onChangePage={handlePageChange}
           onSort={handleSort}
+          metadata={pagination}
         />
       </VStack>
     </>
