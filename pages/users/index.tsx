@@ -270,6 +270,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         'pages.users.index',
         'layouts.private.header',
         'components.shared.permission-guard',
+        'components.shared.pagination',
+        'components.shared.table',
         'general.common'
       ])
     }

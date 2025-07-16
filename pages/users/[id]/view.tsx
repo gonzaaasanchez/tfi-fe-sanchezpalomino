@@ -23,6 +23,7 @@ import { pick } from 'lodash';
 import { useRouter } from 'next/router';
 import { useGetUser } from 'lib/hooks';
 import { useRef } from 'react';
+import { Loader } from 'components/shared';
 
 interface ViewUserPageProps {
   id: string;
@@ -42,11 +43,7 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
   };
 
   if (isPending) {
-    return (
-      <Container maxW="container.lg" py={8}>
-        <Text>{t('loading')}</Text>
-      </Container>
-    );
+    return <Loader fullHeight />;
   }
 
   if (!user) {

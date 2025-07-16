@@ -175,7 +175,10 @@
         "nextPage": "Página siguiente"
       },
       "table": {
-        "noDataAvailable": "No hay datos disponibles"
+        "noDataAvailable": "No hay datos disponibles",
+        "active": "Activo",
+        "inactive": "Inactivo",
+        "actions": "Acciones"
       }
     }
   },
@@ -197,7 +200,6 @@
       }
     },
     "common": {
-      "loading": "Cargando...",
       "notFound": "No encontrado"
     }
   },
@@ -391,7 +393,6 @@
           "createdAt": "Fecha de Creación",
           "updatedAt": "Última Actualización"
         },
-        "loading": "Cargando...",
         "notFound": "Usuario no encontrado"
       },
       "edit": {
@@ -406,7 +407,6 @@
           "users": "Usuarios",
           "edit": "Editar"
         },
-        "loading": "Cargando...",
         "notFound": "Usuario no encontrado"
       },
       "deleteDialog": {

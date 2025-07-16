@@ -7,7 +7,6 @@ import {
   Th,
   Td,
   Box,
-  Spinner,
   Text,
   Flex,
   HStack,
@@ -22,6 +21,8 @@ import { format } from 'date-fns';
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import Pagination from './pagination';
 import { usePermissions } from '@hooks/use-permissions';
+import { useTranslations } from 'next-intl';
+import Loader from './loader';
 
 // Data types
 export interface Column {
@@ -96,6 +97,8 @@ const TableComponent: React.FC<TableProps> = ({
   pageSizeOptions = [10, 25, 50, 100],
   onPageSizeChange,
 }) => {
+  const t = useTranslations('components.shared.pagination');
+  const tTable = useTranslations('components.shared.table');
   // Ensure rows is always an array
   const safeRows = Array.isArray(rows) ? rows : [];
   const bgColor = useColorModeValue('white', 'gray.800');
@@ -136,7 +139,7 @@ const TableComponent: React.FC<TableProps> = ({
           borderRadius="full"
           px={2}
         >
-          {value ? 'Activo' : 'Inactivo'}
+          {value ? tTable('active') : tTable('inactive')}
         </Badge>
       );
     }
@@ -183,19 +186,32 @@ const TableComponent: React.FC<TableProps> = ({
   );
   const renderLoadingState = () => (
     <Center py={12}>
-      <Spinner size="lg" color="brand1.500" />
+      <Loader size="lg" />
     </Center>
   );
 
   // Pagination
   const renderPagination = () => {
     if (!metadata || !onChangePage) return null;
+    
+    const paginationTranslations = {
+      showingResults: t('showingResults', { 
+        startItem: (metadata.page - 1) * metadata.pageSize + 1,
+        endItem: Math.min(metadata.page * metadata.pageSize, metadata.total),
+        total: metadata.total
+      }),
+      perPage: t('perPage'),
+      previousPage: t('previousPage'),
+      nextPage: t('nextPage')
+    };
+
     return (
       <Pagination
         metadata={metadata}
         pageSizeOptions={pageSizeOptions}
         onPageChange={onChangePage}
         onPageSizeChange={onPageSizeChange}
+        translations={paginationTranslations}
       />
     );
   };
@@ -231,7 +247,7 @@ const TableComponent: React.FC<TableProps> = ({
             ))}
             {actions.length > 0 && (
               <Th textAlign="center" w="120px">
-                Actions
+                {tTable('actions')}
               </Th>
             )}
           </Tr>
@@ -270,7 +286,7 @@ const TableComponent: React.FC<TableProps> = ({
                         >
                           <Box>
                             {isLoading ? (
-                              <Spinner size="sm" color="brand1.500" />
+                              <Loader size="sm" />
                             ) : (
                               <IconButton
                                 size={action.size || 'sm'}

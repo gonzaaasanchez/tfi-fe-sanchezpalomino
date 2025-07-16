@@ -21,6 +21,7 @@ import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
 import { useGetUser, useUpdateUser } from 'lib/hooks';
 import { UserFormType } from 'lib/types/forms';
+import { Loader } from 'components/shared';
 
 interface EditUserPageProps {
   id: string;
@@ -45,11 +46,7 @@ const EditUserPage: NextPage<EditUserPageProps> = ({ id }) => {
   };
 
   if (isPending) {
-    return (
-      <Container maxW="container.lg" py={8}>
-        <Text>{tCommon('loading')}</Text>
-      </Container>
-    );
+    return <Loader fullHeight />;
   }
 
   if (!user) {

@@ -149,6 +149,8 @@ export const getServerSideProps: GetServerSideProps = async ({
       messages: pick(await import(`../../message/${locale}.json`), [
         'pages.roles',
         'layouts.private.header',
+        'components.shared.pagination',
+        'components.shared.table',
         'general.common'
       ])
     }

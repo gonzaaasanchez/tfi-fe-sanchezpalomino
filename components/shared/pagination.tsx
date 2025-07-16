@@ -9,7 +9,6 @@ import {
   useColorModeValue
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { useTranslations } from 'next-intl';
 
 export interface PaginationMetadata {
   page: number;
@@ -23,21 +22,37 @@ export interface PaginationProps {
   pageSizeOptions?: number[];
   onPageChange: (page: number) => void;
   onPageSizeChange?: (pageSize: number) => void;
+  translations?: {
+    showingResults: string;
+    perPage: string;
+    previousPage: string;
+    nextPage: string;
+  };
 }
 
 const Pagination: React.FC<PaginationProps> = ({
   metadata,
   pageSizeOptions = [10, 25, 50, 100],
   onPageChange,
-  onPageSizeChange
+  onPageSizeChange,
+  translations
 }) => {
-  const t = useTranslations('components.shared.pagination');
   const { page, pageCount, total } = metadata;
   const startItem = (page - 1) * metadata.pageSize + 1;
   const endItem = Math.min(page * metadata.pageSize, total);
   
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const bgColor = useColorModeValue('white', 'gray.800');
+
+  // Default translations
+  const defaultTranslations = {
+    showingResults: `Mostrando ${startItem} a ${endItem} de ${total} resultados`,
+    perPage: 'Por página:',
+    previousPage: 'Página anterior',
+    nextPage: 'Página siguiente'
+  };
+
+  const t = translations || defaultTranslations;
 
   return (
     <Flex
@@ -50,14 +65,14 @@ const Pagination: React.FC<PaginationProps> = ({
       bg={bgColor}
     >
       <Text fontSize="sm" color="gray.600">
-        {t('showingResults', { startItem, endItem, total })}
+        {t.showingResults}
       </Text>
 
       <HStack spacing={2}>
         {onPageSizeChange && (
           <HStack spacing={2}>
             <Text fontSize="sm" color="gray.600">
-              {t('perPage')}
+              {t.perPage}
             </Text>
             <Select
               size="sm"
@@ -78,7 +93,7 @@ const Pagination: React.FC<PaginationProps> = ({
           <IconButton
             size="sm"
             icon={<ChevronLeftIcon />}
-            aria-label={t('previousPage')}
+            aria-label={t.previousPage}
             isDisabled={page <= 1}
             onClick={() => onPageChange(page - 1)}
             variant="ghost"
@@ -113,7 +128,7 @@ const Pagination: React.FC<PaginationProps> = ({
           <IconButton
             size="sm"
             icon={<ChevronRightIcon />}
-            aria-label={t('nextPage')}
+            aria-label={t.nextPage}
             isDisabled={page >= pageCount}
             onClick={() => onPageChange(page + 1)}
             variant="ghost"

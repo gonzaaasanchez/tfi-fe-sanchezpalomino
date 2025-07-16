@@ -6,9 +6,7 @@ import {
   Container,
   Heading,
   Text,
-  VStack,
-  Spinner,
-  Center
+  VStack
 } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { useTranslations } from 'next-intl';
@@ -22,9 +20,7 @@ import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
 import { useGetAdmin, useUpdateAdmin } from '@hooks/use-admins';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { AdminFormType } from 'lib/types/forms';
+import { Loader } from 'components/shared';
 
 const EditAdminPage: NextPage = () => {
   const t = useTranslations('pages.admins.edit');
@@ -48,17 +44,8 @@ const EditAdminPage: NextPage = () => {
     router.push('/admins');
   };
 
-  // Si está cargando el admin, mostrar spinner
   if (isLoadingAdmin) {
-    return (
-      <PrivateLayout>
-        <Container maxW="container.lg" py={8}>
-          <Center>
-            <Spinner size="xl" color="brand1.500" />
-          </Center>
-        </Container>
-      </PrivateLayout>
-    );
+    return <Loader fullHeight />;
   }
 
   // Si no se encontró el admin, redirigir

@@ -114,6 +114,7 @@ const TableExample: React.FC = () => {
       shadow={true}
       showEmpty={true}
       onAction={handleAction}
+      onChangePage={(page) => console.log('Page changed to:', page)}
     />
   );
 };

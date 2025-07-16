@@ -7,8 +7,6 @@ import {
   Heading,
   Text,
   VStack,
-  Spinner,
-  Center,
   HStack,
   Button,
   Card,
@@ -28,6 +26,7 @@ import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
 import { useGetAdmin } from '@hooks/use-admins';
 import { PermissionGuard } from 'components/shared/permission-guard';
+import { Loader } from 'components/shared';
 
 const ViewAdminPage: NextPage = () => {
   const t = useTranslations('pages.admins.view');
@@ -46,17 +45,8 @@ const ViewAdminPage: NextPage = () => {
     router.push('/admins');
   };
 
-  // Si está cargando el admin, mostrar spinner
   if (isLoadingAdmin) {
-    return (
-      <PrivateLayout>
-        <Container maxW="container.lg" height="100vh" py={8}>
-          <Center>
-            <Spinner size="xl" color="brand1.500" />
-          </Center>
-        </Container>
-      </PrivateLayout>
-    );
+    return <Loader fullHeight />;
   }
 
   // Si no se encontró el admin, redirigir
