@@ -22,11 +22,12 @@ import { NextSeo } from 'next-seo';
 
 const CreateUserPage: NextPage = () => {
   const t = useTranslations('pages.users.create');
+  const tForm = useTranslations('components.forms.user');
   const router = useRouter();
   const { successToast } = useCustomToast();
 
   const handleSuccess = () => {
-    successToast('Usuario creado exitosamente');
+    successToast(tForm('responses.createSuccess'));
     router.push('/users');
   };
 
@@ -101,7 +102,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         'pages.users.index',
         'layouts.private.header',
         'components.forms.user',
-        'general.form.errors'
+        'general.form.errors',
+        'general.common'
       ])
     }
   };

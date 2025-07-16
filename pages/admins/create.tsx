@@ -22,11 +22,12 @@ import { NextSeo } from 'next-seo';
 
 const CreateAdminPage: NextPage = () => {
   const t = useTranslations('pages.admins.create');
+  const tForm = useTranslations('components.forms.admin');
   const router = useRouter();
   const { successToast } = useCustomToast();
 
   const handleSuccess = () => {
-    successToast('Administrador creado exitosamente');
+    successToast(tForm('responses.createSuccess'));
     router.push('/admins');
   };
 
@@ -101,7 +102,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         'pages.admins.create',
         'pages.admins.index',
         'components.forms.admin',
-        'general.form.errors'
+        'general.form.errors',
+        'general.common'
       ])
     }
   };

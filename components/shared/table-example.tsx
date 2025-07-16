@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Text, Badge } from '@chakra-ui/react';
 import { ViewIcon } from '@chakra-ui/icons';
 import Table, { Column, Action, PaginationMetadata } from './table';
+import { useTranslations } from 'next-intl';
 
 // Simple example data
 const sampleData = [
@@ -28,64 +29,65 @@ const sampleData = [
   }
 ];
 
+const TableExample: React.FC = () => {
+  const t = useTranslations('components.shared.table');
+  const [isLoading, setIsLoading] = useState(true);
+
   // Simplified column configuration
-const columns: Column[] = [
-  {
-    key: 'id',
-    label: 'ID',
-    width: '60px',
-    align: 'center'
-  },
-  {
-    key: 'name',
-    label: 'Nombre',
-    sortable: true
-  },
-  {
-    key: 'email',
-    label: 'Email'
-  },
-  {
-    key: 'role',
-    label: 'Rol',
-    type: 'custom',
-    renderCell: (item) => (
-      <Badge
-        colorScheme={item.role === 'Admin' ? 'red' : item.role === 'superAdmin' ? 'orange' : 'blue'}
-        variant="subtle"
-        fontSize="xs"
-        size="xs"
-      >
-        {item.role}
-      </Badge>
-    )
-  }
-];
+  const columns: Column[] = [
+    {
+      key: 'id',
+      label: 'ID',
+      width: '60px',
+      align: 'center'
+    },
+    {
+      key: 'name',
+      label: 'Nombre',
+      sortable: true
+    },
+    {
+      key: 'email',
+      label: 'Email'
+    },
+    {
+      key: 'role',
+      label: 'Rol',
+      type: 'custom',
+      renderCell: (item) => (
+        <Badge
+          colorScheme={item.role === 'Admin' ? 'red' : item.role === 'superAdmin' ? 'orange' : 'blue'}
+          variant="subtle"
+          fontSize="xs"
+          size="xs"
+        >
+          {item.role}
+        </Badge>
+      )
+    }
+  ];
 
   // Simple action with permission validation
-const actions: Action[] = [
-  {
-    name: 'view',
-    label: 'Ver detalles',
-    icon: <ViewIcon />,
-    color: 'blue',
-    variant: 'ghost',
-    tooltip: 'Ver información detallada',
-    module: 'users',
-    action: 'read'
-  }
-];
+  const actions: Action[] = [
+    {
+      name: 'view',
+      label: 'Ver detalles',
+      icon: <ViewIcon />,
+      color: 'blue',
+      variant: 'ghost',
+      tooltip: 'Ver información detallada',
+      module: 'users',
+      action: 'read'
+    }
+  ];
 
   // Pagination metadata
-const metadata: PaginationMetadata = {
-  page: 1,
-  pageCount: 1,
-  pageSize: 10,
-  total: 3
-};
-
-const TableExample: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const metadata: PaginationMetadata = {
+    page: 1,
+    pageCount: 1,
+    pageSize: 10,
+    total: 3
+  };
 
   // Simular carga inicial
   useEffect(() => {
@@ -106,7 +108,7 @@ const TableExample: React.FC = () => {
       columns={columns}
       actions={actions}
       loading={isLoading}
-      emptyText="No hay datos disponibles"
+      emptyText={t('noDataAvailable')}
       title="Listado de Operadores"
       metadata={metadata}
       shadow={true}

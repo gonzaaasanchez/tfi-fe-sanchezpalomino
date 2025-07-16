@@ -45,7 +45,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         'general.form.errors',
         'layouts.private',
         'pages.auth.login',
-        'components.forms.auth.login'
+        'components.forms.auth.login',
+        'general.common'
       ])
     }
   };

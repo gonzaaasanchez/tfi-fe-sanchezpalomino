@@ -9,15 +9,17 @@ import { pick } from 'lodash';
 import { useGetRoles } from 'lib/hooks';
 import TableComponent, { Column, Action } from 'components/shared/table';
 import { Role } from 'lib/types/role';
+import { useTranslations } from 'next-intl';
 
 const Roles: NextPageWithLayout = () => {
+  const t = useTranslations('pages.roles');
   const [currentPage, setCurrentPage] = useState(1);
   const { roles, search, setSearch, isPending } = useGetRoles({ limit: 10 });
 
   const columns: Column[] = [
     {
       key: 'id',
-      label: 'ID',
+      label: t('columns.id'),
       width: '80px',
       align: 'center' as const,
       sortable: true,
@@ -25,13 +27,13 @@ const Roles: NextPageWithLayout = () => {
     },
     {
       key: 'name',
-      label: 'Nombre',
+      label: t('columns.name'),
       sortable: true,
       sortKey: 'name'
     },
     {
       key: 'description',
-      label: 'Descripción',
+      label: t('columns.description'),
       sortable: true,
       sortKey: 'description'
     }
@@ -40,34 +42,34 @@ const Roles: NextPageWithLayout = () => {
   const actions: Action[] = [
     {
       name: 'view',
-      label: 'Ver',
+      label: t('actions.view'),
       icon: <ViewIcon />,
       color: 'blue',
       variant: 'ghost' as const,
       size: 'sm' as const,
-      tooltip: 'Ver detalles del rol',
+      tooltip: t('tooltips.view'),
       module: 'roles',
       action: 'read'
     },
     {
       name: 'edit',
-      label: 'Editar',
+      label: t('actions.edit'),
       icon: <EditIcon />,
       color: 'orange',
       variant: 'ghost' as const,
       size: 'sm' as const,
-      tooltip: 'Editar rol',
+      tooltip: t('tooltips.edit'),
       module: 'roles',
       action: 'update'
     },
     {
       name: 'delete',
-      label: 'Eliminar',
+      label: t('actions.delete'),
       icon: <DeleteIcon />,
       color: 'red',
       variant: 'ghost' as const,
       size: 'sm' as const,
-      tooltip: 'Eliminar rol',
+      tooltip: t('tooltips.delete'),
       module: 'roles',
       action: 'delete'
     }
@@ -76,15 +78,15 @@ const Roles: NextPageWithLayout = () => {
   const handleAction = (actionName: string, item: Role) => {
     switch (actionName) {
       case 'view':
-        console.log('Ver rol:', item);
+        console.log(t('console.view'), item);
         // Here would go navigation to details page
         break;
       case 'edit':
-        console.log('Editar rol:', item);
+        console.log(t('console.edit'), item);
         // Here would go navigation to edit page
         break;
       case 'delete':
-        console.log('Eliminar rol:', item);
+        console.log(t('console.delete'), item);
         // Here would go delete confirmation
         break;
       default:
@@ -105,16 +107,16 @@ const Roles: NextPageWithLayout = () => {
   return (
     <>
       <NextSeo
-        title="Roles"
-        description="Gestión de roles y permisos del sistema"
+        title={t('meta.title')}
+        description={t('meta.description')}
       />
       <VStack spacing={6} align="stretch" p={6}>
         <Box>
           <Heading size="lg" mb={2}>
-            Roles
+            {t('title')}
           </Heading>
           <Text color="gray.600">
-            Administra los roles y permisos de los usuarios
+            {t('description')}
           </Text>
         </Box>
 
@@ -123,7 +125,7 @@ const Roles: NextPageWithLayout = () => {
           columns={columns}
           actions={actions}
           loading={isPending}
-          emptyText="No hay roles disponibles"
+          emptyText={t('empty')}
           shadow={true}
           onAction={handleAction}
           onChangePage={handlePageChange}
@@ -146,7 +148,8 @@ export const getServerSideProps: GetServerSideProps = async ({
     props: {
       messages: pick(await import(`../../message/${locale}.json`), [
         'pages.roles',
-        'layouts.private.header'
+        'layouts.private.header',
+        'general.common'
       ])
     }
   };

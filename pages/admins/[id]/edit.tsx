@@ -28,6 +28,7 @@ import { AdminFormType } from 'lib/types/forms';
 
 const EditAdminPage: NextPage = () => {
   const t = useTranslations('pages.admins.edit');
+  const tForm = useTranslations('components.forms.admin');
   const router = useRouter();
   const { id } = router.query;
   const { successToast } = useCustomToast();
@@ -39,7 +40,7 @@ const EditAdminPage: NextPage = () => {
   const updateAdminMutation = useUpdateAdmin(id as string);
 
   const handleSuccess = () => {
-    successToast('Administrador actualizado exitosamente');
+    successToast(tForm('responses.updateSuccess'));
     router.push('/admins');
   };
 
@@ -146,7 +147,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         'pages.admins.edit',
         'pages.admins.index',
         'components.forms.admin',
-        'general.form.errors'
+        'general.form.errors',
+        'general.common'
       ])
     }
   };

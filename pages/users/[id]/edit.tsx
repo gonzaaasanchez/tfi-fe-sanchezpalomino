@@ -28,13 +28,15 @@ interface EditUserPageProps {
 
 const EditUserPage: NextPage<EditUserPageProps> = ({ id }) => {
   const t = useTranslations('pages.users.edit');
+  const tCommon = useTranslations('general.common');
+  const tForm = useTranslations('components.forms.user');
   const router = useRouter();
   const { successToast } = useCustomToast();
   const { user, isPending } = useGetUser({ id });
   const updateUserMutation = useUpdateUser(id);
 
   const handleSuccess = () => {
-    successToast('Usuario actualizado exitosamente');
+    successToast(tForm('responses.updateSuccess'));
     router.push('/users');
   };
 
@@ -45,7 +47,7 @@ const EditUserPage: NextPage<EditUserPageProps> = ({ id }) => {
   if (isPending) {
     return (
       <Container maxW="container.lg" py={8}>
-        <Text>Cargando...</Text>
+        <Text>{tCommon('loading')}</Text>
       </Container>
     );
   }
@@ -53,7 +55,7 @@ const EditUserPage: NextPage<EditUserPageProps> = ({ id }) => {
   if (!user) {
     return (
       <Container maxW="container.lg" py={8}>
-        <Text>Usuario no encontrado</Text>
+        <Text>{tCommon('notFound')}</Text>
       </Container>
     );
   }
@@ -139,7 +141,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         'pages.users.index',
         'layouts.private.header',
         'components.forms.user',
-        'general.form.errors'
+        'general.form.errors',
+        'general.common'
       ])
     }
   };

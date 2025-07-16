@@ -22,6 +22,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }) => {
   const { data: session } = useSession();
   const t = useTranslations('layouts.private.header');
+  const tLayout = useTranslations('components.layout.header');
   
   const bgColor = 'brand1.700';
 
@@ -56,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarOpen }
         <Flex align="center" gap={2}>
           {/* Botón hamburguesa - Solo visible en mobile */}
           <IconButton
-            aria-label="Toggle sidebar"
+            aria-label={tLayout('toggleSidebar')}
             icon={<HamburgerIcon />}
             variant="ghost"
             color="white"

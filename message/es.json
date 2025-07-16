@@ -39,6 +39,9 @@
         "loading": {
           "creating": "Creando...",
           "updating": "Actualizando..."
+        },
+        "options": {
+          "admin": "Administrador"
         }
       },
       "user": {
@@ -112,7 +115,8 @@
           },
           "responses": {
             "error": "Credenciales inválidas",
-            "success": "¡Bienvenido!"
+            "success": "¡Bienvenido!",
+            "unexpectedError": "Error inesperado durante el login"
           },
           "title": "Iniciar Sesión"
         },
@@ -159,7 +163,19 @@
             "discover": "Descubrir",
             "projects": "Proyectos"
           }
-        }
+        },
+        "toggleSidebar": "Alternar barra lateral"
+      }
+    },
+    "shared": {
+      "pagination": {
+        "showingResults": "Mostrando {startItem} a {endItem} de {total} resultados",
+        "perPage": "Por página:",
+        "previousPage": "Página anterior",
+        "nextPage": "Página siguiente"
+      },
+      "table": {
+        "noDataAvailable": "No hay datos disponibles"
       }
     }
   },
@@ -179,6 +195,10 @@
         "requiredTeamLeader": "Líder de equipo pendiente",
         "url": "URL inválida"
       }
+    },
+    "common": {
+      "loading": "Cargando...",
+      "notFound": "No encontrado"
     }
   },
   "layouts": {
@@ -190,8 +210,7 @@
     }
   },
   "lib": {
-    "hooks": {
-    }
+    "hooks": {}
   },
   "pages": {
     "admins": {
@@ -386,7 +405,9 @@
           "home": "Inicio",
           "users": "Usuarios",
           "edit": "Editar"
-        }
+        },
+        "loading": "Cargando...",
+        "notFound": "Usuario no encontrado"
       },
       "deleteDialog": {
         "title": "Confirmar eliminación",
@@ -415,7 +436,8 @@
           "title": "Dashboard",
           "description": "Panel principal"
         },
-        "title": "Dashboard"
+        "title": "Dashboard",
+        "description": "Panel principal del sistema"
       }
     },
     "roles": {
@@ -434,6 +456,16 @@
         "id": "ID",
         "name": "Nombre",
         "description": "Descripción"
+      },
+      "tooltips": {
+        "view": "Ver detalles del rol",
+        "edit": "Editar rol",
+        "delete": "Eliminar rol"
+      },
+      "console": {
+        "view": "Ver rol:",
+        "edit": "Editar rol:",
+        "delete": "Eliminar rol:"
       },
       "empty": "No hay roles disponibles"
     }

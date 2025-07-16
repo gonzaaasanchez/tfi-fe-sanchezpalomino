@@ -5,21 +5,24 @@ import { Box, Heading, Text, VStack } from '@chakra-ui/react';
 import { PrivateLayout } from 'layouts/private';
 import { GetServerSideProps } from 'next';
 import { pick } from 'lodash';
+import { useTranslations } from 'next-intl';
 
 const Dashboard: NextPageWithLayout = () => {
+  const t = useTranslations('pages.dashboard.index');
+
   return (
     <>
       <NextSeo
-        title="Dashboard"
-        description="Panel principal"
+        title={t('meta.title')}
+        description={t('meta.description')}
       />
       <VStack spacing={6} align="stretch" p={6}>
         <Box>
           <Heading size="lg" mb={2}>
-            Dashboard
+            {t('title')}
           </Heading>
           <Text color="gray.600">
-            Panel principal del sistema
+            {t('description')}
           </Text>
         </Box>
       </VStack>
@@ -39,7 +42,8 @@ export const getServerSideProps: GetServerSideProps = async ({
     props: {
       messages: pick(await import(`../../message/${locale}.json`), [
         'pages.dashboard.index',
-        'layouts.private.header'
+        'layouts.private.header',
+        'general.common'
       ])
     }
   };

@@ -9,6 +9,8 @@ import {
   useColorModeValue
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { useTranslations } from 'next-intl';
+
 export interface PaginationMetadata {
   page: number;
   pageCount: number;
@@ -29,6 +31,7 @@ const Pagination: React.FC<PaginationProps> = ({
   onPageChange,
   onPageSizeChange
 }) => {
+  const t = useTranslations('components.shared.pagination');
   const { page, pageCount, total } = metadata;
   const startItem = (page - 1) * metadata.pageSize + 1;
   const endItem = Math.min(page * metadata.pageSize, total);
@@ -47,14 +50,14 @@ const Pagination: React.FC<PaginationProps> = ({
       bg={bgColor}
     >
       <Text fontSize="sm" color="gray.600">
-        Mostrando {startItem} a {endItem} de {total} resultados
+        {t('showingResults', { startItem, endItem, total })}
       </Text>
 
       <HStack spacing={2}>
         {onPageSizeChange && (
           <HStack spacing={2}>
             <Text fontSize="sm" color="gray.600">
-              Por página:
+              {t('perPage')}
             </Text>
             <Select
               size="sm"
@@ -75,7 +78,7 @@ const Pagination: React.FC<PaginationProps> = ({
           <IconButton
             size="sm"
             icon={<ChevronLeftIcon />}
-            aria-label="Página anterior"
+            aria-label={t('previousPage')}
             isDisabled={page <= 1}
             onClick={() => onPageChange(page - 1)}
             variant="ghost"
@@ -110,7 +113,7 @@ const Pagination: React.FC<PaginationProps> = ({
           <IconButton
             size="sm"
             icon={<ChevronRightIcon />}
-            aria-label="Página siguiente"
+            aria-label={t('nextPage')}
             isDisabled={page >= pageCount}
             onClick={() => onPageChange(page + 1)}
             variant="ghost"

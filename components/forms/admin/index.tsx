@@ -186,7 +186,7 @@ export const AdminForm: React.FC<AdminFormProps> = ({
                   required: te('requiredSelect')
                 })}
               >
-                <option value="admin">Administrador</option>
+                <option value="admin">{t('options.admin')}</option>
               </Select>
               <FormErrorMessage>
                 <FormErrorIcon me={1} />

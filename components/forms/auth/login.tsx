@@ -48,7 +48,7 @@ export const LoginForm: React.FC = () => {
         errorToast(res?.error || t('responses.error'));
       }
     } catch (error) {
-      errorToast('Error inesperado durante el login');
+      errorToast(t('responses.unexpectedError'));
     } finally {
       setIsSubmitting(false);
     }

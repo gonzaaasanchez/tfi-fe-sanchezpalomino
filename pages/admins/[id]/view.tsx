@@ -231,7 +231,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         'layouts.private.header',
         'pages.admins.view',
         'pages.admins.index',
-        'components.shared.permission-guard'
+        'components.shared.permission-guard',
+        'general.common'
       ])
     }
   };
