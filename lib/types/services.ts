@@ -264,3 +264,53 @@ export type UserDeleteService = {
   };
   message?: string;
 };
+
+// PetType Services
+export type PetTypeGetAllService = {
+  success: boolean;
+  data: {
+    items: Array<{
+      id: string;
+      name: string;
+      createdAt: string;
+      updatedAt: string;
+    }>;
+    pagination: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPages: number;
+      hasNextPage: boolean;
+      hasPrevPage: boolean;
+    };
+  };
+  message?: string;
+};
+
+export type PetTypeGetByIdService = {
+  success: boolean;
+  data: {
+    id: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+  message?: string;
+};
+
+export type PetTypeCreateService = {
+  name: string;
+};
+
+export type PetTypeUpdateService = {
+  name: string;
+};
+
+export type PetTypeDeleteService = {
+  success: boolean;
+  data: {
+    id: string;
+    name: string;
+  };
+  message?: string;
+};

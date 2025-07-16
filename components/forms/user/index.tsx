@@ -15,7 +15,7 @@ import { useTranslations } from 'next-intl';
 import { FormProvider, useForm } from 'react-hook-form';
 import { UserFormType } from 'lib/types/forms';
 import { FormErrorIcon } from 'components/icons/src/form-error-icon';
-import { useCreateUser } from '@hooks/use-users';
+import { useCreateUser, useUpdateUser } from '@hooks/use-users';
 import { SYSTEM_ROLES } from 'lib/constants/roles';
 
 interface UserFormProps {
@@ -24,7 +24,7 @@ interface UserFormProps {
   defaultValues?: UserFormType;
   onSuccess?: () => void;
   onCancel?: () => void;
-  updateMutation?: any;
+  id?: string; // Solo para edición
 }
 
 export const UserForm: React.FC<UserFormProps> = ({
@@ -33,7 +33,7 @@ export const UserForm: React.FC<UserFormProps> = ({
   defaultValues,
   onSuccess,
   onCancel,
-  updateMutation
+  id
 }) => {
   const t = useTranslations('components.forms.user');
   const te = useTranslations('general.form.errors');
@@ -56,13 +56,14 @@ export const UserForm: React.FC<UserFormProps> = ({
   } = methods;
 
   const createUserMutation = useCreateUser();
-  
+  const updateUserMutation = useUpdateUser(id || '');
+
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
 
   const onSubmit = async (data: UserFormType) => {
     try {
-      if (mode === 'edit' && updateMutation) {
+      if (mode === 'edit') {
         // Para edición, solo enviar campos que han cambiado (sin password ni rol)
         const updateData: any = {};
         if (data.firstName !== defaultValues?.firstName) updateData.firstName = data.firstName;
@@ -70,7 +71,7 @@ export const UserForm: React.FC<UserFormProps> = ({
         if (data.email !== defaultValues?.email) updateData.email = data.email;
         if (data.phoneNumber !== defaultValues?.phoneNumber) updateData.phoneNumber = data.phoneNumber;
 
-        await updateMutation.mutateAsync(updateData);
+        await updateUserMutation.mutateAsync(updateData);
       } else {
         // Para creación - Asignar automáticamente el rol "user" del sistema
         await createUserMutation.mutateAsync({
@@ -91,6 +92,8 @@ export const UserForm: React.FC<UserFormProps> = ({
       // Error handling is done in the mutation
     }
   };
+
+  const isLoading = mode === 'edit' ? updateUserMutation.isPending : createUserMutation.isPending;
 
   return (
     <FormProvider {...methods}>
@@ -197,14 +200,14 @@ export const UserForm: React.FC<UserFormProps> = ({
               <Button
                 variant="outline"
                 onClick={onCancel}
-                isDisabled={createUserMutation.isPending || (updateMutation?.isPending)}
+                isDisabled={isLoading}
               >
                 {t('cta.cancel')}
               </Button>
               <Button
                 type="submit"
-                isLoading={createUserMutation.isPending || (updateMutation?.isPending)}
-                isDisabled={!isValid || createUserMutation.isPending || (updateMutation?.isPending)}
+                isLoading={isLoading}
+                isDisabled={!isValid || isLoading}
                 loadingText={mode === 'edit' ? t('loading.updating') : t('loading.creating')}
               >
                 {mode === 'edit' ? t('cta.update') : t('cta.create')}

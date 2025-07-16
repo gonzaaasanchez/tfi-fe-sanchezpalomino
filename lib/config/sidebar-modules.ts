@@ -54,6 +54,13 @@ export const sidebarModules: SidebarModule[] = [
     action: 'getAll'
   },
   {
+    name: 'Tipos de mascota',
+    path: '/petTypes',
+    icon: CheckCircleIcon,
+    module: 'petTypes',
+    action: 'getAll'
+  },
+  {
     name: 'Reservas',
     path: '/reservations',
     icon: CalendarIcon,

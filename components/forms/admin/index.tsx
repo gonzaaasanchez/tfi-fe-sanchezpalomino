@@ -16,7 +16,7 @@ import { useTranslations } from 'next-intl';
 import { FormProvider, useForm } from 'react-hook-form';
 import { AdminFormType } from 'lib/types/forms';
 import { FormErrorIcon } from 'components/icons/src/form-error-icon';
-import { useCreateAdmin } from '@hooks/use-admins';
+import { useCreateAdmin, useUpdateAdmin } from '@hooks/use-admins';
 
 interface AdminFormProps {
   mode: 'create' | 'edit';
@@ -24,7 +24,7 @@ interface AdminFormProps {
   defaultValues?: AdminFormType;
   onSuccess?: () => void;
   onCancel?: () => void;
-  updateMutation?: any;
+  id?: string; // Solo para edición
 }
 
 export const AdminForm: React.FC<AdminFormProps> = ({
@@ -33,7 +33,7 @@ export const AdminForm: React.FC<AdminFormProps> = ({
   defaultValues,
   onSuccess,
   onCancel,
-  updateMutation
+  id
 }) => {
   const t = useTranslations('components.forms.admin');
   const te = useTranslations('general.form.errors');
@@ -56,13 +56,14 @@ export const AdminForm: React.FC<AdminFormProps> = ({
   } = methods;
 
   const createAdminMutation = useCreateAdmin();
+  const updateAdminMutation = useUpdateAdmin(id || '');
   
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
 
   const onSubmit = async (data: AdminFormType) => {
     try {
-      if (mode === 'edit' && updateMutation) {
+      if (mode === 'edit') {
         // Para edición, solo enviar campos que han cambiado
         const updateData: any = {};
         if (data.firstName !== defaultValues?.firstName) updateData.firstName = data.firstName;
@@ -71,7 +72,7 @@ export const AdminForm: React.FC<AdminFormProps> = ({
         if (data.password) updateData.password = data.password; // Solo si se proporciona nueva contraseña
         if (data.role !== defaultValues?.role) updateData.roleId = data.role;
 
-        await updateMutation.mutateAsync(updateData);
+        await updateAdminMutation.mutateAsync(updateData);
       } else {
         // Para creación
         await createAdminMutation.mutateAsync({
@@ -91,6 +92,8 @@ export const AdminForm: React.FC<AdminFormProps> = ({
       // Error handling is done in the mutation
     }
   };
+
+  const isLoading = mode === 'edit' ? updateAdminMutation.isPending : createAdminMutation.isPending;
 
   return (
     <FormProvider {...methods}>
@@ -199,14 +202,14 @@ export const AdminForm: React.FC<AdminFormProps> = ({
               <Button
                 variant="outline"
                 onClick={onCancel}
-                isDisabled={createAdminMutation.isPending || (updateMutation?.isPending)}
+                isDisabled={isLoading}
               >
                 {t('cta.cancel')}
               </Button>
               <Button
                 type="submit"
-                isLoading={createAdminMutation.isPending || (updateMutation?.isPending)}
-                isDisabled={!isValid || createAdminMutation.isPending || (updateMutation?.isPending)}
+                isLoading={isLoading}
+                isDisabled={!isValid || isLoading}
                 loadingText={mode === 'edit' ? t('loading.updating') : t('loading.creating')}
               >
                 {mode === 'edit' ? t('cta.update') : t('cta.create')}

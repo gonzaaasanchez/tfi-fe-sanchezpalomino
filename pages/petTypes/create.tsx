@@ -1,7 +1,4 @@
-import { ReactElement } from 'react';
-import { NextPageWithLayout } from 'pages/_app';
-import { NextSeo } from 'next-seo';
-import { 
+import {
   Box,
   Breadcrumb,
   BreadcrumbItem,
@@ -12,59 +9,33 @@ import {
 } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { useTranslations } from 'next-intl';
+import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { pick } from 'lodash';
-import { UserForm } from 'components/forms/user';
+import { PetTypeForm } from 'components/forms/pet-types';
 import { useCustomToast } from '@hooks/use-custom-toast';
 import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
-import { useGetUser } from 'lib/hooks';
-import { UserFormType } from 'lib/types/forms';
-import { Loader } from 'components/shared';
+import { NextSeo } from 'next-seo';
 
-interface EditUserPageProps {
-  id: string;
-}
-
-const EditUserPage: NextPageWithLayout<EditUserPageProps> = ({ id }) => {
-  const t = useTranslations('pages.users.edit');
-  const tCommon = useTranslations('general.common');
-  const tForm = useTranslations('components.forms.user');
+const CreatePetTypePage: NextPage = () => {
+  const t = useTranslations('pages.petTypes.create');
+  const tForm = useTranslations('components.forms.petType');
   const router = useRouter();
   const { successToast } = useCustomToast();
-  const { user, isPending } = useGetUser({ id });
 
   const handleSuccess = () => {
-    successToast(tForm('responses.updateSuccess'));
-    router.push('/users');
+    successToast(tForm('responses.createSuccess'));
+    router.push('/petTypes');
   };
 
   const handleCancel = () => {
-    router.push('/users');
-  };
-
-  if (isPending) {
-    return <Loader fullHeight />;
-  }
-
-  if (!user) {
-    return (
-      <Container maxW="container.lg" py={8}>
-        <Text>{tCommon('notFound')}</Text>
-      </Container>
-    );
-  }
-
-  const defaultValues: UserFormType = {
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    phoneNumber: user.phoneNumber || ''
+    router.push('/petTypes');
   };
 
   return (
-    <>
+    <PrivateLayout>
       <NextSeo
         title={t('meta.title')}
         description={t('meta.description')}
@@ -84,13 +55,13 @@ const EditUserPage: NextPageWithLayout<EditUserPageProps> = ({ id }) => {
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/users" color="gray.500">
-                {t('breadcrumb.users')}
+              <BreadcrumbLink href="/petTypes" color="gray.500">
+                {t('breadcrumb.petTypes')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem isCurrentPage>
               <BreadcrumbLink color="brand1.700" fontWeight="medium">
-                {t('breadcrumb.edit')}
+                {t('breadcrumb.create')}
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
@@ -103,44 +74,33 @@ const EditUserPage: NextPageWithLayout<EditUserPageProps> = ({ id }) => {
           </Box>
 
           {/* Form */}
-          <UserForm
-            mode="edit"
+          <PetTypeForm
+            mode="create"
             title={t('title')}
-            defaultValues={defaultValues}
             onSuccess={handleSuccess}
             onCancel={handleCancel}
-            id={id}
           />
         </VStack>
       </Container>
-    </>
+    </PrivateLayout>
   );
-};
-
-EditUserPage.getLayout = function getLayout(page: ReactElement) {
-  return <PrivateLayout>{page}</PrivateLayout>;
 };
 
 export const getServerSideProps: GetServerSideProps = async ({
   locale = 'es',
-  params,
   ...ctx
 }) => {
-  const errors: any = await handlePermission(ctx.req, ctx.res, '/users/edit');
+  const errors: any = await handlePermission(ctx.req, ctx.res, '/petTypes/create');
   if (errors) {
     return errors;
   }
-  
-  const id = params?.id as string;
-  
   return {
     props: {
-      id,
-      messages: pick(await import(`../../../message/${locale}.json`), [
-        'pages.users.edit',
-        'pages.users.index',
+      messages: pick(await import(`../../message/${locale}.json`), [
+        'pages.petTypes.create',
+        'pages.petTypes.index',
         'layouts.private.header',
-        'components.forms.user',
+        'components.forms.petType',
         'general.form.errors',
         'general.common'
       ])
@@ -148,4 +108,4 @@ export const getServerSideProps: GetServerSideProps = async ({
   };
 };
 
-export default EditUserPage; 
+export default CreatePetTypePage; 

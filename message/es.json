@@ -44,6 +44,28 @@
           "admin": "Administrador"
         }
       },
+      "petType": {
+        "cta": {
+          "create": "Crear Tipo de Mascota",
+          "update": "Actualizar Tipo de Mascota",
+          "cancel": "Cancelar"
+        },
+        "labels": {
+          "name": "Nombre"
+        },
+        "placeholders": {
+          "name": "Ej: Perro, Gato, Ave..."        },
+        "responses": {
+          "createSuccess": "Tipo de mascota creado exitosamente",
+          "updateSuccess": "Tipo de mascota actualizado exitosamente",
+          "createError": "Error al crear el tipo de mascota",
+          "updateError": "Error al actualizar el tipo de mascota"
+        },
+        "loading": {
+          "creating": "Creando...",
+          "updating": "Actualizando..."
+        }
+      },
       "user": {
         "cta": {
           "create": "Crear Usuario",
@@ -412,10 +434,108 @@
       "deleteDialog": {
         "title": "Confirmar eliminación",
         "message": "¿Estás seguro de que deseas eliminar al usuario {firstName} {lastName}?",
-        "warning": "Esta acción no se puede deshacer.",
-        "cancel": "Cancelar",
-        "confirm": "Eliminar",
-        "loading": "Eliminando..."
+        "warning": "Esta acción no se puede deshacer."
+      }
+    },
+    "petTypes": {
+      "index": {
+        "actions": {
+          "edit": {
+            "label": "Editar",
+            "tooltip": "Editar tipo de mascota"
+          },
+          "delete": {
+            "label": "Eliminar",
+            "tooltip": "Eliminar tipo de mascota"
+          },
+          "view": {
+            "label": "Ver",
+            "tooltip": "Ver detalles del tipo de mascota"
+          }
+        },
+        "cta": {
+          "createPetType": "Crear Tipo de Mascota"
+        },
+        "description": "Gestión de tipos de mascota del sistema",
+        "emptyText": "No hay tipos de mascota disponibles",
+        "meta": {
+          "title": "Tipos de Mascota",
+          "description": "Gestión de tipos de mascota del sistema"
+        },
+        "title": "Tipos de Mascota",
+        "columns": {
+          "id": "ID",
+          "name": "Nombre",
+          "createdAt": "Fecha de Creación"
+        },
+        "status": {
+          "active": "Activo",
+          "inactive": "Inactivo"
+        },
+        "deleteDialog": {
+          "title": "Confirmar eliminación",
+          "message": "¿Estás seguro de que deseas eliminar el tipo de mascota {name}?",
+          "warning": "Esta acción no se puede deshacer.",
+          "cancel": "Cancelar",
+          "confirm": "Eliminar",
+          "loading": "Eliminando..."
+        }
+      },
+      "create": {
+        "meta": {
+          "title": "Crear Tipo de Mascota",
+          "description": "Crear un nuevo tipo de mascota en el sistema"
+        },
+        "title": "Crear Tipo de Mascota",
+        "description": "Completa el formulario para crear un nuevo tipo de mascota",
+        "breadcrumb": {
+          "home": "Inicio",
+          "petTypes": "Tipos de Mascota",
+          "create": "Crear"
+        }
+      },
+      "edit": {
+        "meta": {
+          "title": "Editar Tipo de Mascota",
+          "description": "Editar información del tipo de mascota"
+        },
+        "title": "Editar Tipo de Mascota",
+        "description": "Modifica la información del tipo de mascota",
+        "breadcrumb": {
+          "home": "Inicio",
+          "petTypes": "Tipos de Mascota",
+          "edit": "Editar"
+        }
+      },
+      "view": {
+        "meta": {
+          "title": "Ver Tipo de Mascota",
+          "description": "Ver detalles del tipo de mascota"
+        },
+        "title": "Detalles del Tipo de Mascota",
+        "description": "Información completa del tipo de mascota",
+        "breadcrumb": {
+          "home": "Inicio",
+          "petTypes": "Tipos de Mascota",
+          "view": "Ver"
+        },
+        "actions": {
+          "back": "Volver",
+          "edit": "Editar"
+        },
+        "sections": {
+          "basicInfo": "Información Básica",
+          "additionalInfo": "Información Adicional",
+          "petTypeInfo": "Información del Tipo de Mascota"
+        },
+        "fields": {
+          "id": "ID",
+          "name": "Nombre",
+          "description": "Descripción",
+          "isActive": "Estado",
+          "createdAt": "Fecha de Creación",
+          "updatedAt": "Última Actualización"
+        }
       }
     },
     "auth": {

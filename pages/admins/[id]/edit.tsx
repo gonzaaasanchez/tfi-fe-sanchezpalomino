@@ -19,7 +19,7 @@ import { useCustomToast } from '@hooks/use-custom-toast';
 import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
-import { useGetAdmin, useUpdateAdmin } from '@hooks/use-admins';
+import { useGetAdmin } from '@hooks/use-admins';
 import { Loader } from 'components/shared';
 
 const EditAdminPage: NextPage = () => {
@@ -32,8 +32,6 @@ const EditAdminPage: NextPage = () => {
   const { admin, isPending: isLoadingAdmin } = useGetAdmin({ 
     id: id as string 
   });
-  
-  const updateAdminMutation = useUpdateAdmin(id as string);
 
   const handleSuccess = () => {
     successToast(tForm('responses.updateSuccess'));
@@ -109,7 +107,7 @@ const EditAdminPage: NextPage = () => {
               password: '',
               role: admin.role?.id || 'admin'
             }}
-            updateMutation={updateAdminMutation}
+            id={id as string}
           />
         </VStack>
       </Container>

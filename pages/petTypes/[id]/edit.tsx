@@ -1,7 +1,7 @@
 import { ReactElement } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 import { NextSeo } from 'next-seo';
-import { 
+import {
   Box,
   Breadcrumb,
   BreadcrumbItem,
@@ -15,52 +15,47 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { GetServerSideProps } from 'next';
 import { pick } from 'lodash';
-import { UserForm } from 'components/forms/user';
+import { PetTypeForm } from 'components/forms/pet-types';
 import { useCustomToast } from '@hooks/use-custom-toast';
 import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
-import { useGetUser } from 'lib/hooks';
-import { UserFormType } from 'lib/types/forms';
+import { useGetPetType } from '@hooks/use-pet-types';
 import { Loader } from 'components/shared';
 
-interface EditUserPageProps {
+interface EditPetTypePageProps {
   id: string;
 }
 
-const EditUserPage: NextPageWithLayout<EditUserPageProps> = ({ id }) => {
-  const t = useTranslations('pages.users.edit');
-  const tCommon = useTranslations('general.common');
-  const tForm = useTranslations('components.forms.user');
+const EditPetTypePage: NextPageWithLayout<EditPetTypePageProps> = ({ id }) => {
+  const t = useTranslations('pages.petTypes.edit');
+  const tForm = useTranslations('components.forms.petType');
   const router = useRouter();
   const { successToast } = useCustomToast();
-  const { user, isPending } = useGetUser({ id });
+  const { petType, isPending } = useGetPetType({ id });
 
   const handleSuccess = () => {
     successToast(tForm('responses.updateSuccess'));
-    router.push('/users');
+    router.push('/petTypes');
   };
 
   const handleCancel = () => {
-    router.push('/users');
+    router.push('/petTypes');
   };
 
   if (isPending) {
     return <Loader fullHeight />;
   }
 
-  if (!user) {
+  if (!petType) {
     return (
       <Container maxW="container.lg" py={8}>
-        <Text>{tCommon('notFound')}</Text>
+        <Text>{t('notFound')}</Text>
       </Container>
     );
   }
 
-  const defaultValues: UserFormType = {
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    phoneNumber: user.phoneNumber || ''
+  const defaultValues = {
+    name: petType.name,
   };
 
   return (
@@ -84,8 +79,8 @@ const EditUserPage: NextPageWithLayout<EditUserPageProps> = ({ id }) => {
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/users" color="gray.500">
-                {t('breadcrumb.users')}
+              <BreadcrumbLink href="/petTypes" color="gray.500">
+                {t('breadcrumb.petTypes')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem isCurrentPage>
@@ -103,7 +98,7 @@ const EditUserPage: NextPageWithLayout<EditUserPageProps> = ({ id }) => {
           </Box>
 
           {/* Form */}
-          <UserForm
+          <PetTypeForm
             mode="edit"
             title={t('title')}
             defaultValues={defaultValues}
@@ -117,7 +112,7 @@ const EditUserPage: NextPageWithLayout<EditUserPageProps> = ({ id }) => {
   );
 };
 
-EditUserPage.getLayout = function getLayout(page: ReactElement) {
+EditPetTypePage.getLayout = function getLayout(page: ReactElement) {
   return <PrivateLayout>{page}</PrivateLayout>;
 };
 
@@ -126,21 +121,19 @@ export const getServerSideProps: GetServerSideProps = async ({
   params,
   ...ctx
 }) => {
-  const errors: any = await handlePermission(ctx.req, ctx.res, '/users/edit');
+  const id = params?.id as string;
+  const errors: any = await handlePermission(ctx.req, ctx.res, '/petTypes/edit');
   if (errors) {
     return errors;
   }
-  
-  const id = params?.id as string;
-  
   return {
     props: {
       id,
       messages: pick(await import(`../../../message/${locale}.json`), [
-        'pages.users.edit',
-        'pages.users.index',
+        'pages.petTypes.edit',
+        'pages.petTypes.index',
         'layouts.private.header',
-        'components.forms.user',
+        'components.forms.petType',
         'general.form.errors',
         'general.common'
       ])
@@ -148,4 +141,4 @@ export const getServerSideProps: GetServerSideProps = async ({
   };
 };
 
-export default EditUserPage; 
+export default EditPetTypePage;

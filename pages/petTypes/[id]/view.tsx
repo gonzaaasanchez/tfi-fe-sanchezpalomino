@@ -21,31 +21,31 @@ import { GetServerSideProps } from 'next';
 import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
 import { useRouter } from 'next/router';
-import { useGetUser } from 'lib/hooks';
+import { useGetPetType } from '@hooks/use-pet-types';
 import { Loader } from 'components/shared';
 
-interface ViewUserPageProps {
+interface ViewPetTypePageProps {
   id: string;
 }
 
-const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
-  const t = useTranslations('pages.users.view');
+const ViewPetTypePage: NextPageWithLayout<ViewPetTypePageProps> = ({ id }) => {
+  const t = useTranslations('pages.petTypes.view');
   const router = useRouter();
-  const { user, isPending } = useGetUser({ id });
+  const { petType, isPending } = useGetPetType({ id });
 
   const handleEdit = () => {
-    router.push(`/users/${id}/edit`);
+    router.push(`/petTypes/${id}/edit`);
   };
 
   const handleBack = () => {
-    router.push('/users');
+    router.push('/petTypes');
   };
 
   if (isPending) {
     return <Loader fullHeight />;
   }
 
-  if (!user) {
+  if (!petType) {
     return (
       <Container maxW="container.lg" py={8}>
         <Text>{t('notFound')}</Text>
@@ -74,8 +74,8 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/users" color="gray.500">
-                {t('breadcrumb.users')}
+              <BreadcrumbLink href="/petTypes" color="gray.500">
+                {t('breadcrumb.petTypes')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem isCurrentPage>
@@ -95,7 +95,7 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
             </Text>
           </Box>
 
-          {/* User Details */}
+          {/* Pet Type Details */}
           <Box
             bg="white"
             border="1px"
@@ -107,7 +107,7 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
             <VStack spacing={4} align="stretch">
               <HStack justify="space-between">
                 <Heading size="md" color="brand1.700">
-                  {t('sections.userInfo')}
+                  {t('sections.petTypeInfo')}
                 </Heading>
                 <HStack spacing={2}>
                   <Button
@@ -129,48 +129,19 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
 
               <Box>
                 <Text fontWeight="bold" color="gray.700">{t('fields.id')}:</Text>
-                <Text color="gray.600">{user.id}</Text>
+                <Text color="gray.600">{petType.id}</Text>
               </Box>
 
               <Box>
-                <Text fontWeight="bold" color="gray.700">{t('fields.firstName')}:</Text>
-                <Text color="gray.600">{user.firstName}</Text>
+                <Text fontWeight="bold" color="gray.700">{t('fields.name')}:</Text>
+                <Text color="gray.600">{petType.name}</Text>
               </Box>
 
-              <Box>
-                <Text fontWeight="bold" color="gray.700">{t('fields.lastName')}:</Text>
-                <Text color="gray.600">{user.lastName}</Text>
-              </Box>
-
-              <Box>
-                <Text fontWeight="bold" color="gray.700">{t('fields.email')}:</Text>
-                <Text color="gray.600">{user.email}</Text>
-              </Box>
-
-              <Box>
-                <Text fontWeight="bold" color="gray.700">{t('fields.role')}:</Text>
-                <Tag
-                  colorScheme={user.role?.name === 'admin' ? 'orange' : 'blue'}
-                  variant="subtle"
-                  px={3}
-                  py={1}
-                >
-                  {user.role?.name || '-'}
-                </Tag>
-              </Box>
-
-              {user.phoneNumber && (
-                <Box>
-                  <Text fontWeight="bold" color="gray.700">{t('fields.phoneNumber')}:</Text>
-                  <Text color="gray.600">{user.phoneNumber}</Text>
-                </Box>
-              )}
-
-              {user.createdAt && (
+              {petType.createdAt && (
                 <Box>
                   <Text fontWeight="bold" color="gray.700">{t('fields.createdAt')}:</Text>
                   <Text color="gray.600">
-                    {new Date(user.createdAt).toLocaleDateString('es-ES', {
+                    {new Date(petType.createdAt).toLocaleDateString('es-ES', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
@@ -181,11 +152,11 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
                 </Box>
               )}
 
-              {user.updatedAt && (
+              {petType.updatedAt && (
                 <Box>
                   <Text fontWeight="bold" color="gray.700">{t('fields.updatedAt')}:</Text>
                   <Text color="gray.600">
-                    {new Date(user.updatedAt).toLocaleDateString('es-ES', {
+                    {new Date(petType.updatedAt).toLocaleDateString('es-ES', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric',
@@ -203,7 +174,7 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
   );
 };
 
-ViewUserPage.getLayout = function getLayout(page: ReactElement) {
+ViewPetTypePage.getLayout = function getLayout(page: ReactElement) {
   return <PrivateLayout>{page}</PrivateLayout>;
 };
 
@@ -212,7 +183,7 @@ export const getServerSideProps: GetServerSideProps = async ({
   params,
   ...ctx
 }) => {
-  const errors: any = await handlePermission(ctx.req, ctx.res, '/users/view');
+  const errors: any = await handlePermission(ctx.req, ctx.res, '/petTypes/view');
   if (errors) {
     return errors;
   }
@@ -223,10 +194,10 @@ export const getServerSideProps: GetServerSideProps = async ({
     props: {
       id,
       messages: pick(await import(`../../../message/${locale}.json`), [
-        'pages.users.view',
-        'pages.users.index',
+        'pages.petTypes.view',
+        'pages.petTypes.index',
         'layouts.private.header',
-        'components.forms.user',
+        'components.forms.petType',
         'general.form.errors',
         'general.common'
       ])
@@ -234,4 +205,4 @@ export const getServerSideProps: GetServerSideProps = async ({
   };
 };
 
-export default ViewUserPage; 
+export default ViewPetTypePage;

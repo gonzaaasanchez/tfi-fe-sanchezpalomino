@@ -36,7 +36,7 @@ export const authOptions: NextAuthOptions = {
           const { data } = response;
           
           if (!data || !data.data || !data.data.admin || !data.data.token) {
-            return null;
+            throw new Error('Invalid response format');
           }
 
           const { admin, token } = data.data;
@@ -50,7 +50,16 @@ export const authOptions: NextAuthOptions = {
             token: token 
           };
         } catch (error: any) {
-          return null;
+          // Log the error for debugging
+          console.error('Auth error:', error);
+          
+          // If it's an axios error with response data, throw a specific error
+          if (error.response?.data?.message) {
+            throw new Error(error.response.data.message);
+          }
+          
+          // For other errors, throw a generic error
+          throw new Error('Authentication failed');
         }
       }
     })
@@ -80,6 +89,10 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     }
+  },
+  pages: {
+    signIn: '/auth/login',
+    error: '/auth/login'
   }
 };
 
