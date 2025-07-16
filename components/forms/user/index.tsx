@@ -6,7 +6,6 @@ import {
   FormLabel,
   Heading,
   Input,
-  Select,
   VStack,
   HStack,
   useColorModeValue
@@ -17,6 +16,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { UserFormType } from 'lib/types/forms';
 import { FormErrorIcon } from 'components/icons/src/form-error-icon';
 import { useCreateUser } from '@hooks/use-users';
+import { SYSTEM_ROLES } from 'lib/constants/roles';
 
 interface UserFormProps {
   mode: 'create' | 'edit';
@@ -43,8 +43,8 @@ export const UserForm: React.FC<UserFormProps> = ({
       firstName: '',
       lastName: '',
       email: '',
-      password: '',
-      role: 'user'
+      phoneNumber: '',
+      password: mode === 'create' ? '' : undefined
     }
   });
   
@@ -63,23 +63,23 @@ export const UserForm: React.FC<UserFormProps> = ({
   const onSubmit = async (data: UserFormType) => {
     try {
       if (mode === 'edit' && updateMutation) {
-        // Para edición, solo enviar campos que han cambiado
+        // Para edición, solo enviar campos que han cambiado (sin password ni rol)
         const updateData: any = {};
         if (data.firstName !== defaultValues?.firstName) updateData.firstName = data.firstName;
         if (data.lastName !== defaultValues?.lastName) updateData.lastName = data.lastName;
         if (data.email !== defaultValues?.email) updateData.email = data.email;
-        if (data.password) updateData.password = data.password; // Solo si se proporciona nueva contraseña
-        if (data.role !== defaultValues?.role) updateData.roleId = data.role;
+        if (data.phoneNumber !== defaultValues?.phoneNumber) updateData.phoneNumber = data.phoneNumber;
 
         await updateMutation.mutateAsync(updateData);
       } else {
-        // Para creación
+        // Para creación - Asignar automáticamente el rol "user" del sistema
         await createUserMutation.mutateAsync({
           firstName: data.firstName,
           lastName: data.lastName,
           email: data.email,
-          password: data.password,
-          role: data.role
+          phoneNumber: data.phoneNumber,
+          password: data.password!, // Requerido para creación
+          role: SYSTEM_ROLES.USER // TODO: Obtener este ID dinámicamente del sistema
         });
       }
 
@@ -113,11 +113,11 @@ export const UserForm: React.FC<UserFormProps> = ({
             {/* Name Fields */}
             <HStack spacing={4} w="full">
               <FormControl isInvalid={!!errors.firstName}>
-                <FormLabel>Nombre</FormLabel>
+                <FormLabel>{t('labels.firstName')}</FormLabel>
                 <Input
-                  placeholder="Ingrese el nombre"
+                  placeholder={t('placeholders.firstName')}
                   {...register('firstName', {
-                    required: 'El nombre es requerido'
+                    required: te('required')
                   })}
                 />
                 <FormErrorMessage>
@@ -127,11 +127,11 @@ export const UserForm: React.FC<UserFormProps> = ({
               </FormControl>
 
               <FormControl isInvalid={!!errors.lastName}>
-                <FormLabel>Apellido</FormLabel>
+                <FormLabel>{t('labels.lastName')}</FormLabel>
                 <Input
-                  placeholder="Ingrese el apellido"
+                  placeholder={t('placeholders.lastName')}
                   {...register('lastName', {
-                    required: 'El apellido es requerido'
+                    required: te('required')
                   })}
                 />
                 <FormErrorMessage>
@@ -143,12 +143,12 @@ export const UserForm: React.FC<UserFormProps> = ({
 
             {/* Email */}
             <FormControl isInvalid={!!errors.email}>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{t('labels.email')}</FormLabel>
               <Input
-                placeholder="Ingrese el email"
+                placeholder={t('placeholders.email')}
                 {...register('email', {
-                  required: 'El email es requerido',
-                  pattern: emailPattern('Email inválido')
+                  required: te('required'),
+                  pattern: emailPattern(te('email'))
                 })}
               />
               <FormErrorMessage>
@@ -157,41 +157,38 @@ export const UserForm: React.FC<UserFormProps> = ({
               </FormErrorMessage>
             </FormControl>
 
-            {/* Password */}
-            <FormControl isInvalid={!!errors.password}>
-              <FormLabel>Contraseña</FormLabel>
+            {/* Password - Solo visible en modo creación */}
+            {mode === 'create' && (
+              <FormControl isInvalid={!!errors.password}>
+                <FormLabel>{t('labels.password')}</FormLabel>
+                <Input
+                  type="password"
+                  placeholder={t('placeholders.password')}
+                  {...register('password', {
+                    required: te('required'),
+                    minLength: {
+                      value: 6,
+                      message: t('validation.passwordMinLength')
+                    }
+                  })}
+                />
+                <FormErrorMessage>
+                  <FormErrorIcon me={1} />
+                  {errors.password && errors.password.message}
+                </FormErrorMessage>
+              </FormControl>
+            )}
+
+            {/* Phone Number */}
+            <FormControl isInvalid={!!errors.phoneNumber}>
+              <FormLabel>{t('labels.phoneNumber')}</FormLabel>
               <Input
-                type="password"
-                placeholder="Ingrese la contraseña"
-                {...register('password', {
-                  required: 'La contraseña es requerida',
-                  minLength: {
-                    value: 6,
-                    message: 'La contraseña debe tener al menos 6 caracteres'
-                  }
-                })}
+                placeholder={t('placeholders.phoneNumber')}
+                {...register('phoneNumber')}
               />
               <FormErrorMessage>
                 <FormErrorIcon me={1} />
-                {errors.password && errors.password.message}
-              </FormErrorMessage>
-            </FormControl>
-
-            {/* Role */}
-            <FormControl isInvalid={!!errors.role}>
-              <FormLabel>Rol</FormLabel>
-              <Select
-                placeholder="Seleccione el rol"
-                {...register('role', {
-                  required: 'El rol es requerido'
-                })}
-              >
-                <option value="user">Usuario</option>
-                <option value="admin">Administrador</option>
-              </Select>
-              <FormErrorMessage>
-                <FormErrorIcon me={1} />
-                {errors.role && errors.role.message}
+                {errors.phoneNumber && errors.phoneNumber.message}
               </FormErrorMessage>
             </FormControl>
 
@@ -202,15 +199,15 @@ export const UserForm: React.FC<UserFormProps> = ({
                 onClick={onCancel}
                 isDisabled={createUserMutation.isPending || (updateMutation?.isPending)}
               >
-                Cancelar
+                {t('cta.cancel')}
               </Button>
               <Button
                 type="submit"
                 isLoading={createUserMutation.isPending || (updateMutation?.isPending)}
                 isDisabled={!isValid || createUserMutation.isPending || (updateMutation?.isPending)}
-                loadingText={mode === 'edit' ? 'Actualizando...' : 'Creando...'}
+                loadingText={mode === 'edit' ? t('loading.updating') : t('loading.creating')}
               >
-                {mode === 'edit' ? 'Actualizar Usuario' : 'Crear Usuario'}
+                {mode === 'edit' ? t('cta.update') : t('cta.create')}
               </Button>
             </HStack>
           </VStack>

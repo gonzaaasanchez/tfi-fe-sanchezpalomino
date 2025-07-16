@@ -242,16 +242,15 @@ export type UserCreateService = {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
-  role: string;
+  phoneNumber?: string;
+  password: string; // Requerido para creación
+  role: string; // TODO: Este campo se hardcodea con el ID del rol "user" del sistema
 };
 
 export type UserUpdateService = {
   firstName?: string;
   lastName?: string;
   email?: string;
-  password?: string;
-  roleId?: string;
   phoneNumber?: string;
   avatar?: File;
 };

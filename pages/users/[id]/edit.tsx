@@ -16,6 +16,7 @@ import { GetServerSideProps } from 'next';
 import { pick } from 'lodash';
 import { UserForm } from 'components/forms/user';
 import { useCustomToast } from '@hooks/use-custom-toast';
+import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
 import { useGetUser, useUpdateUser } from 'lib/hooks';
@@ -61,8 +62,7 @@ const EditUserPage: NextPage<EditUserPageProps> = ({ id }) => {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
-    password: '', // No mostrar contraseña actual
-    role: user.role?.id || 'user'
+    phoneNumber: user.phoneNumber || ''
   };
 
   return (
@@ -124,6 +124,11 @@ export const getServerSideProps: GetServerSideProps = async ({
   params,
   ...ctx
 }) => {
+  const errors: any = await handlePermission(ctx.req, ctx.res, '/users/edit');
+  if (errors) {
+    return errors;
+  }
+  
   const id = params?.id as string;
   
   return {

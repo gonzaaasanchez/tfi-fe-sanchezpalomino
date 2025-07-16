@@ -16,6 +16,7 @@ import { GetServerSideProps } from 'next';
 import { pick } from 'lodash';
 import { UserForm } from 'components/forms/user';
 import { useCustomToast } from '@hooks/use-custom-toast';
+import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
 
@@ -89,6 +90,10 @@ export const getServerSideProps: GetServerSideProps = async ({
   locale = 'es',
   ...ctx
 }) => {
+  const errors: any = await handlePermission(ctx.req, ctx.res, '/users/create');
+  if (errors) {
+    return errors;
+  }
   return {
     props: {
       messages: pick(await import(`../../message/${locale}.json`), [

@@ -18,6 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { ViewIcon, EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
+import { handlePermission } from '@helpers/middlewares';
 import { GetServerSideProps } from 'next';
 import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
@@ -44,7 +45,7 @@ const UsersPage: NextPageWithLayout = () => {
   const columns: Column[] = [
     {
       key: 'id',
-      label: 'ID',
+      label: t('columns.id'),
       width: '80px',
       align: 'center' as const,
       sortable: true,
@@ -52,25 +53,25 @@ const UsersPage: NextPageWithLayout = () => {
     },
     {
       key: 'firstName',
-      label: 'Nombre',
+      label: t('columns.firstName'),
       sortable: true,
       sortKey: 'firstName'
     },
     {
       key: 'lastName',
-      label: 'Apellido',
+      label: t('columns.lastName'),
       sortable: true,
       sortKey: 'lastName'
     },
     {
       key: 'email',
-      label: 'Email',
+      label: t('columns.email'),
       sortable: true,
       sortKey: 'email'
     },
     {
       key: 'role.name',
-      label: 'Rol',
+      label: t('columns.role'),
       sortable: true,
       sortKey: 'role.name',
       type: 'custom',
@@ -212,29 +213,31 @@ const UsersPage: NextPageWithLayout = () => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Confirmar eliminación
+              {t('deleteDialog.title')}
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              ¿Estás seguro de que deseas eliminar al usuario{' '}
-              <strong>{userToDelete?.firstName} {userToDelete?.lastName}</strong>?
+              {t('deleteDialog.message', {
+                firstName: userToDelete?.firstName || '',
+                lastName: userToDelete?.lastName || ''
+              })}
               <br />
               <br />
-              Esta acción no se puede deshacer.
+              {t('deleteDialog.warning')}
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={handleDeleteCancel}>
-                Cancelar
+                {t('deleteDialog.cancel')}
               </Button>
               <Button
                 colorScheme="red"
                 onClick={handleDeleteConfirm}
                 ml={3}
                 isLoading={deleteUserMutation.isPending}
-                loadingText="Eliminando..."
+                loadingText={t('deleteDialog.loading')}
               >
-                Eliminar
+                {t('deleteDialog.confirm')}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -252,10 +255,15 @@ export const getServerSideProps: GetServerSideProps = async ({
   locale = 'es',
   ...ctx
 }) => {
+  const errors: any = await handlePermission(ctx.req, ctx.res, '/users');
+  if (errors) {
+    return errors;
+  }
   return {
     props: {
       messages: pick(await import(`../../message/${locale}.json`), [
         'pages.users.index',
+        'pages.users.create',
         'layouts.private.header',
         'components.forms.user',
         'general.form.errors'

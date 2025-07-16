@@ -21,6 +21,6 @@ export type UserFormType = {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
-  role: string;
+  phoneNumber?: string;
+  password?: string; // Opcional para edición, requerido para creación
 };

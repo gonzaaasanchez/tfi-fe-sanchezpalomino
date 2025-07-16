@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { ChevronRightIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
+import { handlePermission } from '@helpers/middlewares';
 import { GetServerSideProps } from 'next';
 import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
@@ -43,7 +44,7 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
   if (isPending) {
     return (
       <Container maxW="container.lg" py={8}>
-        <Text>Cargando...</Text>
+        <Text>{t('loading')}</Text>
       </Container>
     );
   }
@@ -51,7 +52,7 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
   if (!user) {
     return (
       <Container maxW="container.lg" py={8}>
-        <Text>Usuario no encontrado</Text>
+        <Text>{t('notFound')}</Text>
       </Container>
     );
   }
@@ -110,7 +111,7 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
             <VStack spacing={4} align="stretch">
               <HStack justify="space-between">
                 <Heading size="md" color="brand1.700">
-                  Información del Usuario
+                  {t('sections.userInfo')}
                 </Heading>
                 <HStack spacing={2}>
                   <Button
@@ -118,40 +119,40 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
                     variant="outline"
                     onClick={handleBack}
                   >
-                    Volver
+                    {t('actions.back')}
                   </Button>
                   <Button
                     leftIcon={<EditIcon />}
                     colorScheme="blue"
                     onClick={handleEdit}
                   >
-                    Editar
+                    {t('actions.edit')}
                   </Button>
                 </HStack>
               </HStack>
 
               <Box>
-                <Text fontWeight="bold" color="gray.700">ID:</Text>
+                <Text fontWeight="bold" color="gray.700">{t('fields.id')}:</Text>
                 <Text color="gray.600">{user.id}</Text>
               </Box>
 
               <Box>
-                <Text fontWeight="bold" color="gray.700">Nombre:</Text>
+                <Text fontWeight="bold" color="gray.700">{t('fields.firstName')}:</Text>
                 <Text color="gray.600">{user.firstName}</Text>
               </Box>
 
               <Box>
-                <Text fontWeight="bold" color="gray.700">Apellido:</Text>
+                <Text fontWeight="bold" color="gray.700">{t('fields.lastName')}:</Text>
                 <Text color="gray.600">{user.lastName}</Text>
               </Box>
 
               <Box>
-                <Text fontWeight="bold" color="gray.700">Email:</Text>
+                <Text fontWeight="bold" color="gray.700">{t('fields.email')}:</Text>
                 <Text color="gray.600">{user.email}</Text>
               </Box>
 
               <Box>
-                <Text fontWeight="bold" color="gray.700">Rol:</Text>
+                <Text fontWeight="bold" color="gray.700">{t('fields.role')}:</Text>
                 <Tag
                   colorScheme={user.role?.name === 'admin' ? 'orange' : 'blue'}
                   variant="subtle"
@@ -164,14 +165,14 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
 
               {user.phoneNumber && (
                 <Box>
-                  <Text fontWeight="bold" color="gray.700">Teléfono:</Text>
+                  <Text fontWeight="bold" color="gray.700">{t('fields.phoneNumber')}:</Text>
                   <Text color="gray.600">{user.phoneNumber}</Text>
                 </Box>
               )}
 
               {user.createdAt && (
                 <Box>
-                  <Text fontWeight="bold" color="gray.700">Fecha de Creación:</Text>
+                  <Text fontWeight="bold" color="gray.700">{t('fields.createdAt')}:</Text>
                   <Text color="gray.600">
                     {new Date(user.createdAt).toLocaleDateString('es-ES', {
                       year: 'numeric',
@@ -186,7 +187,7 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
 
               {user.updatedAt && (
                 <Box>
-                  <Text fontWeight="bold" color="gray.700">Última Actualización:</Text>
+                  <Text fontWeight="bold" color="gray.700">{t('fields.updatedAt')}:</Text>
                   <Text color="gray.600">
                     {new Date(user.updatedAt).toLocaleDateString('es-ES', {
                       year: 'numeric',
@@ -215,6 +216,11 @@ export const getServerSideProps: GetServerSideProps = async ({
   params,
   ...ctx
 }) => {
+  const errors: any = await handlePermission(ctx.req, ctx.res, '/users/view');
+  if (errors) {
+    return errors;
+  }
+  
   const id = params?.id as string;
   
   return {

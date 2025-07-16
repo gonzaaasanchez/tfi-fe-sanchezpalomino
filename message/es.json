@@ -71,6 +71,10 @@
         "validation": {
           "passwordMismatch": "Las contraseñas no coinciden",
           "passwordMinLength": "La contraseña debe tener al menos 6 caracteres"
+        },
+        "loading": {
+          "creating": "Creando...",
+          "updating": "Actualizando..."
         }
       },
       "auth": {
@@ -298,7 +302,14 @@
           "title": "Usuarios",
           "description": "Gestión de usuarios del sistema"
         },
-        "title": "Usuarios"
+        "title": "Usuarios",
+        "columns": {
+          "id": "ID",
+          "firstName": "Nombre",
+          "lastName": "Apellido",
+          "email": "Email",
+          "role": "Rol"
+        }
       },
       "create": {
         "meta": {
@@ -324,7 +335,26 @@
           "home": "Inicio",
           "users": "Usuarios",
           "view": "Ver"
-        }
+        },
+        "actions": {
+          "back": "Volver",
+          "edit": "Editar"
+        },
+        "sections": {
+          "userInfo": "Información del Usuario"
+        },
+        "fields": {
+          "id": "ID",
+          "firstName": "Nombre",
+          "lastName": "Apellido",
+          "email": "Email",
+          "role": "Rol",
+          "phoneNumber": "Teléfono",
+          "createdAt": "Fecha de Creación",
+          "updatedAt": "Última Actualización"
+        },
+        "loading": "Cargando...",
+        "notFound": "Usuario no encontrado"
       },
       "edit": {
         "meta": {
@@ -338,6 +368,14 @@
           "users": "Usuarios",
           "edit": "Editar"
         }
+      },
+      "deleteDialog": {
+        "title": "Confirmar eliminación",
+        "message": "¿Estás seguro de que deseas eliminar al usuario {firstName} {lastName}?",
+        "warning": "Esta acción no se puede deshacer.",
+        "cancel": "Cancelar",
+        "confirm": "Eliminar",
+        "loading": "Eliminando..."
       }
     },
     "auth": {
