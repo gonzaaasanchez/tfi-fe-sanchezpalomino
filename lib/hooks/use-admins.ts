@@ -10,12 +10,11 @@ import {
 import { UseGetAllType, UseGetOneByIdType } from '../types/hooks';
 import { DEFAULT_PARAM_LIMIT } from '../constants/params';
 import { PaginatedResponse } from '../types/response';
-import { AxiosError } from 'axios';
 
 export function useGetAdmins(params?: UseGetAllType) {
   const [search, setSearch] = useState<string>(params?.initialSearch || '');
 
-  const { data, isPending } = useQuery<PaginatedResponse<Admin>, AxiosError>({
+  const { data, isPending } = useQuery<PaginatedResponse<Admin>>({
     queryKey: ['/admins', search],
     queryFn: () =>
       AdminService.getAdmins({ search, limit: params?.limit || DEFAULT_PARAM_LIMIT }),
@@ -29,7 +28,7 @@ export function useGetAdmins(params?: UseGetAllType) {
 }
 
 export function useGetAdmin({ id }: UseGetOneByIdType) {
-  const { data, isPending } = useQuery<Admin, AxiosError>({
+  const { data, isPending } = useQuery<Admin>({
     queryKey: [`/admins/${id}`],
     queryFn: () => AdminService.getAdmin(id.toString()),
     retry: false,

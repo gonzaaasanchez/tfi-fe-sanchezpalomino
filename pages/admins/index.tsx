@@ -45,7 +45,7 @@ const AdminPage: NextPageWithLayout = () => {
   const columns: Column[] = [
     {
       key: 'id',
-      label: 'ID',
+      label: t('columns.id'),
       width: '80px',
       align: 'center' as const,
       sortable: true,
@@ -53,25 +53,25 @@ const AdminPage: NextPageWithLayout = () => {
     },
     {
       key: 'firstName',
-      label: 'Nombre',
+      label: t('columns.firstName'),
       sortable: true,
       sortKey: 'firstName'
     },
     {
       key: 'lastName',
-      label: 'Apellido',
+      label: t('columns.lastName'),
       sortable: true,
       sortKey: 'lastName'
     },
     {
       key: 'email',
-      label: 'Email',
+      label: t('columns.email'),
       sortable: true,
       sortKey: 'email'
     },
     {
       key: 'role.name',
-      label: 'Rol',
+      label: t('columns.role'),
       sortable: true,
       sortKey: 'role.name',
       type: 'custom',
@@ -214,29 +214,31 @@ const AdminPage: NextPageWithLayout = () => {
         <AlertDialogOverlay>
           <AlertDialogContent>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Confirmar eliminación
+              {t('deleteDialog.title')}
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              ¿Estás seguro de que deseas eliminar al administrador{' '}
-              <strong>{adminToDelete?.firstName} {adminToDelete?.lastName}</strong>?
+              {t('deleteDialog.message', {
+                firstName: adminToDelete?.firstName || '',
+                lastName: adminToDelete?.lastName || ''
+              })}
               <br />
               <br />
-              Esta acción no se puede deshacer.
+              {t('deleteDialog.warning')}
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={handleDeleteCancel}>
-                Cancelar
+                {t('deleteDialog.cancel')}
               </Button>
               <Button
                 colorScheme="red"
                 onClick={handleDeleteConfirm}
                 ml={3}
                 isLoading={deleteAdminMutation.isPending}
-                loadingText="Eliminando..."
+                loadingText={t('deleteDialog.loading')}
               >
-                Eliminar
+                {t('deleteDialog.confirm')}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

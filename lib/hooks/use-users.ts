@@ -5,32 +5,42 @@ import { useCustomToast } from './use-custom-toast';
 import { User } from '../types/user';
 import { 
   UserCreateService, 
-  UserUpdateService,
-  UserGetAllService,
-  UserGetByIdService
+  UserUpdateService
 } from '../types/services';
 import { UseGetAllType, UseGetOneByIdType } from '../types/hooks';
 import { DEFAULT_PARAM_LIMIT } from '../constants/params';
-import { AxiosError } from 'axios';
 
 export function useGetUsers(params?: UseGetAllType) {
   const [search, setSearch] = useState<string>(params?.initialSearch || '');
+  const [currentPage, setCurrentPage] = useState<number>(params?.page || 1);
 
-  const { data, isPending } = useQuery<UserGetAllService, AxiosError>({
-    queryKey: ['/users', search],
+  const { data, isPending } = useQuery({
+    queryKey: ['/users', search, currentPage],
     queryFn: () =>
-      UserService.getUsers({ search, limit: params?.limit || DEFAULT_PARAM_LIMIT }),
+      UserService.getUsers({ 
+        search, 
+        limit: params?.limit || DEFAULT_PARAM_LIMIT,
+        page: currentPage
+      }),
     retry: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     staleTime: 60000
   });
 
-  return { users: data?.data?.items as User[], search, setSearch, isPending };
+  return { 
+    users: data?.data as User[], 
+    pagination: data?.pagination,
+    search, 
+    setSearch, 
+    currentPage,
+    setCurrentPage,
+    isPending 
+  };
 }
 
 export function useGetUser({ id }: UseGetOneByIdType) {
-  const { data, isPending } = useQuery<UserGetByIdService, AxiosError>({
+  const { data, isPending } = useQuery({
     queryKey: [`/users/${id}`],
     queryFn: () => UserService.getUser(id.toString()),
     retry: false,
@@ -40,7 +50,7 @@ export function useGetUser({ id }: UseGetOneByIdType) {
     enabled: !!id
   });
 
-  return { user: data?.data as User | undefined, isPending };
+  return { user: data as User | undefined, isPending };
 }
 
 export const useCreateUser = () => {

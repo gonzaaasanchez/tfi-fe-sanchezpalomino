@@ -32,7 +32,7 @@ import { useRef } from 'react';
 const UsersPage: NextPageWithLayout = () => {
   const t = useTranslations('pages.users.index');
   const router = useRouter();
-  const { users, search, setSearch, isPending } = useGetUsers({ limit: 10 });
+  const { users, pagination, search, setSearch, currentPage, setCurrentPage, isPending } = useGetUsers({ limit: 10 });
   
   // Estados para el modal de confirmación
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -141,6 +141,10 @@ const UsersPage: NextPageWithLayout = () => {
     }
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   const handleDeleteConfirm = async () => {
     if (!userToDelete || !userToDelete.id) return;
     
@@ -198,7 +202,8 @@ const UsersPage: NextPageWithLayout = () => {
             emptyText={t('emptyText')}
             shadow={true}
             onAction={handleAction}
-            onChangePage={() => {}}
+            onChangePage={handlePageChange}
+            metadata={pagination}
           />
         </PermissionGuard>
       </VStack>

@@ -10,12 +10,11 @@ import {
 import { UseGetAllType, UseGetOneByIdType } from '../types/hooks';
 import { DEFAULT_PARAM_LIMIT } from '../constants/params';
 import { PaginatedResponse } from '../types/response';
-import { AxiosError } from 'axios';
 
 export function useGetRoles(params?: UseGetAllType) {
   const [search, setSearch] = useState<string>(params?.initialSearch || '');
 
-  const { data, isPending } = useQuery<PaginatedResponse<Role>, AxiosError>({
+  const { data, isPending } = useQuery<PaginatedResponse<Role>>({
     queryKey: [
       '/roles'
     ],
@@ -31,7 +30,7 @@ export function useGetRoles(params?: UseGetAllType) {
 }
 
 export function useGetRole({ id }: UseGetOneByIdType) {
-  const { data, isPending } = useQuery<Role, AxiosError>({
+  const { data, isPending } = useQuery<Role>({
     queryKey: [`/roles/${id}`],
     queryFn: () => RoleService.getRole(id.toString()),
     retry: false,

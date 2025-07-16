@@ -113,11 +113,11 @@ export const AdminForm: React.FC<AdminFormProps> = ({
             {/* Name Fields */}
             <HStack spacing={4} w="full">
               <FormControl isInvalid={!!errors.firstName}>
-                <FormLabel>Nombre</FormLabel>
+                <FormLabel>{t('labels.firstName')}</FormLabel>
                 <Input
-                  placeholder="Ingrese el nombre"
+                  placeholder={t('placeholders.firstName')}
                   {...register('firstName', {
-                    required: 'El nombre es requerido'
+                    required: te('required')
                   })}
                 />
                 <FormErrorMessage>
@@ -127,11 +127,11 @@ export const AdminForm: React.FC<AdminFormProps> = ({
               </FormControl>
 
               <FormControl isInvalid={!!errors.lastName}>
-                <FormLabel>Apellido</FormLabel>
+                <FormLabel>{t('labels.lastName')}</FormLabel>
                 <Input
-                  placeholder="Ingrese el apellido"
+                  placeholder={t('placeholders.lastName')}
                   {...register('lastName', {
-                    required: 'El apellido es requerido'
+                    required: te('required')
                   })}
                 />
                 <FormErrorMessage>
@@ -143,12 +143,12 @@ export const AdminForm: React.FC<AdminFormProps> = ({
 
             {/* Email */}
             <FormControl isInvalid={!!errors.email}>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{t('labels.email')}</FormLabel>
               <Input
-                placeholder="Ingrese el email"
+                placeholder={t('placeholders.email')}
                 {...register('email', {
-                  required: 'El email es requerido',
-                  pattern: emailPattern('Email inválido')
+                  required: te('required'),
+                  pattern: emailPattern(te('email'))
                 })}
               />
               <FormErrorMessage>
@@ -159,15 +159,15 @@ export const AdminForm: React.FC<AdminFormProps> = ({
 
             {/* Password */}
             <FormControl isInvalid={!!errors.password}>
-              <FormLabel>Contraseña</FormLabel>
+              <FormLabel>{t('labels.password')}</FormLabel>
               <Input
                 type="password"
-                placeholder="Ingrese la contraseña"
+                placeholder={t('placeholders.password')}
                 {...register('password', {
-                  required: 'La contraseña es requerida',
+                  required: te('required'),
                   minLength: {
                     value: 6,
-                    message: 'La contraseña debe tener al menos 6 caracteres'
+                    message: t('validation.passwordMinLength')
                   }
                 })}
               />
@@ -179,11 +179,11 @@ export const AdminForm: React.FC<AdminFormProps> = ({
 
             {/* Role */}
             <FormControl isInvalid={!!errors.role}>
-              <FormLabel>Rol</FormLabel>
+              <FormLabel>{t('labels.role')}</FormLabel>
               <Select
-                placeholder="Seleccione el rol"
+                placeholder={t('placeholders.role')}
                 {...register('role', {
-                  required: 'El rol es requerido'
+                  required: te('requiredSelect')
                 })}
               >
                 <option value="admin">Administrador</option>
@@ -201,15 +201,15 @@ export const AdminForm: React.FC<AdminFormProps> = ({
                 onClick={onCancel}
                 isDisabled={createAdminMutation.isPending || (updateMutation?.isPending)}
               >
-                Cancelar
+                {t('cta.cancel')}
               </Button>
               <Button
                 type="submit"
                 isLoading={createAdminMutation.isPending || (updateMutation?.isPending)}
                 isDisabled={!isValid || createAdminMutation.isPending || (updateMutation?.isPending)}
-                loadingText={mode === 'edit' ? 'Actualizando...' : 'Creando...'}
+                loadingText={mode === 'edit' ? t('loading.updating') : t('loading.creating')}
               >
-                {mode === 'edit' ? 'Actualizar Administrador' : 'Crear Administrador'}
+                {mode === 'edit' ? t('cta.update') : t('cta.create')}
               </Button>
             </HStack>
           </VStack>

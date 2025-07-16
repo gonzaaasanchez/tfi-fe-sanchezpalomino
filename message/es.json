@@ -35,6 +35,10 @@
         "validation": {
           "passwordMismatch": "Las contraseñas no coinciden",
           "passwordMinLength": "La contraseña debe tener al menos 8 caracteres"
+        },
+        "loading": {
+          "creating": "Creando...",
+          "updating": "Actualizando..."
         }
       },
       "user": {
@@ -215,7 +219,22 @@
           "title": "Administradores",
           "description": "Gestión de administradores del sistema"
         },
-        "title": "Administradores"
+        "title": "Administradores",
+        "columns": {
+          "id": "ID",
+          "firstName": "Nombre",
+          "lastName": "Apellido",
+          "email": "Email",
+          "role": "Rol"
+        },
+        "deleteDialog": {
+          "title": "Confirmar eliminación",
+          "message": "¿Estás seguro de que deseas eliminar al administrador {firstName} {lastName}?",
+          "warning": "Esta acción no se puede deshacer.",
+          "cancel": "Cancelar",
+          "confirm": "Eliminar",
+          "loading": "Eliminando..."
+        }
       },
       "create": {
         "meta": {
