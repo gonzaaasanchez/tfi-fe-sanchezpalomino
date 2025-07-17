@@ -1,3 +1,7 @@
 export { RoleService } from './role';
 export { ClientApi } from './api/ssc';
-export { UserService } from './user'; 
+export { UserService } from './user';
+export { ReservationService } from './reservation';
+export { AdminService } from './admin';
+export { PetTypeService } from './petTypes';
+export { PetCharacteristicService } from './petCharacteristic';

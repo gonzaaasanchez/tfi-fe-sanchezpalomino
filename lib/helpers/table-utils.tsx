@@ -1,24 +1,27 @@
-import { PaginationMetadata } from '../types/table';
 import { ViewIcon, EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import React from 'react';
-import { Action } from '../../components/shared/table';
-
+import { Action } from '../types/table';
+import { PaginationMetadata } from '../types/response';
 
 export const getPageInfo = (metadata: PaginationMetadata) => {
-  const startItem = (metadata.page - 1) * metadata.pageSize + 1;
-  const endItem = Math.min(metadata.page * metadata.pageSize, metadata.total);
-  
+  const startItem = (metadata.page - 1) * metadata.limit + 1;
+  const endItem = Math.min(metadata.page * metadata.limit, metadata.total);
+
   return {
     startItem,
     endItem,
     total: metadata.total,
-    hasNextPage: metadata.page < metadata.pageCount,
-    hasPrevPage: metadata.page > 1
+    hasNextPage: metadata.page < metadata.totalPages,
+    hasPrevPage: metadata.page > 1,
   };
 };
 
 // Sorting utilities
-export const getSortDirection = (currentKey: string, currentDirection: 'ASC' | 'DESC', newKey: string): 'ASC' | 'DESC' => {
+export const getSortDirection = (
+  currentKey: string,
+  currentDirection: 'ASC' | 'DESC',
+  newKey: string
+): 'ASC' | 'DESC' => {
   if (currentKey === newKey) {
     return currentDirection === 'ASC' ? 'DESC' : 'ASC';
   }
@@ -27,27 +30,31 @@ export const getSortDirection = (currentKey: string, currentDirection: 'ASC' | '
 
 // Filter utilities
 export const filterRows = (rows: any[], filters: Record<string, any>) => {
-  return rows.filter(row => {
+  return rows.filter((row) => {
     return Object.entries(filters).every(([key, value]) => {
       if (!value) return true;
-      
+
       const rowValue = row[key];
       if (typeof value === 'string') {
         return rowValue?.toLowerCase().includes(value.toLowerCase());
       }
-      
+
       return rowValue === value;
     });
   });
 };
 
 // Search utilities
-export const searchRows = (rows: any[], searchTerm: string, searchFields: string[]) => {
+export const searchRows = (
+  rows: any[],
+  searchTerm: string,
+  searchFields: string[]
+) => {
   if (!searchTerm) return rows;
-  
+
   const term = searchTerm.toLowerCase();
-  return rows.filter(row => {
-    return searchFields.some(field => {
+  return rows.filter((row) => {
+    return searchFields.some((field) => {
       const value = row[field];
       return value?.toString().toLowerCase().includes(term);
     });
@@ -62,26 +69,26 @@ export const createRowClassFn = (config: {
 }) => {
   return (item: any): string => {
     const classes: string[] = [];
-    
+
     if (config.adminClass && item.role === 'Admin') {
       classes.push(config.adminClass);
     }
-    
+
     if (config.inactiveClass && item.status === false) {
       classes.push(config.inactiveClass);
     }
-    
+
     if (config.customRules) {
-      config.customRules.forEach(rule => {
+      config.customRules.forEach((rule) => {
         if (rule.condition(item)) {
           classes.push(rule.className);
         }
       });
     }
-    
+
     return classes.join(' ');
   };
-}; 
+};
 
 // Table actions utilities
 export interface StandardActionConfig {
@@ -101,9 +108,11 @@ export interface StandardActionConfig {
   };
 }
 
-export const createStandardTableActions = (config: StandardActionConfig): Action[] => {
+export const createStandardTableActions = (
+  config: StandardActionConfig
+): Action[] => {
   const actions: Action[] = [];
-  
+
   if (config.includeView !== false) {
     actions.push({
       name: 'view',
@@ -113,12 +122,10 @@ export const createStandardTableActions = (config: StandardActionConfig): Action
       variant: 'ghost' as const,
       size: 'sm' as const,
       tooltip: config.translations.view.tooltip,
-      module: config.module,
-      action: 'read',
-      isDisabled: config.customDisabledRules?.view
+      isDisabled: config.customDisabledRules?.view,
     });
   }
-  
+
   if (config.includeEdit !== false) {
     actions.push({
       name: 'edit',
@@ -128,12 +135,10 @@ export const createStandardTableActions = (config: StandardActionConfig): Action
       variant: 'ghost' as const,
       size: 'sm' as const,
       tooltip: config.translations.edit.tooltip,
-      module: config.module,
-      action: 'update',
-      isDisabled: config.customDisabledRules?.edit
+      isDisabled: config.customDisabledRules?.edit,
     });
   }
-  
+
   if (config.includeDelete !== false) {
     actions.push({
       name: 'delete',
@@ -143,11 +148,9 @@ export const createStandardTableActions = (config: StandardActionConfig): Action
       variant: 'ghost' as const,
       size: 'sm' as const,
       tooltip: config.translations.delete.tooltip,
-      module: config.module,
-      action: 'delete',
-      isDisabled: config.customDisabledRules?.delete
+      isDisabled: config.customDisabledRules?.delete,
     });
   }
-  
+
   return actions;
-}; 
+};

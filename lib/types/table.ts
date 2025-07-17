@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { PaginationMetadata } from './response';
 
 // Basic types for table component
 export interface Column {
@@ -24,13 +25,6 @@ export interface Action {
   size?: 'xs' | 'sm' | 'md';
   isDisabled?: (item: any) => boolean;
   tooltip?: string;
-}
-
-export interface PaginationMetadata {
-  page: number;
-  pageCount: number;
-  pageSize: number;
-  total: number;
 }
 
 export interface TableProps {

@@ -712,6 +712,111 @@
         "delete": "Eliminar rol:"
       },
       "empty": "No hay roles disponibles"
+    },
+    "reservations": {
+      "index": {
+        "meta": {
+          "title": "Reservas",
+          "description": "Gestión de reservas del sistema"
+        },
+        "title": "Reservas",
+        "description": "Administra las reservas del sistema",
+        "emptyText": "No hay reservas disponibles",
+        "columns": {
+          "id": "ID",
+          "startDate": "Fecha de Inicio",
+          "endDate": "Fecha de Fin",
+          "careLocation": "Ubicación de Cuidado",
+          "user": "Usuario",
+          "caregiver": "Cuidador",
+          "pets": "Mascotas",
+          "pet": "Mascotas",
+          "totalPrice": "Precio Total",
+          "status": "Estado",
+          "createdAt": "Fecha de Creación"
+        },
+        "actions": {
+          "view": {
+            "label": "Ver",
+            "tooltip": "Ver detalles de la reserva"
+          },
+          "edit": {
+            "label": "Editar",
+            "tooltip": "Editar reserva"
+          },
+          "delete": {
+            "label": "Eliminar",
+            "tooltip": "Eliminar reserva"
+          }
+        },
+        "status": {
+          "payment_pending": "Pago Pendiente",
+          "payment_rejected": "Pago Rechazado",
+          "waiting_acceptance": "Esperando Aceptación",
+          "confirmed": "Confirmada",
+          "started": "Iniciada",
+          "finished": "Finalizada",
+          "cancelledOwner": "Cancelada por Propietario",
+          "cancelledCaregiver": "Cancelada por Cuidador",
+          "rejected": "Rechazada"
+        },
+        "careLocationLabels": {
+          "pet_home": "Casa de la Mascota",
+          "caregiver_home": "Casa del Cuidador"
+        }
+      },
+      "view": {
+        "meta": {
+          "title": "Reserva",
+          "description": "Ver detalles de la reserva"
+        },
+        "title": "Detalles de la Reserva",
+        "description": "Información completa de la reserva",
+        "breadcrumb": {
+          "home": "Inicio",
+          "reservations": "Reservas",
+          "view": "Ver"
+        },
+        "actions": {
+          "back": "Volver"
+        },
+        "sections": {
+          "basicInfo": "Información Básica",
+          "dates": "Fechas",
+          "location": "Ubicación",
+          "users": "Usuarios",
+          "pets": "Mascotas",
+          "pricing": "Precios",
+          "status": "Estado"
+        },
+        "fields": {
+          "id": "ID",
+          "startDate": "Fecha de Inicio",
+          "endDate": "Fecha de Fin",
+          "careLocation": "Ubicación de Cuidado",
+          "address": "Dirección",
+          "user": "Usuario",
+          "caregiver": "Cuidador",
+          "pets": "Mascotas",
+          "visitsCount": "Número de Visitas",
+          "totalPrice": "Precio Total",
+          "commission": "Comisión",
+          "totalOwner": "Total Propietario",
+          "totalCaregiver": "Total Cuidador",
+          "distance": "Distancia",
+          "status": "Estado",
+          "createdAt": "Fecha de Creación",
+          "updatedAt": "Última Actualización"
+        },
+        "notFound": "Reserva no encontrada"
+      }
+    },
+    "staticLabels": {
+      "floor": "Piso",
+      "apartment": "Departamento",
+      "coordinates": "Coordenadas",
+      "distance": "Distancia",
+      "km": "km"
     }
   }
 }
