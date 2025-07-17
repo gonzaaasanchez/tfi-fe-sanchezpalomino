@@ -11,6 +11,7 @@ import {
   Card,
   CardBody,
   SimpleGrid,
+  Grid,
   Tag,
   Avatar,
   Divider,
@@ -95,25 +96,26 @@ const ReservationViewPage: NextPageWithLayout = () => {
             columns={{ base: 1, lg: 2 }}
             spacing={6}
           >
-            {/* Basic Information */}
+            {/* Información de la Reserva */}
             <Card>
               <CardBody>
                 <Heading
                   size="md"
                   mb={4}
                 >
-                  {t('sections.basicInfo')}
+                  Información de la Reserva
                 </Heading>
                 <VStack
                   align="stretch"
-                  spacing={3}
+                  spacing={4}
                 >
-                  <HStack justify="space-between">
-                    <Text fontWeight="bold">{t('fields.id')}:</Text>
+                  {/* ID y Estado */}
+                  <HStack>
+                    <Text fontWeight="semibold">{t('fields.id')}:</Text>
                     <Text>{reservation.id}</Text>
                   </HStack>
-                  <HStack justify="space-between">
-                    <Text fontWeight="bold">{t('fields.status')}:</Text>
+                  <HStack>
+                    <Text fontWeight="semibold">{t('fields.status')}:</Text>
                     {(() => {
                       const statusConfig = getReservationStatusConfig(
                         reservation.status,
@@ -133,321 +135,281 @@ const ReservationViewPage: NextPageWithLayout = () => {
                       );
                     })()}
                   </HStack>
-                  <HStack justify="space-between">
-                    <Text fontWeight="bold">{t('fields.careLocation')}:</Text>
-                    <Text>
-                      {tIndex(`careLocationLabels.${reservation.careLocation}`)}
-                    </Text>
-                  </HStack>
-                </VStack>
-              </CardBody>
-            </Card>
-            {/* Dates */}
-            <Card>
-              <CardBody>
-                <Heading
-                  size="md"
-                  mb={4}
-                >
-                  {t('sections.dates')}
-                </Heading>
-                <VStack
-                  align="stretch"
-                  spacing={3}
-                >
-                  <HStack justify="space-between">
-                    <Text fontWeight="bold">{t('fields.startDate')}:</Text>
-                    <Text>
-                      {format(
-                        new Date(reservation.startDate),
-                        'dd/MM/yyyy HH:mm'
-                      )}
-                    </Text>
-                  </HStack>
-                  <HStack justify="space-between">
-                    <Text fontWeight="bold">{t('fields.endDate')}:</Text>
-                    <Text>
-                      {format(
-                        new Date(reservation.endDate),
-                        'dd/MM/yyyy HH:mm'
-                      )}
-                    </Text>
-                  </HStack>
-                  {reservation.visitsCount && (
-                    <HStack justify="space-between">
-                      <Text fontWeight="bold">{t('fields.visitsCount')}:</Text>
-                      <Text>{reservation.visitsCount}</Text>
-                    </HStack>
-                  )}
-                </VStack>
-              </CardBody>
-            </Card>
-            {/* Location */}
-            <Card>
-              <CardBody>
-                <Heading
-                  size="md"
-                  mb={4}
-                >
-                  {t('sections.location')}
-                </Heading>
-                <VStack
-                  align="stretch"
-                  spacing={3}
-                >
-                  <Text fontWeight="bold">{reservation.address.name}</Text>
-                  <Text>{reservation.address.fullAddress}</Text>
-                  {reservation.address.floor && (
-                    <Text>Piso: {reservation.address.floor}</Text>
-                  )}
-                  {reservation.address.apartment && (
-                    <Text>Departamento: {reservation.address.apartment}</Text>
-                  )}
-                  <Text>
-                    Coordenadas: {reservation.address.coords.lat},{' '}
-                    {reservation.address.coords.lon}
-                  </Text>
-                  {reservation.distance && (
-                    <Text>Distancia: {reservation.distance} km</Text>
-                  )}
-                </VStack>
-              </CardBody>
-            </Card>
-            {/* Users */}
-            <Card>
-              <CardBody>
-                <Heading
-                  size="md"
-                  mb={4}
-                >
-                  {t('sections.users')}
-                </Heading>
-                <VStack
-                  align="stretch"
-                  spacing={4}
-                >
-                  <Box>
-                    <Text
-                      fontWeight="bold"
-                      mb={2}
-                    >
-                      {t('fields.user')}:
-                    </Text>
-                    <HStack>
-                      <Avatar
-                        size="sm"
-                        src={reservation.user.avatar}
-                        name={`${reservation.user.firstName} ${reservation.user.lastName}`}
-                      />
-                      <VStack
-                        align="start"
-                        spacing={0}
-                      >
-                        <Text fontWeight="medium">
-                          {reservation.user.firstName}{' '}
-                          {reservation.user.lastName}
-                        </Text>
-                        <Text
-                          fontSize="sm"
-                          color="gray.600"
-                        >
-                          {reservation.user.email}
-                        </Text>
-                        {reservation.user.phoneNumber && (
-                          <Text
-                            fontSize="sm"
-                            color="gray.600"
-                          >
-                            {reservation.user.phoneNumber}
-                          </Text>
-                        )}
-                      </VStack>
-                    </HStack>
-                  </Box>
+
                   <Divider />
+
+                  {/* Ubicación de Cuidado */}
                   <Box>
                     <Text
                       fontWeight="bold"
+                      fontSize="sm"
+                      color="gray.600"
                       mb={2}
                     >
-                      {t('fields.caregiver')}:
+                      Ubicación de Cuidado
                     </Text>
-                    <HStack>
-                      <Avatar
-                        size="sm"
-                        src={reservation.caregiver.avatar}
-                        name={`${reservation.caregiver.firstName} ${reservation.caregiver.lastName}`}
-                      />
-                      <VStack
-                        align="start"
-                        spacing={0}
-                      >
-                        <Text fontWeight="medium">
-                          {reservation.caregiver.firstName}{' '}
-                          {reservation.caregiver.lastName}
+                    <VStack
+                      align="stretch"
+                      spacing={2}
+                    >
+                      <HStack>
+                        <Text fontWeight="medium">Lugar:</Text>
+                        <Text>
+                          {tIndex(
+                            `careLocationLabels.${reservation.careLocation}`
+                          )}
                         </Text>
-                        <Text
-                          fontSize="sm"
-                          color="gray.600"
-                        >
-                          {reservation.caregiver.email}
+                      </HStack>
+                      <HStack>
+                        <Text fontWeight="medium">Dirección:</Text>
+                        <Text>
+                          {reservation.address.fullAddress}
+                          {reservation.address.floor &&
+                            `, Piso ${reservation.address.floor}`}
+                          {reservation.address.apartment &&
+                            `, Depto ${reservation.address.apartment}`}
                         </Text>
-                        {reservation.caregiver.phoneNumber && (
-                          <Text
-                            fontSize="sm"
-                            color="gray.600"
-                          >
-                            {reservation.caregiver.phoneNumber}
-                          </Text>
-                        )}
-                      </VStack>
-                    </HStack>
+                      </HStack>
+                    </VStack>
+                  </Box>
+
+                  <Divider />
+
+                  {/* Fechas */}
+                  <Box>
+                    <Text
+                      fontWeight="bold"
+                      fontSize="sm"
+                      color="gray.600"
+                      mb={2}
+                    >
+                      Fechas
+                    </Text>
+                    <VStack
+                      align="stretch"
+                      spacing={2}
+                    >
+                      <HStack>
+                        <Text fontWeight="medium">Inicio:</Text>
+                        <Text>
+                          {format(
+                            new Date(reservation.startDate),
+                            'dd/MM/yyyy'
+                          )}
+                        </Text>
+                      </HStack>
+                      <HStack>
+                        <Text fontWeight="medium">Fin:</Text>
+                        <Text>
+                          {format(new Date(reservation.endDate), 'dd/MM/yyyy')}
+                        </Text>
+                      </HStack>
+                      {reservation.visitsCount && (
+                        <HStack>
+                          <Text fontWeight="medium">Visitas:</Text>
+                          <Text>{reservation.visitsCount}</Text>
+                        </HStack>
+                      )}
+                    </VStack>
+                  </Box>
+
+                  <Divider />
+
+                  {/* Mascotas */}
+                  <Box>
+                    <Text
+                      fontWeight="bold"
+                      fontSize="sm"
+                      color="gray.600"
+                      mb={2}
+                    >
+                      Mascotas
+                    </Text>
+                    <VStack
+                      align="stretch"
+                      spacing={1}
+                    >
+                      {reservation.pets.map((pet, index) => (
+                        <Text key={pet.id}>
+                          {pet.name} ({pet.petType.name})
+                          {index < reservation.pets.length - 1 ? ',' : ''}
+                        </Text>
+                      ))}
+                    </VStack>
                   </Box>
                 </VStack>
               </CardBody>
             </Card>
-            {/* Pets */}
-            <Card>
-              <CardBody>
-                <Heading
-                  size="md"
-                  mb={4}
-                >
-                  {t('sections.pets')}
-                </Heading>
-                <VStack
-                  align="stretch"
-                  spacing={3}
-                >
-                  {reservation.pets.map((pet) => (
-                    <Box
-                      key={pet.id}
-                      p={3}
-                      border="1px solid"
-                      borderColor="gray.200"
-                      borderRadius="md"
-                    >
+            {/* Primera Card Derecha - Usuarios */}
+            <VStack
+              spacing={6}
+              width="100%"
+              height="100%"
+            >
+              <Card
+                height="100%"
+                width="100%"
+              >
+                <CardBody>
+                  <Heading
+                    size="md"
+                    mb={4}
+                  >
+                    {t('sections.users')}
+                  </Heading>
+                  <VStack
+                    align="stretch"
+                    spacing={4}
+                  >
+                    <Box>
+                      <Text
+                        fontWeight="bold"
+                        mb={2}
+                      >
+                        {t('fields.user')}:
+                      </Text>
                       <HStack>
                         <Avatar
                           size="sm"
-                          src={pet.avatar}
-                          name={pet.name}
+                          src={reservation.user.avatar}
+                          name={`${reservation.user.firstName} ${reservation.user.lastName}`}
                         />
                         <VStack
                           align="start"
                           spacing={0}
-                          flex={1}
                         >
-                          <Text fontWeight="medium">{pet.name}</Text>
+                          <Text fontWeight="medium">
+                            {reservation.user.firstName}{' '}
+                            {reservation.user.lastName}
+                          </Text>
                           <Text
                             fontSize="sm"
                             color="gray.600"
                           >
-                            {pet.petType.name}
+                            {reservation.user.email}
                           </Text>
-                          {pet.comment && (
+                          {reservation.user.phoneNumber && (
                             <Text
                               fontSize="sm"
                               color="gray.600"
                             >
-                              {pet.comment}
+                              {reservation.user.phoneNumber}
                             </Text>
                           )}
                         </VStack>
                       </HStack>
-                      {pet.characteristics.length > 0 && (
-                        <VStack
-                          mt={3}
-                          align="stretch"
-                          spacing={1}
-                        >
-                          {pet.characteristics.map((char) => (
-                            <Text
-                              key={char.id}
-                              fontSize="sm"
-                            >
-                              <Text
-                                as="span"
-                                fontWeight="medium"
-                              >
-                                {char.name}:
-                              </Text>{' '}
-                              {char.value}
-                            </Text>
-                          ))}
-                        </VStack>
-                      )}
                     </Box>
-                  ))}
-                </VStack>
-              </CardBody>
-            </Card>
-            {/* Monto */}
-            <Card>
-              <CardBody>
-                <Heading
-                  size="md"
-                  mb={4}
-                >
-                  Monto
-                </Heading>
-                <VStack
-                  align="stretch"
-                  spacing={3}
-                >
-                  <HStack justify="space-between">
-                    <Text fontWeight="bold">{t('fields.totalPrice')}:</Text>
-                    <Text>{reservation.totalPrice}</Text>
-                  </HStack>
-                  <HStack justify="space-between">
-                    <Text fontWeight="bold">{t('fields.commission')}:</Text>
-                    <Text>{reservation.commission}</Text>
-                  </HStack>
-                  <HStack justify="space-between">
-                    <Text fontWeight="bold">{t('fields.totalOwner')}:</Text>
-                    <Text>{reservation.totalOwner}</Text>
-                  </HStack>
-                  <HStack justify="space-between">
-                    <Text fontWeight="bold">{t('fields.totalCaregiver')}:</Text>
-                    <Text>{reservation.totalCaregiver}</Text>
-                  </HStack>
-                </VStack>
-              </CardBody>
-            </Card>
-            {/* Timestamps */}
-            <Card>
-              <CardBody>
-                <Heading
-                  size="md"
-                  mb={4}
-                >
-                  {t('sections.status')}
-                </Heading>
-                <SimpleGrid
-                  columns={{ base: 1, md: 2 }}
-                  spacing={3}
-                >
-                  <HStack justify="space-between">
-                    <Text fontWeight="bold">{t('fields.createdAt')}:</Text>
-                    <Text>
-                      {format(
-                        new Date(reservation.createdAt!),
-                        'dd/MM/yyyy HH:mm'
-                      )}
-                    </Text>
-                  </HStack>
-                  <HStack justify="space-between">
-                    <Text fontWeight="bold">{t('fields.updatedAt')}:</Text>
-                    <Text>
-                      {format(
-                        new Date(reservation.updatedAt!),
-                        'dd/MM/yyyy HH:mm'
-                      )}
-                    </Text>
-                  </HStack>
-                </SimpleGrid>
-              </CardBody>
-            </Card>
+                    <Divider />
+                    <Box>
+                      <Text
+                        fontWeight="bold"
+                        mb={2}
+                      >
+                        {t('fields.caregiver')}:
+                      </Text>
+                      <HStack>
+                        <Avatar
+                          size="sm"
+                          src={reservation.caregiver.avatar}
+                          name={`${reservation.caregiver.firstName} ${reservation.caregiver.lastName}`}
+                        />
+                        <VStack
+                          align="start"
+                          spacing={0}
+                        >
+                          <Text fontWeight="medium">
+                            {reservation.caregiver.firstName}{' '}
+                            {reservation.caregiver.lastName}
+                          </Text>
+                          <Text
+                            fontSize="sm"
+                            color="gray.600"
+                          >
+                            {reservation.caregiver.email}
+                          </Text>
+                          {reservation.caregiver.phoneNumber && (
+                            <Text
+                              fontSize="sm"
+                              color="gray.600"
+                            >
+                              {reservation.caregiver.phoneNumber}
+                            </Text>
+                          )}
+                        </VStack>
+                      </HStack>
+                    </Box>
+                  </VStack>
+                </CardBody>
+              </Card>
+              {/* Segunda Card Derecha - Monto */}
+              <Card
+                height="100%"
+                width="100%"
+              >
+                <CardBody>
+                  <Heading
+                    size="md"
+                    mb={4}
+                  >
+                    Monto
+                  </Heading>
+                  <VStack
+                    align="stretch"
+                    spacing={3}
+                  >
+                    <HStack justify="space-between">
+                      <Text fontWeight="bold">{t('fields.totalPrice')}:</Text>
+                      <Text>{reservation.totalPrice}</Text>
+                    </HStack>
+                    <HStack justify="space-between">
+                      <Text fontWeight="bold">{t('fields.commission')}:</Text>
+                      <Text>{reservation.commission}</Text>
+                    </HStack>
+                    <HStack justify="space-between">
+                      <Text fontWeight="bold">{t('fields.totalOwner')}:</Text>
+                      <Text>{reservation.totalOwner}</Text>
+                    </HStack>
+                    <HStack justify="space-between">
+                      <Text fontWeight="bold">
+                        {t('fields.totalCaregiver')}:
+                      </Text>
+                      <Text>{reservation.totalCaregiver}</Text>
+                    </HStack>
+                  </VStack>
+                </CardBody>
+              </Card>
+              {/* Tercera Card Derecha - Estado/Timestamps */}
+              <Card
+                height="100%"
+                width="100%"
+              >
+                <CardBody>
+                  <VStack
+                    align="stretch"
+                    spacing={3}
+                  >
+                    <HStack>
+                      <Text fontWeight="bold">{t('fields.createdAt')}:</Text>
+                      <Text>
+                        {format(
+                          new Date(reservation.createdAt!),
+                          'dd/MM/yyyy HH:mm'
+                        )}
+                      </Text>
+                    </HStack>
+                    <HStack>
+                      <Text fontWeight="bold">{t('fields.updatedAt')}:</Text>
+                      <Text>
+                        {format(
+                          new Date(reservation.updatedAt!),
+                          'dd/MM/yyyy HH:mm'
+                        )}
+                      </Text>
+                    </HStack>
+                  </VStack>
+                </CardBody>
+              </Card>
+            </VStack>
           </SimpleGrid>
         </PermissionGuard>
       </VStack>
