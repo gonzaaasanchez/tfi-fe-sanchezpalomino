@@ -103,7 +103,7 @@ const ReservationViewPage: NextPageWithLayout = () => {
                   size="md"
                   mb={4}
                 >
-                  Información de la Reserva
+                  {t('sections.reservationInfo')}
                 </Heading>
                 <VStack
                   align="stretch"
@@ -146,14 +146,14 @@ const ReservationViewPage: NextPageWithLayout = () => {
                       color="gray.600"
                       mb={2}
                     >
-                      Ubicación de Cuidado
+                      {t('sections.careLocation')}
                     </Text>
                     <VStack
                       align="stretch"
                       spacing={2}
                     >
                       <HStack>
-                        <Text fontWeight="medium">Lugar:</Text>
+                        <Text fontWeight="medium">{t('fields.place')}:</Text>
                         <Text>
                           {tIndex(
                             `careLocationLabels.${reservation.careLocation}`
@@ -161,7 +161,7 @@ const ReservationViewPage: NextPageWithLayout = () => {
                         </Text>
                       </HStack>
                       <HStack>
-                        <Text fontWeight="medium">Dirección:</Text>
+                        <Text fontWeight="medium">{t('fields.address')}:</Text>
                         <Text>
                           {reservation.address.fullAddress}
                           {reservation.address.floor &&
@@ -190,7 +190,7 @@ const ReservationViewPage: NextPageWithLayout = () => {
                       spacing={2}
                     >
                       <HStack>
-                        <Text fontWeight="medium">Inicio:</Text>
+                        <Text fontWeight="medium">{t('fields.start')}:</Text>
                         <Text>
                           {format(
                             new Date(reservation.startDate),
@@ -199,14 +199,14 @@ const ReservationViewPage: NextPageWithLayout = () => {
                         </Text>
                       </HStack>
                       <HStack>
-                        <Text fontWeight="medium">Fin:</Text>
+                        <Text fontWeight="medium">{t('fields.end')}:</Text>
                         <Text>
                           {format(new Date(reservation.endDate), 'dd/MM/yyyy')}
                         </Text>
                       </HStack>
                       {reservation.visitsCount && (
                         <HStack>
-                          <Text fontWeight="medium">Visitas:</Text>
+                          <Text fontWeight="medium">{t('fields.visits')}:</Text>
                           <Text>{reservation.visitsCount}</Text>
                         </HStack>
                       )}

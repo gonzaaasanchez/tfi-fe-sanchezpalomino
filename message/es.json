@@ -787,7 +787,9 @@
           "users": "Usuarios",
           "pets": "Mascotas",
           "pricing": "Precios",
-          "status": "Estado"
+          "status": "Estado",
+          "reservationInfo": "Información de la Reserva",
+          "careLocation": "Ubicación de Cuidado"
         },
         "fields": {
           "id": "ID",
@@ -806,7 +808,11 @@
           "distance": "Distancia",
           "status": "Estado",
           "createdAt": "Fecha de Creación",
-          "updatedAt": "Última Actualización"
+          "updatedAt": "Última Actualización",
+          "place": "Lugar",
+          "start": "Inicio",
+          "end": "Fin",
+          "visits": "Visitas"
         },
         "notFound": "Reserva no encontrada"
       }
