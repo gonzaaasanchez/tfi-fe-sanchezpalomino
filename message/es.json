@@ -552,8 +552,6 @@
           "edit": "Editar"
         },
         "sections": {
-          "basicInfo": "Información Básica",
-          "additionalInfo": "Información Adicional",
           "petTypeInfo": "Información del Tipo de Mascota"
         },
         "fields": {
@@ -649,8 +647,6 @@
           "edit": "Editar"
         },
         "sections": {
-          "basicInfo": "Información Básica",
-          "additionalInfo": "Información Adicional",
           "petCharacteristicInfo": "Información de la Característica de Mascota"
         },
         "fields": {
@@ -838,7 +834,6 @@
           "back": "Volver"
         },
         "sections": {
-          "basicInfo": "Información Básica",
           "dates": "Fechas",
           "location": "Ubicación",
           "users": "Usuarios",
@@ -877,7 +872,9 @@
         "reviews": {
           "noUserReview": "El usuario aún no hizo su reseña",
           "noCaregiverReview": "El cuidador aún no hizo su reseña"
-        }
+        },
+        "floor": "Piso",
+        "apartment": "Departamento"
       }
     },
     "pets": {
@@ -942,13 +939,6 @@
         },
         "notFound": "Mascota no encontrada"
       }
-    },
-    "staticLabels": {
-      "floor": "Piso",
-      "apartment": "Departamento",
-      "coordinates": "Coordenadas",
-      "distance": "Distancia",
-      "km": "km"
     }
   }
 }

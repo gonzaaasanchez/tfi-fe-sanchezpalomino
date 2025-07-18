@@ -171,10 +171,24 @@ const ReservationViewPage: NextPageWithLayout = () => {
                         <Text fontWeight="medium">{t('fields.address')}:</Text>
                         <Text>
                           {reservation.address.fullAddress}
-                          {reservation.address.floor &&
-                            `, Piso ${reservation.address.floor}`}
-                          {reservation.address.apartment &&
-                            `, Depto ${reservation.address.apartment}`}
+                          {(reservation.address.floor ||
+                            reservation.address.apartment) &&
+                            `, (${
+                              reservation.address.floor
+                                ? `${t('floor')} ${reservation.address.floor}`
+                                : ''
+                            }${
+                              reservation.address.floor &&
+                              reservation.address.apartment
+                                ? ', '
+                                : ''
+                            }${
+                              reservation.address.apartment
+                                ? `${t('apartment')} ${
+                                    reservation.address.apartment
+                                  }`
+                                : ''
+                            })`}
                         </Text>
                       </HStack>
                     </VStack>
@@ -190,7 +204,7 @@ const ReservationViewPage: NextPageWithLayout = () => {
                       color="gray.600"
                       mb={2}
                     >
-                      Fechas
+                      {t('sections.dates')}
                     </Text>
                     <VStack
                       align="stretch"
@@ -230,7 +244,7 @@ const ReservationViewPage: NextPageWithLayout = () => {
                       color="gray.600"
                       mb={2}
                     >
-                      Mascotas
+                      {t('sections.pets')}
                     </Text>
                     <VStack
                       align="stretch"
@@ -269,7 +283,8 @@ const ReservationViewPage: NextPageWithLayout = () => {
                               fontSize="sm"
                               mb={1}
                             >
-                              {reservation.user.firstName} {reservation.user.lastName}
+                              {reservation.user.firstName}{' '}
+                              {reservation.user.lastName}
                             </Text>
                             {reviewsData?.reviews.owner ? (
                               <VStack
@@ -309,7 +324,8 @@ const ReservationViewPage: NextPageWithLayout = () => {
                               fontSize="sm"
                               mb={1}
                             >
-                              {reservation.caregiver.firstName} {reservation.caregiver.lastName}
+                              {reservation.caregiver.firstName}{' '}
+                              {reservation.caregiver.lastName}
                             </Text>
                             {reviewsData?.reviews.caregiver ? (
                               <VStack
@@ -354,9 +370,7 @@ const ReservationViewPage: NextPageWithLayout = () => {
               width="100%"
               height="100%"
             >
-              <Card
-                width="100%"
-              >
+              <Card width="100%">
                 <CardBody>
                   <Heading
                     size="sm"
@@ -450,16 +464,14 @@ const ReservationViewPage: NextPageWithLayout = () => {
                 </CardBody>
               </Card>
               {/* Segunda Card Derecha - Monto */}
-              <Card
-                width="100%"
-              >
+              <Card width="100%">
                 <CardBody>
                   <Heading
                     size="sm"
                     color="brand1.700"
                     mb={4}
                   >
-                    Monto
+                    {t('sections.pricing')}
                   </Heading>
                   <VStack
                     align="stretch"
@@ -487,9 +499,7 @@ const ReservationViewPage: NextPageWithLayout = () => {
                 </CardBody>
               </Card>
               {/* Tercera Card Derecha - Estado/Timestamps */}
-              <Card
-                width="100%"
-              >
+              <Card width="100%">
                 <CardBody>
                   <VStack
                     align="stretch"
