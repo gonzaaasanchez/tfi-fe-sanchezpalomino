@@ -10,9 +10,11 @@ import TableComponent, { Column, Action } from 'components/shared/table';
 import { createStandardTableActions } from 'lib/helpers/table-utils';
 import { Role } from 'lib/types/role';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 
 const Roles: NextPageWithLayout = () => {
   const t = useTranslations('pages.roles');
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const { roles, isPending } = useGetRoles({ limit: 10 });
 
@@ -21,7 +23,6 @@ const Roles: NextPageWithLayout = () => {
       key: 'id',
       label: t('columns.id'),
       width: '80px',
-      align: 'center' as const,
       sortable: true,
       sortKey: 'id'
     },
@@ -45,18 +46,20 @@ const Roles: NextPageWithLayout = () => {
       view: { label: t('actions.view'), tooltip: t('tooltips.view') },
       edit: { label: t('actions.edit'), tooltip: t('tooltips.edit') },
       delete: { label: t('actions.delete'), tooltip: t('tooltips.delete') }
-    }
+    },
+    customDisabledRules: {
+      delete: (item: Role) => item.isSystem,
+      edit: (item: Role) => item.isSystem,
+    },
   });
 
   const handleAction = (actionName: string, item: Role) => {
     switch (actionName) {
       case 'view':
-        console.log(t('console.view'), item);
-        // Here would go navigation to details page
+        router.push(`/roles/${item.id}/view`);
         break;
       case 'edit':
-        console.log(t('console.edit'), item);
-        // Here would go navigation to edit page
+        router.push(`/roles/${item.id}/edit`);
         break;
       case 'delete':
         console.log(t('console.delete'), item);

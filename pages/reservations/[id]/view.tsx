@@ -106,7 +106,8 @@ const ReservationViewPage: NextPageWithLayout = () => {
             <Card>
               <CardBody>
                 <Heading
-                  size="md"
+                  size="sm"
+                  color="brand1.700"
                   mb={4}
                 >
                   {t('sections.reservationInfo')}
@@ -358,7 +359,8 @@ const ReservationViewPage: NextPageWithLayout = () => {
               >
                 <CardBody>
                   <Heading
-                    size="md"
+                    size="sm"
+                    color="brand1.700"
                     mb={4}
                   >
                     {t('sections.users')}
@@ -453,7 +455,8 @@ const ReservationViewPage: NextPageWithLayout = () => {
               >
                 <CardBody>
                   <Heading
-                    size="md"
+                    size="sm"
+                    color="brand1.700"
                     mb={4}
                   >
                     Monto

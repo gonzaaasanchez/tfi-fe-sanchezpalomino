@@ -1,18 +1,19 @@
 import { ReactElement } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 import { NextSeo } from 'next-seo';
-import { 
-  Box, 
-  Heading, 
-  Text, 
-  VStack, 
-  Button, 
+import {
+  Box,
+  Heading,
+  Text,
+  VStack,
+  Button,
   Tag,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   Container,
-  HStack
+  HStack,
+  Divider,
 } from '@chakra-ui/react';
 import { ChevronRightIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
@@ -47,7 +48,10 @@ const ViewPetTypePage: NextPageWithLayout<ViewPetTypePageProps> = ({ id }) => {
 
   if (!petType) {
     return (
-      <Container maxW="container.lg" py={8}>
+      <Container
+        maxW="container.lg"
+        py={8}
+      >
         <Text>{t('notFound')}</Text>
       </Container>
     );
@@ -60,8 +64,14 @@ const ViewPetTypePage: NextPageWithLayout<ViewPetTypePageProps> = ({ id }) => {
         description={t('meta.description')}
       />
 
-      <Container maxW="container.lg" py={8}>
-        <VStack spacing={6} align="stretch">
+      <Container
+        maxW="container.lg"
+        py={8}
+      >
+        <VStack
+          spacing={6}
+          align="stretch"
+        >
           {/* Breadcrumb */}
           <Breadcrumb
             spacing="8px"
@@ -69,17 +79,26 @@ const ViewPetTypePage: NextPageWithLayout<ViewPetTypePageProps> = ({ id }) => {
             fontSize="sm"
           >
             <BreadcrumbItem>
-              <BreadcrumbLink href="/dashboard" color="gray.500">
+              <BreadcrumbLink
+                href="/dashboard"
+                color="gray.500"
+              >
                 {t('breadcrumb.home')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/petTypes" color="gray.500">
+              <BreadcrumbLink
+                href="/petTypes"
+                color="gray.500"
+              >
                 {t('breadcrumb.petTypes')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink color="brand1.700" fontWeight="medium">
+              <BreadcrumbLink
+                color="brand1.700"
+                fontWeight="medium"
+              >
                 {t('breadcrumb.view')}
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -87,12 +106,36 @@ const ViewPetTypePage: NextPageWithLayout<ViewPetTypePageProps> = ({ id }) => {
 
           {/* Header */}
           <Box>
-            <Heading size="lg" mb={2} color="gray.800">
-              {t('title')}
-            </Heading>
-            <Text color="gray.600">
-              {t('description')}
-            </Text>
+            <HStack
+              justify="space-between"
+              align="flex-start"
+            >
+              <Box>
+                <Heading
+                  size="lg"
+                  mb={2}
+                  color="gray.800"
+                >
+                  {t('title')}
+                </Heading>
+                <Text color="gray.600">{t('description')}</Text>
+              </Box>
+              <HStack spacing={3}>
+                <Button
+                  leftIcon={<ArrowBackIcon />}
+                  variant="outline"
+                  onClick={handleBack}
+                >
+                  {t('actions.back')}
+                </Button>
+                <Button
+                  leftIcon={<EditIcon />}
+                  onClick={handleEdit}
+                >
+                  {t('actions.edit')}
+                </Button>
+              </HStack>
+            </HStack>
           </Box>
 
           {/* Pet Type Details */}
@@ -104,68 +147,89 @@ const ViewPetTypePage: NextPageWithLayout<ViewPetTypePageProps> = ({ id }) => {
             p={6}
             shadow="sm"
           >
-            <VStack spacing={4} align="stretch">
-              <HStack justify="space-between">
-                <Heading size="md" color="brand1.700">
-                  {t('sections.petTypeInfo')}
-                </Heading>
-                <HStack spacing={2}>
-                  <Button
-                    leftIcon={<ArrowBackIcon />}
-                    variant="outline"
-                    onClick={handleBack}
+            <VStack
+              spacing={6}
+              align="stretch"
+            >
+              <Heading
+                size="sm"
+                color="brand1.700"
+              >
+                {t('sections.petTypeInfo')}
+              </Heading>
+
+              <VStack
+                spacing={4}
+                align="stretch"
+              >
+                <HStack justify="space-between">
+                  <Text
+                    fontWeight="semibold"
+                    color="gray.700"
                   >
-                    {t('actions.back')}
-                  </Button>
-                  <Button
-                    leftIcon={<EditIcon />}
-                    colorScheme="blue"
-                    onClick={handleEdit}
-                  >
-                    {t('actions.edit')}
-                  </Button>
+                    {t('fields.id')}:
+                  </Text>
+                  <Text color="gray.600">{petType.id}</Text>
                 </HStack>
-              </HStack>
 
-              <Box>
-                <Text fontWeight="bold" color="gray.700">{t('fields.id')}:</Text>
-                <Text color="gray.600">{petType.id}</Text>
-              </Box>
-
-              <Box>
-                <Text fontWeight="bold" color="gray.700">{t('fields.name')}:</Text>
-                <Text color="gray.600">{petType.name}</Text>
-              </Box>
-
-              {petType.createdAt && (
-                <Box>
-                  <Text fontWeight="bold" color="gray.700">{t('fields.createdAt')}:</Text>
-                  <Text color="gray.600">
-                    {new Date(petType.createdAt).toLocaleDateString('es-ES', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
+                <HStack justify="space-between">
+                  <Text
+                    fontWeight="semibold"
+                    color="gray.700"
+                  >
+                    {t('fields.name')}:
                   </Text>
-                </Box>
-              )}
+                  <Text color="gray.600">{petType.name}</Text>
+                </HStack>
+              </VStack>
 
-              {petType.updatedAt && (
-                <Box>
-                  <Text fontWeight="bold" color="gray.700">{t('fields.updatedAt')}:</Text>
-                  <Text color="gray.600">
-                    {new Date(petType.updatedAt).toLocaleDateString('es-ES', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </Text>
-                </Box>
-              )}
+              <Divider />
+
+              {/* Timestamps */}
+              <VStack
+                spacing={4}
+                align="stretch"
+              >
+                {petType.createdAt && (
+                  <HStack justify="space-between">
+                    <Text
+                      fontWeight="semibold"
+                      color="gray.700"
+                    >
+                      {t('fields.createdAt')}:
+                    </Text>
+                    <Text color="gray.600">
+                      {new Date(petType.createdAt).toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </Text>
+                  </HStack>
+                )}
+
+                {petType.updatedAt && (
+                  <HStack justify="space-between">
+                    <Text
+                      fontWeight="semibold"
+                      color="gray.700"
+                    >
+                      {t('fields.updatedAt')}:
+                    </Text>
+                    <Text color="gray.600">
+                      {new Date(petType.updatedAt).toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </Text>
+                  </HStack>
+                )}
+              </VStack>
             </VStack>
           </Box>
         </VStack>
@@ -183,13 +247,17 @@ export const getServerSideProps: GetServerSideProps = async ({
   params,
   ...ctx
 }) => {
-  const errors: any = await handlePermission(ctx.req, ctx.res, '/petTypes/view');
+  const errors: any = await handlePermission(
+    ctx.req,
+    ctx.res,
+    '/petTypes/view'
+  );
   if (errors) {
     return errors;
   }
-  
+
   const id = params?.id as string;
-  
+
   return {
     props: {
       id,
@@ -199,9 +267,9 @@ export const getServerSideProps: GetServerSideProps = async ({
         'layouts.private.header',
         'components.forms.petType',
         'general.form.errors',
-        'general.common'
-      ])
-    }
+        'general.common',
+      ]),
+    },
   };
 };
 

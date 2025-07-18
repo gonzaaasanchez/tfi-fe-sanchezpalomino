@@ -1,18 +1,19 @@
 import { ReactElement } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 import { NextSeo } from 'next-seo';
-import { 
-  Box, 
-  Heading, 
-  Text, 
-  VStack, 
-  Button, 
+import {
+  Box,
+  Heading,
+  Text,
+  VStack,
+  Button,
   Tag,
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   Container,
-  HStack
+  HStack,
+  Divider,
 } from '@chakra-ui/react';
 import { ChevronRightIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
@@ -47,7 +48,10 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
 
   if (!user) {
     return (
-      <Container maxW="container.lg" py={8}>
+      <Container
+        maxW="container.lg"
+        py={8}
+      >
         <Text>{t('notFound')}</Text>
       </Container>
     );
@@ -60,8 +64,14 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
         description={t('meta.description')}
       />
 
-      <Container maxW="container.lg" py={8}>
-        <VStack spacing={6} align="stretch">
+      <Container
+        maxW="container.lg"
+        py={8}
+      >
+        <VStack
+          spacing={6}
+          align="stretch"
+        >
           {/* Breadcrumb */}
           <Breadcrumb
             spacing="8px"
@@ -69,17 +79,26 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
             fontSize="sm"
           >
             <BreadcrumbItem>
-              <BreadcrumbLink href="/dashboard" color="gray.500">
+              <BreadcrumbLink
+                href="/dashboard"
+                color="gray.500"
+              >
                 {t('breadcrumb.home')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/users" color="gray.500">
+              <BreadcrumbLink
+                href="/users"
+                color="gray.500"
+              >
                 {t('breadcrumb.users')}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbItem isCurrentPage>
-              <BreadcrumbLink color="brand1.700" fontWeight="medium">
+              <BreadcrumbLink
+                color="brand1.700"
+                fontWeight="medium"
+              >
                 {t('breadcrumb.view')}
               </BreadcrumbLink>
             </BreadcrumbItem>
@@ -87,12 +106,36 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
 
           {/* Header */}
           <Box>
-            <Heading size="lg" mb={2} color="gray.800">
-              {t('title')}
-            </Heading>
-            <Text color="gray.600">
-              {t('description')}
-            </Text>
+            <HStack
+              justify="space-between"
+              align="flex-start"
+            >
+              <Box>
+                <Heading
+                  size="lg"
+                  mb={2}
+                  color="gray.800"
+                >
+                  {t('title')}
+                </Heading>
+                <Text color="gray.600">{t('description')}</Text>
+              </Box>
+              <HStack spacing={3}>
+                <Button
+                  leftIcon={<ArrowBackIcon />}
+                  variant="outline"
+                  onClick={handleBack}
+                >
+                  {t('actions.back')}
+                </Button>
+                <Button
+                  leftIcon={<EditIcon />}
+                  onClick={handleEdit}
+                >
+                  {t('actions.edit')}
+                </Button>
+              </HStack>
+            </HStack>
           </Box>
 
           {/* User Details */}
@@ -104,97 +147,140 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
             p={6}
             shadow="sm"
           >
-            <VStack spacing={4} align="stretch">
-              <HStack justify="space-between">
-                <Heading size="md" color="brand1.700">
-                  {t('sections.userInfo')}
-                </Heading>
-                <HStack spacing={2}>
-                  <Button
-                    leftIcon={<ArrowBackIcon />}
-                    variant="outline"
-                    onClick={handleBack}
+            <VStack
+              spacing={6}
+              align="stretch"
+            >
+              <Heading
+                size="sm"
+                color="brand1.700"
+              >
+                {t('sections.userInfo')}
+              </Heading>
+
+              <VStack
+                spacing={4}
+                align="stretch"
+              >
+                <HStack justify="space-between">
+                  <Text
+                    fontWeight="semibold"
+                    color="gray.700"
                   >
-                    {t('actions.back')}
-                  </Button>
-                  <Button
-                    leftIcon={<EditIcon />}
-                    colorScheme="blue"
-                    onClick={handleEdit}
-                  >
-                    {t('actions.edit')}
-                  </Button>
+                    {t('fields.id')}:
+                  </Text>
+                  <Text color="gray.600">{user.id}</Text>
                 </HStack>
-              </HStack>
 
-              <Box>
-                <Text fontWeight="bold" color="gray.700">{t('fields.id')}:</Text>
-                <Text color="gray.600">{user.id}</Text>
-              </Box>
-
-              <Box>
-                <Text fontWeight="bold" color="gray.700">{t('fields.firstName')}:</Text>
-                <Text color="gray.600">{user.firstName}</Text>
-              </Box>
-
-              <Box>
-                <Text fontWeight="bold" color="gray.700">{t('fields.lastName')}:</Text>
-                <Text color="gray.600">{user.lastName}</Text>
-              </Box>
-
-              <Box>
-                <Text fontWeight="bold" color="gray.700">{t('fields.email')}:</Text>
-                <Text color="gray.600">{user.email}</Text>
-              </Box>
-
-              <Box>
-                <Text fontWeight="bold" color="gray.700">{t('fields.role')}:</Text>
-                <Tag
-                  colorScheme={user.role?.name === 'admin' ? 'orange' : 'blue'}
-                  variant="subtle"
-                  px={3}
-                  py={1}
-                >
-                  {user.role?.name || '-'}
-                </Tag>
-              </Box>
-
-              {user.phoneNumber && (
-                <Box>
-                  <Text fontWeight="bold" color="gray.700">{t('fields.phoneNumber')}:</Text>
-                  <Text color="gray.600">{user.phoneNumber}</Text>
-                </Box>
-              )}
-
-              {user.createdAt && (
-                <Box>
-                  <Text fontWeight="bold" color="gray.700">{t('fields.createdAt')}:</Text>
-                  <Text color="gray.600">
-                    {new Date(user.createdAt).toLocaleDateString('es-ES', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
+                <HStack justify="space-between">
+                  <Text
+                    fontWeight="semibold"
+                    color="gray.700"
+                  >
+                    {t('fields.firstName')}:
                   </Text>
-                </Box>
-              )}
+                  <Text color="gray.600">{user.firstName}</Text>
+                </HStack>
 
-              {user.updatedAt && (
-                <Box>
-                  <Text fontWeight="bold" color="gray.700">{t('fields.updatedAt')}:</Text>
-                  <Text color="gray.600">
-                    {new Date(user.updatedAt).toLocaleDateString('es-ES', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
+                <HStack justify="space-between">
+                  <Text
+                    fontWeight="semibold"
+                    color="gray.700"
+                  >
+                    {t('fields.lastName')}:
                   </Text>
-                </Box>
-              )}
+                  <Text color="gray.600">{user.lastName}</Text>
+                </HStack>
+
+                <HStack justify="space-between">
+                  <Text
+                    fontWeight="semibold"
+                    color="gray.700"
+                  >
+                    {t('fields.email')}:
+                  </Text>
+                  <Text color="gray.600">{user.email}</Text>
+                </HStack>
+
+                <HStack justify="space-between">
+                  <Text
+                    fontWeight="semibold"
+                    color="gray.700"
+                  >
+                    {t('fields.role')}:
+                  </Text>
+                  <Tag
+                    colorScheme={
+                      user.role?.name === 'admin' ? 'orange' : 'blue'
+                    }
+                    variant="subtle"
+                    px={3}
+                    py={1}
+                  >
+                    {user.role?.name || '-'}
+                  </Tag>
+                </HStack>
+
+                {user.phoneNumber && (
+                  <HStack justify="space-between">
+                    <Text
+                      fontWeight="semibold"
+                      color="gray.700"
+                    >
+                      {t('fields.phoneNumber')}:
+                    </Text>
+                    <Text color="gray.600">{user.phoneNumber}</Text>
+                  </HStack>
+                )}
+              </VStack>
+
+              <Divider />
+
+              {/* Timestamps */}
+              <VStack
+                spacing={4}
+                align="stretch"
+              >
+                {user.createdAt && (
+                  <HStack justify="space-between">
+                    <Text
+                      fontWeight="semibold"
+                      color="gray.700"
+                    >
+                      {t('fields.createdAt')}:
+                    </Text>
+                    <Text color="gray.600">
+                      {new Date(user.createdAt).toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </Text>
+                  </HStack>
+                )}
+
+                {user.updatedAt && (
+                  <HStack justify="space-between">
+                    <Text
+                      fontWeight="semibold"
+                      color="gray.700"
+                    >
+                      {t('fields.updatedAt')}:
+                    </Text>
+                    <Text color="gray.600">
+                      {new Date(user.updatedAt).toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </Text>
+                  </HStack>
+                )}
+              </VStack>
             </VStack>
           </Box>
         </VStack>
@@ -216,9 +302,9 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (errors) {
     return errors;
   }
-  
+
   const id = params?.id as string;
-  
+
   return {
     props: {
       id,
@@ -228,10 +314,10 @@ export const getServerSideProps: GetServerSideProps = async ({
         'layouts.private.header',
         'components.forms.user',
         'general.form.errors',
-        'general.common'
-      ])
-    }
+        'general.common',
+      ]),
+    },
   };
 };
 
-export default ViewUserPage; 
+export default ViewUserPage;

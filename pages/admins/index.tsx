@@ -48,7 +48,6 @@ const AdminPage: NextPageWithLayout = () => {
       key: 'id',
       label: t('columns.id'),
       width: '80px',
-      align: 'center' as const,
       sortable: true,
       sortKey: 'id',
     },

@@ -12,7 +12,8 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
   Container,
-  HStack
+  HStack,
+  Divider
 } from '@chakra-ui/react';
 import { ChevronRightIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
@@ -87,12 +88,34 @@ const ViewPetCharacteristicPage: NextPageWithLayout<ViewPetCharacteristicPagePro
 
           {/* Header */}
           <Box>
-            <Heading size="lg" mb={2} color="gray.800">
-              {t('title')}
-            </Heading>
-            <Text color="gray.600">
-              {t('description')}
-            </Text>
+            <HStack
+              justify="space-between"
+              align="flex-start"
+            >
+              <Box>
+                <Heading size="lg" mb={2} color="gray.800">
+                  {t('title')}
+                </Heading>
+                <Text color="gray.600">
+                  {t('description')}
+                </Text>
+              </Box>
+              <HStack spacing={3}>
+                <Button
+                  leftIcon={<ArrowBackIcon />}
+                  variant="outline"
+                  onClick={handleBack}
+                >
+                  {t('actions.back')}
+                </Button>
+                <Button
+                  leftIcon={<EditIcon />}
+                  onClick={handleEdit}
+                >
+                  {t('actions.edit')}
+                </Button>
+              </HStack>
+            </HStack>
           </Box>
 
           {/* Pet Characteristic Details */}
@@ -104,68 +127,57 @@ const ViewPetCharacteristicPage: NextPageWithLayout<ViewPetCharacteristicPagePro
             p={6}
             shadow="sm"
           >
-            <VStack spacing={4} align="stretch">
-              <HStack justify="space-between">
-                <Heading size="md" color="brand1.700">
-                  {t('sections.petCharacteristicInfo')}
-                </Heading>
-                <HStack spacing={2}>
-                  <Button
-                    leftIcon={<ArrowBackIcon />}
-                    variant="outline"
-                    onClick={handleBack}
-                  >
-                    {t('actions.back')}
-                  </Button>
-                  <Button
-                    leftIcon={<EditIcon />}
-                    colorScheme="blue"
-                    onClick={handleEdit}
-                  >
-                    {t('actions.edit')}
-                  </Button>
+            <VStack spacing={6} align="stretch">
+              <Heading size="sm" color="brand1.700">
+                {t('sections.petCharacteristicInfo')}
+              </Heading>
+
+              <VStack spacing={4} align="stretch">
+                <HStack justify="space-between">
+                  <Text fontWeight="semibold" color="gray.700">{t('fields.id')}:</Text>
+                  <Text color="gray.600">{petCharacteristic.id}</Text>
                 </HStack>
-              </HStack>
 
-              <Box>
-                <Text fontWeight="bold" color="gray.700">{t('fields.id')}:</Text>
-                <Text color="gray.600">{petCharacteristic.id}</Text>
-              </Box>
+                <HStack justify="space-between">
+                  <Text fontWeight="semibold" color="gray.700">{t('fields.name')}:</Text>
+                  <Text color="gray.600">{petCharacteristic.name}</Text>
+                </HStack>
+              </VStack>
 
-              <Box>
-                <Text fontWeight="bold" color="gray.700">{t('fields.name')}:</Text>
-                <Text color="gray.600">{petCharacteristic.name}</Text>
-              </Box>
+              <Divider />
 
-              {petCharacteristic.createdAt && (
-                <Box>
-                  <Text fontWeight="bold" color="gray.700">{t('fields.createdAt')}:</Text>
-                  <Text color="gray.600">
-                    {new Date(petCharacteristic.createdAt).toLocaleDateString('es-ES', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </Text>
-                </Box>
-              )}
+              {/* Timestamps */}
+              <VStack spacing={4} align="stretch">
+                {petCharacteristic.createdAt && (
+                  <HStack justify="space-between">
+                    <Text fontWeight="semibold" color="gray.700">{t('fields.createdAt')}:</Text>
+                    <Text color="gray.600">
+                      {new Date(petCharacteristic.createdAt).toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </Text>
+                  </HStack>
+                )}
 
-              {petCharacteristic.updatedAt && (
-                <Box>
-                  <Text fontWeight="bold" color="gray.700">{t('fields.updatedAt')}:</Text>
-                  <Text color="gray.600">
-                    {new Date(petCharacteristic.updatedAt).toLocaleDateString('es-ES', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </Text>
-                </Box>
-              )}
+                {petCharacteristic.updatedAt && (
+                  <HStack justify="space-between">
+                    <Text fontWeight="semibold" color="gray.700">{t('fields.updatedAt')}:</Text>
+                    <Text color="gray.600">
+                      {new Date(petCharacteristic.updatedAt).toLocaleDateString('es-ES', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </Text>
+                  </HStack>
+                )}
+              </VStack>
             </VStack>
           </Box>
         </VStack>

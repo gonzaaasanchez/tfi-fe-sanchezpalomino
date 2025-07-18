@@ -351,8 +351,7 @@
           "edit": "Editar"
         },
         "sections": {
-          "basicInfo": "Información Básica",
-          "additionalInfo": "Información Adicional"
+          "basicInfo": "Información Básica"
         },
         "fields": {
           "id": "ID",
@@ -712,7 +711,64 @@
         "edit": "Editar rol:",
         "delete": "Eliminar rol:"
       },
-      "empty": "No hay roles disponibles"
+      "empty": "No hay roles disponibles",
+      "view": {
+        "meta": {
+          "title": "Ver Rol",
+          "description": "Ver información del rol"
+        },
+        "title": "Ver Rol",
+        "description": "Información detallada del rol y sus permisos",
+        "breadcrumb": {
+          "home": "Inicio",
+          "roles": "Roles",
+          "view": "Ver"
+        },
+        "actions": {
+          "back": "Volver",
+          "edit": "Editar"
+        },
+        "sections": {
+          "roleInfo": "Información del Rol",
+          "permissions": "Permisos",
+          "timestamps": "Fechas"
+        },
+        "fields": {
+          "id": "ID",
+          "name": "Nombre",
+          "description": "Descripción",
+          "type": "Tipo",
+          "systemRole": "Rol del Sistema",
+          "customRole": "Rol Personalizado",
+          "createdAt": "Fecha de Creación",
+          "updatedAt": "Última Actualización"
+        },
+        "permissions": {
+          "allowed": "Permitido",
+          "denied": "Denegado",
+          "modules": {
+            "users": "Usuarios",
+            "roles": "Roles",
+            "admins": "Administradores",
+            "logs": "Registros",
+            "petTypes": "Tipos de Mascota",
+            "petCharacteristics": "Características de Mascota",
+            "pets": "Mascotas",
+            "caregiverSearch": "Búsqueda de Cuidadores",
+            "reservations": "Reservas",
+            "reviews": "Reseñas"
+          },
+          "actions": {
+            "create": "Crear",
+            "read": "Leer",
+            "update": "Actualizar",
+            "delete": "Eliminar",
+            "getAll": "Listar",
+            "admin": "Administrar"
+          }
+        },
+        "notFound": "Rol no encontrado"
+      }
     },
     "reservations": {
       "index": {

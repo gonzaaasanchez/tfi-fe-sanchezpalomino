@@ -128,6 +128,13 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
                 </Text>
               </Box>
               <HStack spacing={3}>
+                <Button
+                  leftIcon={<ArrowBackIcon />}
+                  variant="outline"
+                  onClick={handleBack}
+                >
+                  {t('actions.back')}
+                </Button>
                 <PermissionGuard
                   module="admins"
                   action="update"
@@ -165,7 +172,7 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
                   >
                     <HStack justify="space-between">
                       <Text
-                        fontWeight="medium"
+                        fontWeight="semibold"
                         color="gray.700"
                       >
                         {t('fields.id')}:
@@ -174,7 +181,7 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
                     </HStack>
                     <HStack justify="space-between">
                       <Text
-                        fontWeight="medium"
+                        fontWeight="semibold"
                         color="gray.700"
                       >
                         {t('fields.firstName')}:
@@ -183,7 +190,7 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
                     </HStack>
                     <HStack justify="space-between">
                       <Text
-                        fontWeight="medium"
+                        fontWeight="semibold"
                         color="gray.700"
                       >
                         {t('fields.lastName')}:
@@ -192,7 +199,7 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
                     </HStack>
                     <HStack justify="space-between">
                       <Text
-                        fontWeight="medium"
+                        fontWeight="semibold"
                         color="gray.700"
                       >
                         {t('fields.email')}:
@@ -201,7 +208,7 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
                     </HStack>
                     <HStack justify="space-between">
                       <Text
-                        fontWeight="medium"
+                        fontWeight="semibold"
                         color="gray.700"
                       >
                         {t('fields.role')}:
@@ -224,20 +231,13 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
 
                 {/* Additional Information */}
                 <Box>
-                  <Heading
-                    size="sm"
-                    color="brand1.700"
-                    mb={4}
-                  >
-                    {t('sections.additionalInfo')}
-                  </Heading>
                   <VStack
                     spacing={4}
                     align="stretch"
                   >
                     <HStack justify="space-between">
                       <Text
-                        fontWeight="medium"
+                        fontWeight="semibold"
                         color="gray.700"
                       >
                         {t('fields.createdAt')}:
@@ -252,7 +252,7 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
                     </HStack>
                     <HStack justify="space-between">
                       <Text
-                        fontWeight="medium"
+                        fontWeight="semibold"
                         color="gray.700"
                       >
                         {t('fields.updatedAt')}:
@@ -271,15 +271,6 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
             </CardBody>
           </Card>
         </VStack>
-        <Box mt={10}>
-          <Button
-            leftIcon={<ArrowBackIcon />}
-            variant="outline"
-            onClick={handleBack}
-          >
-            {t('actions.back')}
-          </Button>
-        </Box>
       </Container>
     </>
   );
