@@ -1,16 +1,10 @@
 import React, { ReactNode } from 'react';
-import {
-  Box,
-  VStack,
-  Text,
-  Flex,
-  Icon,
-  IconProps,
-  useDisclosure,
-  SlideFade
-} from '@chakra-ui/react';
+import { Box, VStack, Text, Flex, Icon, IconProps } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { sidebarModules, SidebarModule } from '../../lib/config/sidebar-modules';
+import {
+  sidebarModules,
+  SidebarModule,
+} from '../../lib/config/sidebar-modules';
 import { usePermissions } from '@hooks/use-permissions';
 
 interface Module {
@@ -25,18 +19,20 @@ interface SidebarProps {
   onClose?: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ modules, isOpen = true, onClose }) => {
+const Sidebar: React.FC<SidebarProps> = ({
+  modules,
+  isOpen = true,
+  onClose,
+}) => {
   const router = useRouter();
   const { hasPermission, isSuperAdmin } = usePermissions();
-  
+
   // Filter modules based on permissions
   const filteredModules = sidebarModules.filter((module: SidebarModule) => {
     // If no module/action defined, always show
     if (!module.module || !module.action) return true;
-    
     // Super admin can see everything
     if (isSuperAdmin()) return true;
-    
     // Check specific permissions
     return hasPermission(module.module, module.action);
   });
@@ -65,7 +61,7 @@ const Sidebar: React.FC<SidebarProps> = ({ modules, isOpen = true, onClose }) =>
           onClick={onClose}
         />
       )}
-      
+
       {/* Sidebar */}
       <Box
         bg="brand1.700"
@@ -80,17 +76,25 @@ const Sidebar: React.FC<SidebarProps> = ({ modules, isOpen = true, onClose }) =>
         zIndex={25}
         transform={{
           base: isOpen ? 'translateX(0)' : 'translateX(100%)',
-          lg: 'translateX(0)'
+          lg: 'translateX(0)',
         }}
         transition="transform 0.3s ease-in-out"
         boxShadow={{
           base: isOpen ? '2xl' : 'none',
-          lg: 'none'
+          lg: 'none',
         }}
       >
-        <VStack spacing={0} align="stretch">
+        <VStack
+          spacing={0}
+          align="stretch"
+        >
           {/* Navigation Modules */}
-          <VStack spacing={1} align="stretch" p={4} mt={{ base: "4rem", lg: "4.57rem" }}>
+          <VStack
+            spacing={1}
+            align="stretch"
+            p={4}
+            mt={{ base: '4rem', lg: '4.57rem' }}
+          >
             {filteredModules.map((module: SidebarModule) => {
               const isActive = router.pathname === module.path;
               const IconComponent = module.icon;
@@ -102,19 +106,26 @@ const Sidebar: React.FC<SidebarProps> = ({ modules, isOpen = true, onClose }) =>
                   p={3}
                   borderRadius="md"
                   cursor="pointer"
-                  bg={isActive ? "white" : 'transparent'}
-                  color={isActive ? "brand1.700" : "white"}
+                  bg={isActive ? 'white' : 'transparent'}
+                  color={isActive ? 'brand1.700' : 'white'}
                   _hover={{
-                    bg: isActive ? "white" : "brand1.600",
-                    color: isActive ? "brand1.700" : "white"
+                    bg: isActive ? 'white' : 'brand1.600',
+                    color: isActive ? 'brand1.700' : 'white',
                   }}
                   onClick={() => handleModuleClick(module.path)}
                   transition="all 0.2s"
                 >
                   {IconComponent && (
-                    <Icon as={IconComponent} mr={3} boxSize={5} />
+                    <Icon
+                      as={IconComponent}
+                      mr={3}
+                      boxSize={5}
+                    />
                   )}
-                  <Text fontSize="sm" fontWeight="medium">
+                  <Text
+                    fontSize="sm"
+                    fontWeight="medium"
+                  >
                     {module.name}
                   </Text>
                 </Flex>
@@ -127,4 +138,4 @@ const Sidebar: React.FC<SidebarProps> = ({ modules, isOpen = true, onClose }) =>
   );
 };
 
-export default Sidebar; 
+export default Sidebar;
