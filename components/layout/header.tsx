@@ -9,8 +9,10 @@ import {
   MenuList,
   IconButton,
   Image,
+  Icon,
 } from '@chakra-ui/react';
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons';
+import { FaSignOutAlt } from 'react-icons/fa';
 import { useSession, signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 
@@ -97,11 +99,12 @@ export const Header: React.FC<HeaderProps> = ({
                 fontWeight="bold"
               />
             </MenuButton>
-            <MenuList>
+            <MenuList minW="140px">
               <MenuItem
                 onClick={() => signOut({ callbackUrl: '/auth/login' })}
                 color="gray.900"
                 justifyContent="center"
+                icon={<Icon as={FaSignOutAlt} color="brand1.600" boxSize={4} />}
               >
                 {t('signOut')}
               </MenuItem>

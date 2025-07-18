@@ -1,15 +1,12 @@
+import { LockIcon } from '@chakra-ui/icons';
 import {
-  ViewIcon,
-  SettingsIcon,
-  InfoIcon,
-  ChatIcon,
-  CalendarIcon,
-  StarIcon,
-  CheckCircleIcon,
-  HamburgerIcon,
-  AtSignIcon,
-  LockIcon,
-} from '@chakra-ui/icons';
+  FaUsers,
+  FaPaw,
+  FaChartBar,
+  FaUserShield,
+  FaCalendarCheck,
+  FaFileAlt,
+} from 'react-icons/fa';
 
 export interface SidebarModule {
   name: string;
@@ -23,12 +20,12 @@ export const sidebarModules: SidebarModule[] = [
   {
     name: 'Dashboard',
     path: '/dashboard',
-    icon: ViewIcon,
+    icon: FaChartBar,
   },
   {
     name: 'Admins',
     path: '/admins',
-    icon: AtSignIcon,
+    icon: FaUserShield,
     module: 'admins',
     action: 'getAll',
   },
@@ -42,35 +39,35 @@ export const sidebarModules: SidebarModule[] = [
   {
     name: 'Usuarios',
     path: '/users',
-    icon: HamburgerIcon,
+    icon: FaUsers,
     module: 'users',
     action: 'getAll',
   },
   {
     name: 'Tipos de mascota',
     path: '/petTypes',
-    icon: CheckCircleIcon,
+    icon: FaPaw,
     module: 'petTypes',
     action: 'getAll',
   },
   {
     name: 'Características de mascotas',
     path: '/petCharacteristics',
-    icon: CheckCircleIcon,
+    icon: FaPaw,
     module: 'petCharacteristics',
     action: 'getAll',
   },
   {
     name: 'Mascotas',
     path: '/pets',
-    icon: StarIcon,
+    icon: FaPaw,
     module: 'pets',
     action: 'getAll',
   },
   {
     name: 'Reservas',
     path: '/reservations',
-    icon: CalendarIcon,
+    icon: FaCalendarCheck,
     module: 'reservations',
     action: 'getAll',
   },
@@ -84,7 +81,7 @@ export const sidebarModules: SidebarModule[] = [
   {
     name: 'Logs',
     path: '/logs',
-    icon: InfoIcon,
+    icon: FaFileAlt,
     module: 'logs',
     action: 'getAll',
   },

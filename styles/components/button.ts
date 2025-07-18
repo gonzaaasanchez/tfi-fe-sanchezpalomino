@@ -19,7 +19,14 @@ export const Button: ComponentStyleConfig = {
         transform: 'translateY(0)'
       },
       _focus: {
-        boxShadow: '0 0 0 3px rgba(66, 153, 225, 0.6)'
+        boxShadow: '0 0 0 3px var(--chakra-colors-brand1-600)'
+      },
+      _disabled: {
+        _hover: {
+          bg: 'brand1.500 !important',
+          transform: 'translateY(-1px) !important',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15) !important'
+        }
       }
     },
     secondary: {

@@ -6,7 +6,7 @@ import {
   FormLabel,
   Heading,
   Input,
-  VStack
+  VStack,
 } from '@chakra-ui/react';
 import { emailPattern } from '@helpers/field-validators';
 import { signIn } from 'next-auth/react';
@@ -26,7 +26,7 @@ export const LoginForm: React.FC = () => {
   const {
     formState: { errors, isValid },
     handleSubmit,
-    register
+    register,
   } = methods;
   const { errorToast, successToast } = useCustomToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,7 +38,7 @@ export const LoginForm: React.FC = () => {
       const res = await signIn('credentials', {
         redirect: false,
         email,
-        password
+        password,
       });
 
       if (res?.ok) {
@@ -56,21 +56,35 @@ export const LoginForm: React.FC = () => {
 
   return (
     <FormProvider {...methods}>
-      <VStack spacing={{ base: 6, sm: 8 }} w="full">
-        <Heading 
-          as="h2" 
-          color="brand1.700" 
-          size={{ base: "lg", sm: "xl", md: "h2" }}
+      <VStack
+        spacing={{ base: 6, sm: 8 }}
+        w="full"
+      >
+        <Heading
+          as="h2"
+          color="brand1.700"
+          size={{ base: 'lg', sm: 'xl', md: 'h2' }}
           textAlign="center"
           mb={{ base: 2, sm: 4 }}
         >
           {t('title')}
         </Heading>
-        
-        <Box as="form" noValidate onSubmit={handleSubmit(onSubmit)} w="full">
-          <VStack spacing={{ base: 4, sm: 6 }} w="full">
-            <FormControl isInvalid={!!errors.email} w="full">
-              <FormLabel 
+
+        <Box
+          as="form"
+          noValidate
+          onSubmit={handleSubmit(onSubmit)}
+          w="full"
+        >
+          <VStack
+            spacing={{ base: 4, sm: 6 }}
+            w="full"
+          >
+            <FormControl
+              isInvalid={!!errors.email}
+              w="full"
+            >
+              <FormLabel
                 htmlFor="email"
                 fontSize="md"
                 mb={{ base: 2, sm: 3 }}
@@ -80,21 +94,22 @@ export const LoginForm: React.FC = () => {
               <Input
                 id="email"
                 placeholder={t('placeholders.email')}
-                size="md"
-                fontSize="md"
                 {...register('email', {
                   required: te('required'),
-                  pattern: emailPattern(te('email'))
+                  pattern: emailPattern(te('email')),
                 })}
               />
-              <FormErrorMessage fontSize={{ base: "xs", sm: "sm" }}>
+              <FormErrorMessage>
                 <FormErrorIcon me={1} />
                 {errors.email && errors.email.message}
               </FormErrorMessage>
             </FormControl>
-            
-            <FormControl isInvalid={!!errors.password} w="full">
-              <FormLabel 
+
+            <FormControl
+              isInvalid={!!errors.password}
+              w="full"
+            >
+              <FormLabel
                 htmlFor="password"
                 fontSize="md"
                 mb={{ base: 2, sm: 3 }}
@@ -105,27 +120,23 @@ export const LoginForm: React.FC = () => {
                 id="password"
                 type="password"
                 placeholder={t('placeholders.password')}
-                size="md"
-                fontSize="md"
                 {...register('password', {
                   required: te('required'),
                   // pattern: passwordPattern(te('password'))
                 })}
               />
-              <FormErrorMessage fontSize={{ base: "xs", sm: "sm" }}>
+              <FormErrorMessage>
                 <FormErrorIcon me={1} />
                 {errors.password && errors.password.message}
               </FormErrorMessage>
             </FormControl>
-            
+
             <Button
               isDisabled={!isValid || isSubmitting}
               isLoading={isSubmitting}
               type="submit"
               w="full"
               size="md"
-              mt={{ base: 4, sm: 6 }}
-              colorScheme="brand1"
             >
               {t('cta.submit')}
             </Button>
