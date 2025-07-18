@@ -5,3 +5,4 @@ export { ReservationService } from './reservation';
 export { AdminService } from './admin';
 export { PetTypeService } from './petTypes';
 export { PetCharacteristicService } from './petCharacteristic';
+export { ReviewService } from './review';

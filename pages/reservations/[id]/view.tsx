@@ -25,6 +25,7 @@ import { pick } from 'lodash';
 import { useRouter } from 'next/router';
 import { PermissionGuard } from 'components/shared/permission-guard';
 import { useGetReservation } from 'lib/hooks';
+import { useGetReservationReviews } from 'lib/hooks/use-reviews';
 import { format } from 'date-fns';
 import Loader from 'components/shared/loader';
 import { getReservationStatusConfig } from 'lib/helpers/utils';
@@ -35,6 +36,11 @@ const ReservationViewPage: NextPageWithLayout = () => {
   const router = useRouter();
   const { id } = router.query;
   const { reservation, isPending } = useGetReservation({ id: id as string });
+  const { data: reviewsData, isPending: isReviewsPending } =
+    useGetReservationReviews({
+      reservationId: id as string,
+      enabled: reservation?.status === 'finished',
+    });
 
   if (isPending) {
     return <Loader size="lg" />;
@@ -110,11 +116,11 @@ const ReservationViewPage: NextPageWithLayout = () => {
                   spacing={4}
                 >
                   {/* ID y Estado */}
-                  <HStack>
+                  <HStack justify="space-between">
                     <Text fontWeight="semibold">{t('fields.id')}:</Text>
                     <Text>{reservation.id}</Text>
                   </HStack>
-                  <HStack>
+                  <HStack justify="space-between">
                     <Text fontWeight="semibold">{t('fields.status')}:</Text>
                     {(() => {
                       const statusConfig = getReservationStatusConfig(
@@ -152,7 +158,7 @@ const ReservationViewPage: NextPageWithLayout = () => {
                       align="stretch"
                       spacing={2}
                     >
-                      <HStack>
+                      <HStack justify="space-between">
                         <Text fontWeight="medium">{t('fields.place')}:</Text>
                         <Text>
                           {tIndex(
@@ -160,7 +166,7 @@ const ReservationViewPage: NextPageWithLayout = () => {
                           )}
                         </Text>
                       </HStack>
-                      <HStack>
+                      <HStack justify="space-between">
                         <Text fontWeight="medium">{t('fields.address')}:</Text>
                         <Text>
                           {reservation.address.fullAddress}
@@ -189,7 +195,7 @@ const ReservationViewPage: NextPageWithLayout = () => {
                       align="stretch"
                       spacing={2}
                     >
-                      <HStack>
+                      <HStack justify="space-between">
                         <Text fontWeight="medium">{t('fields.start')}:</Text>
                         <Text>
                           {format(
@@ -198,14 +204,14 @@ const ReservationViewPage: NextPageWithLayout = () => {
                           )}
                         </Text>
                       </HStack>
-                      <HStack>
+                      <HStack justify="space-between">
                         <Text fontWeight="medium">{t('fields.end')}:</Text>
                         <Text>
                           {format(new Date(reservation.endDate), 'dd/MM/yyyy')}
                         </Text>
                       </HStack>
                       {reservation.visitsCount && (
-                        <HStack>
+                        <HStack justify="space-between">
                           <Text fontWeight="medium">{t('fields.visits')}:</Text>
                           <Text>{reservation.visitsCount}</Text>
                         </HStack>
@@ -237,6 +243,107 @@ const ReservationViewPage: NextPageWithLayout = () => {
                       ))}
                     </VStack>
                   </Box>
+
+                  {/* Reviews - Solo mostrar si el estado es 'finished' */}
+                  {reservation.status === 'finished' && (
+                    <>
+                      <Divider />
+                      <Box>
+                        <Text
+                          fontWeight="bold"
+                          fontSize="sm"
+                          color="gray.600"
+                          mb={2}
+                        >
+                          {t('sections.reviews')}
+                        </Text>
+                        <VStack
+                          align="stretch"
+                          spacing={3}
+                        >
+                          {/* Review del Usuario */}
+                          <Box>
+                            <Text
+                              fontWeight="medium"
+                              fontSize="sm"
+                              mb={1}
+                            >
+                              {reservation.user.firstName} {reservation.user.lastName}
+                            </Text>
+                            {reviewsData?.reviews.owner ? (
+                              <VStack
+                                align="stretch"
+                                spacing={1}
+                                p={2}
+                                bg="gray.50"
+                                borderRadius="md"
+                              >
+                                <HStack justify="space-between">
+                                  <Text fontSize="smaller">
+                                    {'⭐'.repeat(
+                                      reviewsData.reviews.owner.rating
+                                    )}
+                                  </Text>
+                                </HStack>
+                                {reviewsData.reviews.owner.comment && (
+                                  <Text fontSize="sm">
+                                    {reviewsData.reviews.owner.comment}
+                                  </Text>
+                                )}
+                              </VStack>
+                            ) : (
+                              <Text
+                                fontSize="sm"
+                                color="gray.500"
+                              >
+                                {t('reviews.noUserReview')}
+                              </Text>
+                            )}
+                          </Box>
+
+                          {/* Review del Cuidador */}
+                          <Box>
+                            <Text
+                              fontWeight="medium"
+                              fontSize="sm"
+                              mb={1}
+                            >
+                              {reservation.caregiver.firstName} {reservation.caregiver.lastName}
+                            </Text>
+                            {reviewsData?.reviews.caregiver ? (
+                              <VStack
+                                align="stretch"
+                                spacing={1}
+                                p={2}
+                                bg="gray.50"
+                                borderRadius="md"
+                              >
+                                <HStack justify="space-between">
+                                  <Text fontSize="smaller">
+                                    {'⭐'.repeat(
+                                      reviewsData.reviews.caregiver.rating
+                                    )}
+                                  </Text>
+                                </HStack>
+                                {reviewsData.reviews.caregiver.comment && (
+                                  <Text fontSize="sm">
+                                    {reviewsData.reviews.caregiver.comment}
+                                  </Text>
+                                )}
+                              </VStack>
+                            ) : (
+                              <Text
+                                fontSize="sm"
+                                color="gray.500"
+                              >
+                                {t('reviews.noCaregiverReview')}
+                              </Text>
+                            )}
+                          </Box>
+                        </VStack>
+                      </Box>
+                    </>
+                  )}
                 </VStack>
               </CardBody>
             </Card>
@@ -247,7 +354,6 @@ const ReservationViewPage: NextPageWithLayout = () => {
               height="100%"
             >
               <Card
-                height="100%"
                 width="100%"
               >
                 <CardBody>
@@ -343,7 +449,6 @@ const ReservationViewPage: NextPageWithLayout = () => {
               </Card>
               {/* Segunda Card Derecha - Monto */}
               <Card
-                height="100%"
                 width="100%"
               >
                 <CardBody>
@@ -380,7 +485,6 @@ const ReservationViewPage: NextPageWithLayout = () => {
               </Card>
               {/* Tercera Card Derecha - Estado/Timestamps */}
               <Card
-                height="100%"
                 width="100%"
               >
                 <CardBody>

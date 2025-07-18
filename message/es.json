@@ -789,7 +789,8 @@
           "pricing": "Precios",
           "status": "Estado",
           "reservationInfo": "Información de la Reserva",
-          "careLocation": "Ubicación de Cuidado"
+          "careLocation": "Ubicación de Cuidado",
+          "reviews": "Reseñas"
         },
         "fields": {
           "id": "ID",
@@ -812,9 +813,14 @@
           "place": "Lugar",
           "start": "Inicio",
           "end": "Fin",
-          "visits": "Visitas"
+          "visits": "Visitas",
+          "comment": "Comentario"
         },
-        "notFound": "Reserva no encontrada"
+        "notFound": "Reserva no encontrada",
+        "reviews": {
+          "noUserReview": "El usuario aún no hizo su reseña",
+          "noCaregiverReview": "El cuidador aún no hizo su reseña"
+        }
       }
     },
     "staticLabels": {
