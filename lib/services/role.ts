@@ -1,6 +1,6 @@
 import { ClientApi } from './api/ssc';
 import { RoleCreateService, RoleUpdateService } from '../types/services';
-import { Role } from '../types/role';
+import { Role, PermissionsTemplate } from '../types/role';
 import { BaseResponse, PaginatedResponse } from '../types/response';
 
 export class RoleService {
@@ -70,6 +70,17 @@ export class RoleService {
         `${this.BASE_URL}/${id}`
       );
       return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getPermissionsTemplate(): Promise<PermissionsTemplate> {
+    try {
+      const response = await ClientApi.get<BaseResponse<PermissionsTemplate>>(
+        `${this.BASE_URL}/permissions/template`
+      );
+      return response.data.data;
     } catch (error) {
       throw error;
     }

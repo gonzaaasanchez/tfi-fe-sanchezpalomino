@@ -44,14 +44,13 @@ export function useGetAdmin({ id }: UseGetOneByIdType) {
 
 export const useCreateAdmin = () => {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const t = useTranslations('lib.hooks.admins');
 
   return useMutation({
     mutationFn: (adminData: AdminCreateService) =>
       AdminService.createAdmin(adminData),
     onSuccess: (data) => {
-      successToast(t('responses.createSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/admins'] });
     },
     onError: (error: any) => {
@@ -64,14 +63,13 @@ export const useCreateAdmin = () => {
 
 export function useUpdateAdmin(id: string) {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const t = useTranslations('lib.hooks.admins');
 
   return useMutation({
     mutationFn: (adminData: AdminUpdateService) =>
       AdminService.updateAdmin(id, adminData),
     onSuccess: () => {
-      successToast(t('responses.updateSuccess'));
       queryClient.invalidateQueries({
         queryKey: [`/admins/${id}`],
       });
@@ -86,13 +84,12 @@ export function useUpdateAdmin(id: string) {
 
 export const useDeleteAdmin = () => {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const t = useTranslations('lib.hooks.admins');
 
   return useMutation({
     mutationFn: (id: string) => AdminService.deleteAdmin(id),
     onSuccess: (data, id) => {
-      successToast(t('responses.deleteSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/admins'] });
     },
     onError: (error: any) => {

@@ -56,13 +56,12 @@ export function useGetPetCharacteristic({ id }: UseGetOneByIdType) {
 
 export const useCreatePetCharacteristic = () => {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const t = useTranslations('lib.hooks.petCharacteristics');
 
   return useMutation({
     mutationFn: (petCharacteristicData: PetCharacteristicCreateService) => PetCharacteristicService.createPetCharacteristic(petCharacteristicData),
     onSuccess: (data) => {
-      successToast(t('responses.createSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/pet-characteristics'] });
     },
     onError: (error: any) => {
@@ -74,13 +73,12 @@ export const useCreatePetCharacteristic = () => {
 
 export function useUpdatePetCharacteristic(id: string) {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const t = useTranslations('lib.hooks.petCharacteristics');
 
   return useMutation({
     mutationFn: (petCharacteristicData: PetCharacteristicUpdateService) => PetCharacteristicService.updatePetCharacteristic(id, petCharacteristicData),
     onSuccess: () => {
-      successToast(t('responses.updateSuccess'));
       queryClient.invalidateQueries({
         queryKey: [`/pet-characteristics/${id}`]
       });
@@ -95,13 +93,12 @@ export function useUpdatePetCharacteristic(id: string) {
 
 export const useDeletePetCharacteristic = () => {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const t = useTranslations('lib.hooks.petCharacteristics');
 
   return useMutation({
     mutationFn: (id: string) => PetCharacteristicService.deletePetCharacteristic(id),
     onSuccess: (data, id) => {
-      successToast(t('responses.deleteSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/pet-characteristics'] });
     },
     onError: (error: any) => {

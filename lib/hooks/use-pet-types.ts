@@ -57,13 +57,12 @@ export function useGetPetType({ id }: UseGetOneByIdType) {
 
 export const useCreatePetType = () => {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const t = useTranslations('lib.hooks.petTypes');
 
   return useMutation({
     mutationFn: (petTypeData: PetTypeCreateService) => PetTypeService.createPetType(petTypeData),
     onSuccess: (data) => {
-      successToast(t('responses.createSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/pet-types'] });
     },
     onError: (error: any) => {
@@ -75,13 +74,12 @@ export const useCreatePetType = () => {
 
 export function useUpdatePetType(id: string) {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const t = useTranslations('lib.hooks.petTypes');
 
   return useMutation({
     mutationFn: (petTypeData: PetTypeUpdateService) => PetTypeService.updatePetType(id, petTypeData),
     onSuccess: () => {
-      successToast(t('responses.updateSuccess'));
       queryClient.invalidateQueries({
         queryKey: [`/pet-types/${id}`]
       });
@@ -96,13 +94,12 @@ export function useUpdatePetType(id: string) {
 
 export const useDeletePetType = () => {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const t = useTranslations('lib.hooks.petTypes');
 
   return useMutation({
     mutationFn: (id: string) => PetTypeService.deletePetType(id),
     onSuccess: (data, id) => {
-      successToast(t('responses.deleteSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/pet-types'] });
     },
     onError: (error: any) => {

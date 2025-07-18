@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { RoleService } from '../services/role';
 import { useCustomToast } from './use-custom-toast';
-import { Role } from '../types/role';
+import { Role, PermissionsTemplate } from '../types/role';
 import { RoleCreateService, RoleUpdateService } from '../types/services';
 import { UseGetAllType, UseGetOneByIdType } from '../types/hooks';
 import { DEFAULT_PARAM_LIMIT } from '../constants/params';
@@ -51,7 +51,6 @@ export const useCreateRole = () => {
     mutationFn: (roleData: RoleCreateService) =>
       RoleService.createRole(roleData),
     onSuccess: (data) => {
-      successToast(t('responses.createSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/roles'] });
     },
     onError: (error: any) => {
@@ -70,7 +69,6 @@ export function useUpdateRole(id: string) {
     mutationFn: (roleData: RoleUpdateService) =>
       RoleService.updateRole(id, roleData),
     onSuccess: () => {
-      successToast(t('responses.updateSuccess'));
       queryClient.invalidateQueries({
         queryKey: [`/roles/${id}`],
       });
@@ -94,7 +92,6 @@ export const useDeleteRole = () => {
   return useMutation({
     mutationFn: (id: string) => RoleService.deleteRole(id),
     onSuccess: (data, id) => {
-      successToast(t('responses.deleteSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/roles'] });
     },
     onError: (error: any) => {
@@ -104,3 +101,16 @@ export const useDeleteRole = () => {
     },
   });
 };
+
+export function useGetPermissionsTemplate() {
+  const { data, isPending } = useQuery<PermissionsTemplate>({
+    queryKey: ['/roles/permissions/template'],
+    queryFn: () => RoleService.getPermissionsTemplate(),
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    staleTime: 60000,
+  });
+
+  return { permissionsTemplate: data || null, isPending };
+}

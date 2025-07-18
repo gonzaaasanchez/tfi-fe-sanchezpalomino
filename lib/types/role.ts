@@ -3,6 +3,7 @@ export type Action = string;
 export type Module = string;
 export type Permission = Record<Action, boolean>;
 export type Permissions = Record<Module, Permission>;
+export type PermissionsTemplate = Permissions;
 
 export interface Role {
   id?: string;

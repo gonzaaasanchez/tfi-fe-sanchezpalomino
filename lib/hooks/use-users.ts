@@ -53,14 +53,13 @@ export function useGetUser({ id }: UseGetOneByIdType) {
 
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const t = useTranslations('lib.hooks.users');
 
   return useMutation({
     mutationFn: (userData: UserCreateService) =>
       UserService.createUser(userData),
     onSuccess: (data) => {
-      successToast(t('responses.createSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/users'] });
     },
     onError: (error: any) => {
@@ -73,14 +72,13 @@ export const useCreateUser = () => {
 
 export function useUpdateUser(id: string) {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const t = useTranslations('lib.hooks.users');
 
   return useMutation({
     mutationFn: (userData: UserUpdateService) =>
       UserService.updateUser(id, userData),
     onSuccess: () => {
-      successToast(t('responses.updateSuccess'));
       queryClient.invalidateQueries({
         queryKey: [`/users/${id}`],
       });
@@ -95,13 +93,12 @@ export function useUpdateUser(id: string) {
 
 export const useDeleteUser = () => {
   const queryClient = useQueryClient();
-  const { successToast, errorToast } = useCustomToast();
+  const { errorToast } = useCustomToast();
   const t = useTranslations('lib.hooks.users');
 
   return useMutation({
     mutationFn: (id: string) => UserService.deleteUser(id),
     onSuccess: (data, id) => {
-      successToast(t('responses.deleteSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/users'] });
     },
     onError: (error: any) => {

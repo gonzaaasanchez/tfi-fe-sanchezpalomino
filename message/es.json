@@ -77,10 +77,10 @@
           "phoneNumber": "+1 (555) 123-4567"
         },
         "responses": {
-          "createSuccess": "Operador creado exitosamente",
-          "updateSuccess": "Operador actualizado exitosamente",
-          "createError": "Error al crear el Operador",
-          "updateError": "Error al actualizar el Operador"
+          "createSuccess": "Administrador del sistema creado exitosamente",
+          "updateSuccess": "Administrador del sistema actualizado exitosamente",
+          "createError": "Error al crear el Administrador del sistema",
+          "updateError": "Error al actualizar el Administrador del sistema"
         },
         "validation": {
           "passwordMismatch": "Las contraseñas no coinciden",
@@ -327,9 +327,6 @@
     "hooks": {
       "roles": {
         "responses": {
-          "createSuccess": "Rol creado exitosamente",
-          "updateSuccess": "Rol actualizado exitosamente",
-          "deleteSuccess": "Rol eliminado exitosamente",
           "createError": "Error al crear el rol",
           "updateError": "Error al actualizar el rol",
           "deleteError": "Error al eliminar el rol"
@@ -337,9 +334,6 @@
       },
       "users": {
         "responses": {
-          "createSuccess": "Usuario creado exitosamente",
-          "updateSuccess": "Usuario actualizado exitosamente",
-          "deleteSuccess": "Usuario eliminado exitosamente",
           "createError": "Error al crear el usuario",
           "updateError": "Error al actualizar el usuario",
           "deleteError": "Error al eliminar el usuario"
@@ -347,9 +341,6 @@
       },
       "admins": {
         "responses": {
-          "createSuccess": "Administrador creado exitosamente",
-          "updateSuccess": "Administrador actualizado exitosamente",
-          "deleteSuccess": "Administrador eliminado exitosamente",
           "createError": "Error al crear el administrador",
           "updateError": "Error al actualizar el administrador",
           "deleteError": "Error al eliminar el administrador"
@@ -357,9 +348,6 @@
       },
       "petTypes": {
         "responses": {
-          "createSuccess": "Tipo de mascota creado exitosamente",
-          "updateSuccess": "Tipo de mascota actualizado exitosamente",
-          "deleteSuccess": "Tipo de mascota eliminado exitosamente",
           "createError": "Error al crear el tipo de mascota",
           "updateError": "Error al actualizar el tipo de mascota",
           "deleteError": "Error al eliminar el tipo de mascota"
@@ -367,9 +355,6 @@
       },
       "petCharacteristics": {
         "responses": {
-          "createSuccess": "Característica de mascota creada exitosamente",
-          "updateSuccess": "Característica de mascota actualizada exitosamente",
-          "deleteSuccess": "Característica de mascota eliminada exitosamente",
           "createError": "Error al crear la característica de mascota",
           "updateError": "Error al actualizar la característica de mascota",
           "deleteError": "Error al eliminar la característica de mascota"

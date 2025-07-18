@@ -1,27 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Button,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Heading,
-  HStack,
-  Input,
-  Textarea,
-  VStack,
   Card,
   CardBody,
   Checkbox,
+  Divider,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  HStack,
+  Heading,
+  Input,
   SimpleGrid,
   Text,
-  Divider,
+  Textarea,
+  VStack,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, Controller } from 'react-hook-form';
 import { useTranslations } from 'next-intl';
 import { FormErrorIcon } from 'components/icons/src/form-error-icon';
-import { useCreateRole, useUpdateRole } from '@hooks/use-roles';
+import {
+  useCreateRole,
+  useUpdateRole,
+  useGetPermissionsTemplate,
+} from '@hooks/use-roles';
 import { RoleFormType } from 'lib/types/forms';
 import { Module, Permission } from 'lib/types/role';
 
@@ -45,6 +49,8 @@ export const RoleForm: React.FC<RoleFormProps> = ({
 
   const createRoleMutation = useCreateRole();
   const updateRoleMutation = useUpdateRole(defaultValues?.id || '');
+  const { permissionsTemplate, isPending: isTemplateLoading } =
+    useGetPermissionsTemplate();
 
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
@@ -63,21 +69,37 @@ export const RoleForm: React.FC<RoleFormProps> = ({
     handleSubmit,
     formState: { errors, isValid },
     reset,
-    watch,
+    control,
+    setValue,
   } = methods;
+
+  // Actualizar permisos cuando el template se carga en modo create
+  useEffect(() => {
+    if (mode === 'create' && permissionsTemplate && !isTemplateLoading) {
+      Object.entries(permissionsTemplate).forEach(
+        ([moduleName, modulePermissions]) => {
+          Object.entries(modulePermissions).forEach(([action, value]) => {
+            setValue(`permissions.${moduleName}.${action}`, value);
+          });
+        }
+      );
+    }
+  }, [mode, permissionsTemplate, isTemplateLoading, setValue]);
 
   // Función para convertir permisos de booleanos a arrays de strings
   const convertPermissionsToServiceFormat = (
     permissions: RoleFormType['permissions']
   ) => {
-    const actions = ['create', 'read', 'update', 'delete', 'getAll', 'admin'];
     const servicePermissions: any = {};
 
     Object.keys(permissions).forEach((module) => {
       const modulePermissions = permissions[module as keyof typeof permissions];
-      servicePermissions[module] = actions.filter(
-        (action) => modulePermissions[action as keyof typeof modulePermissions]
-      );
+      servicePermissions[module] = {};
+
+      Object.keys(modulePermissions).forEach((action) => {
+        servicePermissions[module][action] =
+          modulePermissions[action as keyof typeof modulePermissions];
+      });
     });
 
     return servicePermissions;
@@ -87,6 +109,7 @@ export const RoleForm: React.FC<RoleFormProps> = ({
     try {
       const serviceData = {
         name: data.name,
+        description: data.description,
         permissions: convertPermissionsToServiceFormat(data.permissions),
       };
 
@@ -146,10 +169,17 @@ export const RoleForm: React.FC<RoleFormProps> = ({
                   <Text color="gray.600">
                     {tGeneral(`permissions.actions.${action}`)}
                   </Text>
-                  <Checkbox
-                    {...register(`permissions.${moduleName}.${action}`)}
-                    colorScheme="brand1"
-                    size="lg"
+                  <Controller
+                    name={`permissions.${moduleName}.${action}`}
+                    control={control}
+                    render={({ field }) => (
+                      <Checkbox
+                        isChecked={field.value}
+                        onChange={field.onChange}
+                        colorScheme="brand1"
+                        size="lg"
+                      />
+                    )}
                   />
                 </HStack>
               ))}
@@ -247,15 +277,27 @@ export const RoleForm: React.FC<RoleFormProps> = ({
                 {t('sections.permissions')}
               </Heading>
 
-              <SimpleGrid
-                columns={{ base: 1, md: 2, lg: 3 }}
-                spacing={4}
-              >
-                {Object.entries(defaultValues?.permissions || {}).map(
-                  ([moduleName, modulePermissions]) =>
+              {mode === 'create' && isTemplateLoading ? (
+                <Text
+                  color="gray.500"
+                  textAlign="center"
+                >
+                  Cargando permisos...
+                </Text>
+              ) : (
+                <SimpleGrid
+                  columns={{ base: 1, md: 2, lg: 3 }}
+                  spacing={4}
+                >
+                  {Object.entries(
+                    mode === 'create'
+                      ? permissionsTemplate || {}
+                      : defaultValues?.permissions || {}
+                  ).map(([moduleName, modulePermissions]) =>
                     renderModulePermissions(moduleName, modulePermissions)
-                )}
-              </SimpleGrid>
+                  )}
+                </SimpleGrid>
+              )}
             </VStack>
 
             {/* Action Buttons */}
@@ -275,7 +317,11 @@ export const RoleForm: React.FC<RoleFormProps> = ({
               <Button
                 type="submit"
                 isLoading={isLoading}
-                isDisabled={!isValid || isLoading}
+                isDisabled={
+                  !isValid ||
+                  isLoading ||
+                  (mode === 'create' && isTemplateLoading)
+                }
                 loadingText={
                   mode === 'edit'
                     ? t('loading.updating')
