@@ -49,7 +49,7 @@ export type AdminCreateService = {
   lastName: string;
   email: string;
   password: string;
-  role: string;
+  roleId: string;
 };
 
 export type AdminUpdateService = {

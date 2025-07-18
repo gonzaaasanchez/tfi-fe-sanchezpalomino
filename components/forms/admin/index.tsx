@@ -110,7 +110,7 @@ export const AdminForm: React.FC<AdminFormProps> = ({
           lastName: data.lastName,
           email: data.email,
           password: data.password,
-          role: data.role,
+          roleId: data.role,
         });
       }
 
