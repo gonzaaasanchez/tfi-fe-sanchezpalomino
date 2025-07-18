@@ -28,3 +28,12 @@ export type UserFormType = {
 export type PetCharacteristicFormType = {
   name: string;
 };
+
+import { Permissions } from './role';
+
+export type RoleFormType = {
+  id?: string;
+  name: string;
+  description?: string;
+  permissions: Permissions;
+};

@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { PetTypeService } from '../services/petTypes';
 import { useCustomToast } from './use-custom-toast';
 import { PetType } from '../types/petType';
@@ -56,15 +57,17 @@ export function useGetPetType({ id }: UseGetOneByIdType) {
 
 export const useCreatePetType = () => {
   const queryClient = useQueryClient();
-  const { errorToast } = useCustomToast();
+  const { successToast, errorToast } = useCustomToast();
+  const t = useTranslations('lib.hooks.petTypes');
 
   return useMutation({
     mutationFn: (petTypeData: PetTypeCreateService) => PetTypeService.createPetType(petTypeData),
     onSuccess: (data) => {
+      successToast(t('responses.createSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/pet-types'] });
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || 'Error al crear el tipo de mascota';
+      const message = error.response?.data?.message || t('responses.createError');
       errorToast(message);
     },
   });
@@ -72,18 +75,20 @@ export const useCreatePetType = () => {
 
 export function useUpdatePetType(id: string) {
   const queryClient = useQueryClient();
-  const { errorToast } = useCustomToast();
+  const { successToast, errorToast } = useCustomToast();
+  const t = useTranslations('lib.hooks.petTypes');
 
   return useMutation({
     mutationFn: (petTypeData: PetTypeUpdateService) => PetTypeService.updatePetType(id, petTypeData),
     onSuccess: () => {
+      successToast(t('responses.updateSuccess'));
       queryClient.invalidateQueries({
         queryKey: [`/pet-types/${id}`]
       });
       queryClient.invalidateQueries({ queryKey: ['/pet-types'] });
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message;
+      const message = error.response?.data?.message || t('responses.updateError');
       errorToast(message);
     },
   });
@@ -91,15 +96,17 @@ export function useUpdatePetType(id: string) {
 
 export const useDeletePetType = () => {
   const queryClient = useQueryClient();
-  const { errorToast } = useCustomToast();
+  const { successToast, errorToast } = useCustomToast();
+  const t = useTranslations('lib.hooks.petTypes');
 
   return useMutation({
     mutationFn: (id: string) => PetTypeService.deletePetType(id),
     onSuccess: (data, id) => {
+      successToast(t('responses.deleteSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/pet-types'] });
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || 'Error al eliminar el tipo de mascota';
+      const message = error.response?.data?.message || t('responses.deleteError');
       errorToast(message);
     },
   });

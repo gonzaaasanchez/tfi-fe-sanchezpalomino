@@ -1,4 +1,54 @@
 {
+  "general": {
+    "permissions": {
+      "modules": {
+        "users": "Usuarios",
+        "roles": "Roles",
+        "admins": "Administradores",
+        "logs": "Registros",
+        "petTypes": "Tipos de Mascota",
+        "petCharacteristics": "Características de Mascota",
+        "pets": "Mascotas",
+        "caregiverSearch": "Búsqueda de Cuidadores",
+        "reservations": "Reservas",
+        "reviews": "Reseñas",
+        "posts": "Publicaciones",
+        "comments": "Comentarios",
+        "likes": "Me Gusta"
+      },
+      "actions": {
+        "create": "Crear",
+        "read": "Leer",
+        "update": "Actualizar",
+        "delete": "Eliminar",
+        "getAll": "Listar",
+        "admin": "Administrar"
+      },
+      "status": {
+        "allowed": "Permitido",
+        "denied": "Denegado"
+      }
+    },
+    "form": {
+      "errors": {
+        "email": "Correo electrónico inválido",
+        "invalidDate": "Fecha inválida",
+        "max": "Máximo: {max}",
+        "maxFileSize": "Tamaño de archivo excedido, máximo: {maxSize}mb",
+        "maxLength": "Longitud máxima: {maxLength}",
+        "minLength": "Longitud mínima: {minLength}",
+        "min": "Mínimo: {min}",
+        "password": "Debe contener: un número, una letra mayúscula y una minúscula",
+        "required": "Campo requerido",
+        "requiredSelect": "Selecciona una opción",
+        "requiredTeamLeader": "Líder de equipo pendiente",
+        "url": "URL inválida"
+      }
+    },
+    "common": {
+      "notFound": "No encontrado"
+    }
+  },
   "components": {
     "forms": {
       "admin": {
@@ -131,6 +181,41 @@
           "updating": "Actualizando..."
         }
       },
+      "role": {
+        "cta": {
+          "create": "Crear Rol",
+          "update": "Actualizar Rol",
+          "cancel": "Cancelar"
+        },
+        "labels": {
+          "name": "Nombre",
+          "description": "Descripción"
+        },
+        "placeholders": {
+          "name": "Ej: Administrador, Usuario, Moderador...",
+          "description": "Descripción del rol y sus responsabilidades"
+        },
+        "responses": {
+          "createSuccess": "Rol creado exitosamente",
+          "updateSuccess": "Rol actualizado exitosamente",
+          "createError": "Error al crear el rol",
+          "updateError": "Error al actualizar el rol"
+        },
+        "loading": {
+          "creating": "Creando...",
+          "updating": "Actualizando..."
+        },
+        "validation": {
+          "required": "Este campo es requerido"
+        },
+        "sections": {
+          "basicInfo": "Información Básica",
+          "permissions": "Permisos"
+        },
+        "permissions": {
+          "title": "Permisos"
+        }
+      },
       "auth": {
         "forgotPassword": {
           "cta": {
@@ -229,27 +314,6 @@
       }
     }
   },
-  "general": {
-    "form": {
-      "errors": {
-        "email": "Correo electrónico inválido",
-        "invalidDate": "Fecha inválida",
-        "max": "Máximo: {max}",
-        "maxFileSize": "Tamaño de archivo excedido, máximo: {maxSize}mb",
-        "maxLength": "Longitud máxima: {maxLength}",
-        "minLength": "Longitud mínima: {minLength}",
-        "min": "Mínimo: {min}",
-        "password": "Debe contener: un número, una letra mayúscula y una minúscula",
-        "required": "Campo requerido",
-        "requiredSelect": "Selecciona una opción",
-        "requiredTeamLeader": "Líder de equipo pendiente",
-        "url": "URL inválida"
-      }
-    },
-    "common": {
-      "notFound": "No encontrado"
-    }
-  },
   "layouts": {
     "private": {
       "header": {
@@ -260,7 +324,58 @@
     }
   },
   "lib": {
-    "hooks": {}
+    "hooks": {
+      "roles": {
+        "responses": {
+          "createSuccess": "Rol creado exitosamente",
+          "updateSuccess": "Rol actualizado exitosamente",
+          "deleteSuccess": "Rol eliminado exitosamente",
+          "createError": "Error al crear el rol",
+          "updateError": "Error al actualizar el rol",
+          "deleteError": "Error al eliminar el rol"
+        }
+      },
+      "users": {
+        "responses": {
+          "createSuccess": "Usuario creado exitosamente",
+          "updateSuccess": "Usuario actualizado exitosamente",
+          "deleteSuccess": "Usuario eliminado exitosamente",
+          "createError": "Error al crear el usuario",
+          "updateError": "Error al actualizar el usuario",
+          "deleteError": "Error al eliminar el usuario"
+        }
+      },
+      "admins": {
+        "responses": {
+          "createSuccess": "Administrador creado exitosamente",
+          "updateSuccess": "Administrador actualizado exitosamente",
+          "deleteSuccess": "Administrador eliminado exitosamente",
+          "createError": "Error al crear el administrador",
+          "updateError": "Error al actualizar el administrador",
+          "deleteError": "Error al eliminar el administrador"
+        }
+      },
+      "petTypes": {
+        "responses": {
+          "createSuccess": "Tipo de mascota creado exitosamente",
+          "updateSuccess": "Tipo de mascota actualizado exitosamente",
+          "deleteSuccess": "Tipo de mascota eliminado exitosamente",
+          "createError": "Error al crear el tipo de mascota",
+          "updateError": "Error al actualizar el tipo de mascota",
+          "deleteError": "Error al eliminar el tipo de mascota"
+        }
+      },
+      "petCharacteristics": {
+        "responses": {
+          "createSuccess": "Característica de mascota creada exitosamente",
+          "updateSuccess": "Característica de mascota actualizada exitosamente",
+          "deleteSuccess": "Característica de mascota eliminada exitosamente",
+          "createError": "Error al crear la característica de mascota",
+          "updateError": "Error al actualizar la característica de mascota",
+          "deleteError": "Error al eliminar la característica de mascota"
+        }
+      }
+    }
   },
   "pages": {
     "admins": {
@@ -707,6 +822,9 @@
         "edit": "Editar rol:",
         "delete": "Eliminar rol:"
       },
+      "cta": {
+        "createRole": "Crear Rol"
+      },
       "empty": "No hay roles disponibles",
       "view": {
         "meta": {
@@ -741,29 +859,35 @@
         },
         "permissions": {
           "allowed": "Permitido",
-          "denied": "Denegado",
-          "modules": {
-            "users": "Usuarios",
-            "roles": "Roles",
-            "admins": "Administradores",
-            "logs": "Registros",
-            "petTypes": "Tipos de Mascota",
-            "petCharacteristics": "Características de Mascota",
-            "pets": "Mascotas",
-            "caregiverSearch": "Búsqueda de Cuidadores",
-            "reservations": "Reservas",
-            "reviews": "Reseñas"
-          },
-          "actions": {
-            "create": "Crear",
-            "read": "Leer",
-            "update": "Actualizar",
-            "delete": "Eliminar",
-            "getAll": "Listar",
-            "admin": "Administrar"
-          }
+          "denied": "Denegado"
         },
         "notFound": "Rol no encontrado"
+      },
+      "create": {
+        "meta": {
+          "title": "Crear Rol",
+          "description": "Crear un nuevo rol en el sistema"
+        },
+        "title": "Crear Rol",
+        "description": "Define un nuevo rol y sus permisos en el sistema",
+        "breadcrumb": {
+          "home": "Inicio",
+          "roles": "Roles",
+          "create": "Crear"
+        }
+      },
+      "edit": {
+        "meta": {
+          "title": "Editar Rol",
+          "description": "Editar rol existente"
+        },
+        "title": "Editar Rol",
+        "description": "Modifica la información y permisos del rol",
+        "breadcrumb": {
+          "home": "Inicio",
+          "roles": "Roles",
+          "edit": "Editar"
+        }
       }
     },
     "reservations": {

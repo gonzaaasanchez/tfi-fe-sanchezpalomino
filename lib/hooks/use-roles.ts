@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { RoleService } from '../services/role';
 import { useCustomToast } from './use-custom-toast';
 import { Role } from '../types/role';
@@ -44,16 +45,17 @@ export function useGetRole({ id }: UseGetOneByIdType) {
 export const useCreateRole = () => {
   const queryClient = useQueryClient();
   const { successToast, errorToast } = useCustomToast();
+  const t = useTranslations('lib.hooks.roles');
 
   return useMutation({
     mutationFn: (roleData: RoleCreateService) =>
       RoleService.createRole(roleData),
     onSuccess: (data) => {
-      successToast('Rol creado exitosamente');
+      successToast(t('responses.createSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/roles'] });
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || 'Error al crear el rol';
+      const message = error.response?.data?.message || t('responses.createError');
       errorToast(message);
     },
   });
@@ -61,15 +63,22 @@ export const useCreateRole = () => {
 
 export function useUpdateRole(id: string) {
   const queryClient = useQueryClient();
+  const { successToast, errorToast } = useCustomToast();
+  const t = useTranslations('lib.hooks.roles');
 
   return useMutation({
     mutationFn: (roleData: RoleUpdateService) =>
       RoleService.updateRole(id, roleData),
     onSuccess: () => {
+      successToast(t('responses.updateSuccess'));
       queryClient.invalidateQueries({
         queryKey: [`/roles/${id}`],
       });
       queryClient.invalidateQueries({ queryKey: ['/roles'] });
+    },
+    onError: (error: any) => {
+      const message = error.response?.data?.message || t('responses.updateError');
+      errorToast(message);
     },
   });
 }
@@ -80,16 +89,17 @@ export function useUpdateRole(id: string) {
 export const useDeleteRole = () => {
   const queryClient = useQueryClient();
   const { successToast, errorToast } = useCustomToast();
+  const t = useTranslations('lib.hooks.roles');
 
   return useMutation({
     mutationFn: (id: string) => RoleService.deleteRole(id),
     onSuccess: (data, id) => {
-      successToast('Rol eliminado exitosamente');
+      successToast(t('responses.deleteSuccess'));
       queryClient.invalidateQueries({ queryKey: ['/roles'] });
     },
     onError: (error: any) => {
       const message =
-        error.response?.data?.message || 'Error al eliminar el rol';
+        error.response?.data?.message || t('responses.deleteError');
       errorToast(message);
     },
   });

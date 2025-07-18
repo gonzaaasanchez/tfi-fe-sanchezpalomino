@@ -30,7 +30,6 @@ import { pick } from 'lodash';
 import { useRouter } from 'next/router';
 import { useGetRole } from 'lib/hooks';
 import { Loader } from 'components/shared';
-import { Role } from 'lib/types/role';
 
 interface ViewRolePageProps {
   id: string;
@@ -38,6 +37,7 @@ interface ViewRolePageProps {
 
 const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
   const t = useTranslations('pages.roles.view');
+  const tGeneral = useTranslations('general');
   const router = useRouter();
   const { role, isPending } = useGetRole({ id });
 
@@ -72,7 +72,7 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
       py={1}
       fontSize="12px"
     >
-      {hasPermission ? t('permissions.allowed') : t('permissions.denied')}
+      {hasPermission ? tGeneral('permissions.status.allowed') : tGeneral('permissions.status.denied')}
     </Badge>
   );
 
@@ -94,7 +94,7 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
               size="sm"
               color="brand1.700"
             >
-              {t(`permissions.modules.${moduleName}`)}
+              {tGeneral(`permissions.modules.${moduleName}`)}
             </Heading>
             <VStack
               spacing={2}
@@ -107,7 +107,7 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
                   fontSize="sm"
                 >
                   <Text color="gray.600">
-                    {t(`permissions.actions.${permission}`)}
+                    {tGeneral(`permissions.actions.${permission}`)}
                   </Text>
                   {renderPermissionBadge(permissions[permission])}
                 </HStack>
@@ -221,7 +221,10 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
                   {t('sections.roleInfo')}
                 </Heading>
 
-                <VStack spacing={4} align="stretch">
+                <VStack
+                  spacing={4}
+                  align="stretch"
+                >
                   <HStack justify="space-between">
                     <Text
                       fontWeight="semibold"
@@ -229,9 +232,7 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
                     >
                       {t('fields.id')}:
                     </Text>
-                    <Text color="gray.600">
-                      {role.id}
-                    </Text>
+                    <Text color="gray.600">{role.id}</Text>
                   </HStack>
 
                   <HStack justify="space-between">
@@ -241,9 +242,7 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
                     >
                       {t('fields.name')}:
                     </Text>
-                    <Text color="gray.600">
-                      {role.name}
-                    </Text>
+                    <Text color="gray.600">{role.name}</Text>
                   </HStack>
 
                   {role.description && (
@@ -254,9 +253,7 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
                       >
                         {t('fields.description')}:
                       </Text>
-                      <Text color="gray.600">
-                        {role.description}
-                      </Text>
+                      <Text color="gray.600">{role.description}</Text>
                     </HStack>
                   )}
 
@@ -284,7 +281,10 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
                 <Divider />
 
                 {/* Timestamps */}
-                <VStack spacing={4} align="stretch">
+                <VStack
+                  spacing={4}
+                  align="stretch"
+                >
                   {role.createdAt && (
                     <HStack justify="space-between">
                       <Text
@@ -347,45 +347,11 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
                   templateColumns="repeat(auto-fit, minmax(300px, 1fr))"
                   gap={4}
                 >
-                  <GridItem>
-                    {renderModuleCard('users', role.permissions.users)}
-                  </GridItem>
-                  <GridItem>
-                    {renderModuleCard('roles', role.permissions.roles)}
-                  </GridItem>
-                  <GridItem>
-                    {renderModuleCard('admins', role.permissions.admins)}
-                  </GridItem>
-                  <GridItem>
-                    {renderModuleCard('logs', role.permissions.logs)}
-                  </GridItem>
-                  <GridItem>
-                    {renderModuleCard('petTypes', role.permissions.petTypes)}
-                  </GridItem>
-                  <GridItem>
-                    {renderModuleCard(
-                      'petCharacteristics',
-                      role.permissions.petCharacteristics
-                    )}
-                  </GridItem>
-                  <GridItem>
-                    {renderModuleCard('pets', role.permissions.pets)}
-                  </GridItem>
-                  <GridItem>
-                    {renderModuleCard(
-                      'caregiverSearch',
-                      role.permissions.caregiverSearch
-                    )}
-                  </GridItem>
-                  <GridItem>
-                    {renderModuleCard(
-                      'reservations',
-                      role.permissions.reservations
-                    )}
-                  </GridItem>
-                  <GridItem>
-                    {renderModuleCard('reviews', role.permissions.reviews)}
-                  </GridItem>
+                  {Object.entries(role.permissions).map(([moduleName, permissions]) => (
+                    <GridItem key={moduleName}>
+                      {renderModuleCard(moduleName, permissions)}
+                    </GridItem>
+                  ))}
                 </Grid>
               </VStack>
             </CardBody>
@@ -420,6 +386,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'pages.roles.index',
         'layouts.private.header',
         'general.common',
+        'general.permissions',
       ]),
     },
   };

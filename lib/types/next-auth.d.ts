@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import { User } from '@interfaces/user';
+import { Permissions } from './role';
 
 declare module 'next-auth' {
   /**
@@ -15,7 +16,7 @@ declare module 'next-auth' {
         id: string;
         name: string;
         description?: string;
-        permissions: Record<string, any>;
+        permissions: Permissions;
         isSystem?: boolean;
         createdAt?: string;
         updatedAt?: string;
@@ -37,7 +38,7 @@ declare module 'next-auth' {
         id: string;
         name: string;
         description?: string;
-        permissions: Record<string, any>;
+        permissions: Permissions;
         isSystem?: boolean;
         createdAt?: string;
         updatedAt?: string;

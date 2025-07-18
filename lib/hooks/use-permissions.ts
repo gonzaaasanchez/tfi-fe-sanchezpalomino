@@ -7,18 +7,7 @@ export const usePermissions = () => {
   
   const hasPermission = (module: string, action: string): boolean => {
     if (!userPermissions[module]) return false;
-    
-      // If the module has specific permissions
-  if (typeof userPermissions[module] === 'object') {
     return userPermissions[module][action] === true;
-  }
-  
-  // If the module is an array of allowed actions
-  if (Array.isArray(userPermissions[module])) {
-      return userPermissions[module].includes(action);
-    }
-    
-    return false;
   };
   
   const canCreate = (module: string): boolean => hasPermission(module, 'create');

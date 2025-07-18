@@ -1,8 +1,5 @@
-import { PetCharacteristic } from './petCharacteristic';
-import { User, Admin } from './user';
-import { PetType } from './petType';
-import { Role } from './role';
-import { PaginationMetadata } from './response';
+import { Admin } from './user';
+import { Permissions } from './role';
 
 // Admin Services
 export type AdminSignInService =
@@ -31,23 +28,12 @@ export type AuthResetPasswordService = {
 
 export type RoleCreateService = {
   name: string;
-  permissions: {
-    users?: string[];
-    pets?: string[];
-    roles?: string[];
-    admins?: string[];
-    logs?: string[];
-    petTypes?: string[];
-    petCharacteristics?: string[];
-    caregiverSearch?: string[];
-    reservations?: string[];
-    reviews?: string[];
-  };
+  permissions: Permissions;
 };
 
 export type RoleUpdateService = {
   name?: string;
-  permissions?: Partial<RoleCreateService['permissions']>;
+  permissions?: Partial<Permissions>;
 };
 
 export type RoleSearchService = {

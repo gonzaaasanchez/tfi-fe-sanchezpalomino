@@ -1,7 +1,8 @@
 import { ReactElement, useState } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 import { NextSeo } from 'next-seo';
-import { Box, Heading, Text, VStack} from '@chakra-ui/react';
+import { Box, Heading, Text, VStack, Button } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
 import { GetServerSideProps } from 'next';
 import { pick } from 'lodash';
@@ -11,6 +12,7 @@ import { createStandardTableActions } from 'lib/helpers/table-utils';
 import { Role } from 'lib/types/role';
 import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
+import { PermissionGuard } from 'components/shared/permission-guard';
 
 const Roles: NextPageWithLayout = () => {
   const t = useTranslations('pages.roles');
@@ -95,6 +97,22 @@ const Roles: NextPageWithLayout = () => {
             {t('description')}
           </Text>
         </Box>
+
+        {/* Create new role button */}
+        <PermissionGuard
+          module="roles"
+          action="create"
+        >
+          <Box>
+            <Button
+              leftIcon={<AddIcon />}
+              float="right"
+              onClick={() => router.push('/roles/create')}
+            >
+              {t('cta.createRole')}
+            </Button>
+          </Box>
+        </PermissionGuard>
 
         <TableComponent
           rows={roles || []}
