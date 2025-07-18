@@ -1,3 +1,4 @@
+import { PetService } from './pet';
 export { RoleService } from './role';
 export { ClientApi } from './api/ssc';
 export { UserService } from './user';
@@ -6,3 +7,4 @@ export { AdminService } from './admin';
 export { PetTypeService } from './petTypes';
 export { PetCharacteristicService } from './petCharacteristic';
 export { ReviewService } from './review';
+export { PetService } from './pet';

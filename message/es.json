@@ -823,6 +823,69 @@
         }
       }
     },
+    "pets": {
+      "index": {
+        "meta": {
+          "title": "Mascotas",
+          "description": "Gestión de mascotas del sistema"
+        },
+        "title": "Mascotas",
+        "description": "Administra las mascotas del sistema",
+        "emptyText": "No hay mascotas disponibles",
+        "columns": {
+          "id": "ID",
+          "name": "Nombre",
+          "petType": "Tipo de Mascota",
+          "owner": "Propietario",
+          "characteristics": "Características",
+          "createdAt": "Fecha de Creación"
+        },
+        "actions": {
+          "view": {
+            "label": "Ver",
+            "tooltip": "Ver detalles de la mascota"
+          },
+          "edit": {
+            "label": "Editar",
+            "tooltip": "Editar mascota"
+          },
+          "delete": {
+            "label": "Eliminar",
+            "tooltip": "Eliminar mascota"
+          }
+        }
+      },
+      "view": {
+        "meta": {
+          "title": "Mascota",
+          "description": "Ver detalles de la mascota"
+        },
+        "title": "Detalles de la Mascota",
+        "description": "Información completa de la mascota",
+        "breadcrumb": {
+          "home": "Inicio",
+          "pets": "Mascotas",
+          "view": "Ver"
+        },
+        "actions": {
+          "back": "Volver"
+        },
+        "sections": {
+          "petInfo": "Información de la Mascota"
+        },
+        "fields": {
+          "id": "ID",
+          "name": "Nombre",
+          "petType": "Tipo de Mascota",
+          "comment": "Comentario",
+          "owner": "Propietario",
+          "characteristics": "Características",
+          "createdAt": "Fecha de Creación",
+          "updatedAt": "Última Actualización"
+        },
+        "notFound": "Mascota no encontrada"
+      }
+    },
     "staticLabels": {
       "floor": "Piso",
       "apartment": "Departamento",

@@ -5,4 +5,5 @@ export * from './use-permissions';
 export * from './use-users';
 export * from './use-pet-types';
 export * from './use-pet-characteristics';
+export * from './use-pets';
 export * from './use-reservations'; 
