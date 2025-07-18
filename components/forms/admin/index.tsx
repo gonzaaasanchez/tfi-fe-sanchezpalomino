@@ -9,7 +9,7 @@ import {
   Select,
   VStack,
   HStack,
-  useColorModeValue
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { emailPattern } from '@helpers/field-validators';
 import { useTranslations } from 'next-intl';
@@ -17,6 +17,8 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { AdminFormType } from 'lib/types/forms';
 import { FormErrorIcon } from 'components/icons/src/form-error-icon';
 import { useCreateAdmin, useUpdateAdmin } from '@hooks/use-admins';
+import { useGetRoles } from '@hooks/use-roles';
+import React from 'react';
 
 interface AdminFormProps {
   mode: 'create' | 'edit';
@@ -33,44 +35,72 @@ export const AdminForm: React.FC<AdminFormProps> = ({
   defaultValues,
   onSuccess,
   onCancel,
-  id
+  id,
 }) => {
   const t = useTranslations('components.forms.admin');
   const te = useTranslations('general.form.errors');
-  const methods = useForm<AdminFormType>({ 
+  const { roles, isPending: isLoadingRoles } = useGetRoles();
+
+  // Memoizar defaultValues para evitar re-renders innecesarios
+  const memoizedDefaultValues = React.useMemo(
+    () => ({
+      firstName: defaultValues?.firstName || '',
+      lastName: defaultValues?.lastName || '',
+      email: defaultValues?.email || '',
+      password: defaultValues?.password || '',
+      role: '',
+    }),
+    [defaultValues]
+  );
+
+  const methods = useForm<AdminFormType>({
     mode: 'all',
-    defaultValues: defaultValues || {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      role: 'admin'
-    }
+    defaultValues: memoizedDefaultValues,
   });
-  
+
   const {
     formState: { errors, isValid },
     handleSubmit,
     register,
-    reset
+    reset,
+    setValue,
   } = methods;
 
   const createAdminMutation = useCreateAdmin();
   const updateAdminMutation = useUpdateAdmin(id || '');
-  
+
   const bgColor = useColorModeValue('white', 'gray.800');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
+
+  // Establecer el rol cuando los roles se cargan en modo edición
+  React.useEffect(() => {
+    if (mode === 'edit' && roles && roles.length > 0 && defaultValues?.role) {
+      // Filtrar roles no de sistema
+      const nonSystemRoles = roles.filter((role) => !role.isSystem);
+      const roleExists = nonSystemRoles.some((role) => role.id === defaultValues.role);
+      
+      if (roleExists) {
+        setValue('role', defaultValues.role);
+      }
+    }
+  }, [roles, mode, defaultValues?.role, setValue]);
 
   const onSubmit = async (data: AdminFormType) => {
     try {
       if (mode === 'edit') {
         // Para edición, solo enviar campos que han cambiado
-        const updateData: any = {};
-        if (data.firstName !== defaultValues?.firstName) updateData.firstName = data.firstName;
-        if (data.lastName !== defaultValues?.lastName) updateData.lastName = data.lastName;
+        const updateData: Partial<AdminFormType> = {};
+
+        if (data.firstName !== defaultValues?.firstName)
+          updateData.firstName = data.firstName;
+        if (data.lastName !== defaultValues?.lastName)
+          updateData.lastName = data.lastName;
         if (data.email !== defaultValues?.email) updateData.email = data.email;
-        if (data.password) updateData.password = data.password; // Solo si se proporciona nueva contraseña
-        if (data.role !== defaultValues?.role) updateData.roleId = data.role;
+        if (data.role !== defaultValues?.role) updateData.role = data.role;
+        // Solo enviar password si se proporciona una nueva contraseña
+        if (data.password && data.password.trim() !== '') {
+          updateData.password = data.password;
+        }
 
         await updateAdminMutation.mutateAsync(updateData);
       } else {
@@ -80,7 +110,7 @@ export const AdminForm: React.FC<AdminFormProps> = ({
           lastName: data.lastName,
           email: data.email,
           password: data.password,
-          role: data.role
+          role: data.role,
         });
       }
 
@@ -93,7 +123,32 @@ export const AdminForm: React.FC<AdminFormProps> = ({
     }
   };
 
-  const isLoading = mode === 'edit' ? updateAdminMutation.isPending : createAdminMutation.isPending;
+  const isLoading =
+    mode === 'edit'
+      ? updateAdminMutation.isPending
+      : createAdminMutation.isPending;
+
+  // Memoizar las opciones del select para evitar re-renders
+  const roleOptions = React.useMemo(
+    () =>
+      roles
+        ?.filter((role) => !role.isSystem)
+        .map((role) => (
+          <option
+            key={role.id}
+            value={role.id}
+          >
+            {role.name}
+          </option>
+        )) || [],
+    [roles]
+  );
+
+  // Memoizar el placeholder para evitar re-renders
+  const rolePlaceholder = React.useMemo(
+    () => (isLoadingRoles ? t('loading.roles') : t('placeholders.role')),
+    [isLoadingRoles, t]
+  );
 
   return (
     <FormProvider {...methods}>
@@ -106,21 +161,35 @@ export const AdminForm: React.FC<AdminFormProps> = ({
         shadow="sm"
       >
         {title && (
-          <Heading as="h3" color="brand1.700" size="h3" textAlign="center" mb={6}>
+          <Heading
+            as="h3"
+            color="brand1.700"
+            size="h3"
+            textAlign="center"
+            mb={6}
+          >
             {title}
           </Heading>
         )}
-        
-        <Box as="form" noValidate mt={10} onSubmit={handleSubmit(onSubmit)}>
+
+        <Box
+          as="form"
+          noValidate
+          mt={10}
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <VStack spacing={4}>
             {/* Name Fields */}
-            <HStack spacing={4} w="full">
+            <HStack
+              spacing={4}
+              w="full"
+            >
               <FormControl isInvalid={!!errors.firstName}>
                 <FormLabel>{t('labels.firstName')}</FormLabel>
                 <Input
                   placeholder={t('placeholders.firstName')}
                   {...register('firstName', {
-                    required: te('required')
+                    required: te('required'),
                   })}
                 />
                 <FormErrorMessage>
@@ -134,7 +203,7 @@ export const AdminForm: React.FC<AdminFormProps> = ({
                 <Input
                   placeholder={t('placeholders.lastName')}
                   {...register('lastName', {
-                    required: te('required')
+                    required: te('required'),
                   })}
                 />
                 <FormErrorMessage>
@@ -151,7 +220,7 @@ export const AdminForm: React.FC<AdminFormProps> = ({
                 placeholder={t('placeholders.email')}
                 {...register('email', {
                   required: te('required'),
-                  pattern: emailPattern(te('email'))
+                  pattern: emailPattern(te('email')),
                 })}
               />
               <FormErrorMessage>
@@ -160,36 +229,39 @@ export const AdminForm: React.FC<AdminFormProps> = ({
               </FormErrorMessage>
             </FormControl>
 
-            {/* Password */}
-            <FormControl isInvalid={!!errors.password}>
-              <FormLabel>{t('labels.password')}</FormLabel>
-              <Input
-                type="password"
-                placeholder={t('placeholders.password')}
-                {...register('password', {
-                  required: te('required'),
-                  minLength: {
-                    value: 6,
-                    message: t('validation.passwordMinLength')
-                  }
-                })}
-              />
-              <FormErrorMessage>
-                <FormErrorIcon me={1} />
-                {errors.password && errors.password.message}
-              </FormErrorMessage>
-            </FormControl>
+            {/* Password - Solo mostrar en modo creación */}
+            {mode === 'create' && (
+              <FormControl isInvalid={!!errors.password}>
+                <FormLabel>{t('labels.password')}</FormLabel>
+                <Input
+                  type="password"
+                  placeholder={t('placeholders.password')}
+                  {...register('password', {
+                    required: mode === 'create' ? te('required') : false,
+                    minLength: {
+                      value: 6,
+                      message: t('validation.passwordMinLength'),
+                    },
+                  })}
+                />
+                <FormErrorMessage>
+                  <FormErrorIcon me={1} />
+                  {errors.password && errors.password.message}
+                </FormErrorMessage>
+              </FormControl>
+            )}
 
             {/* Role */}
             <FormControl isInvalid={!!errors.role}>
               <FormLabel>{t('labels.role')}</FormLabel>
               <Select
-                placeholder={t('placeholders.role')}
+                placeholder={rolePlaceholder}
                 {...register('role', {
-                  required: te('requiredSelect')
+                  required: te('requiredSelect'),
                 })}
+                isDisabled={isLoadingRoles}
               >
-                <option value="admin">{t('options.admin')}</option>
+                {roleOptions}
               </Select>
               <FormErrorMessage>
                 <FormErrorIcon me={1} />
@@ -198,7 +270,12 @@ export const AdminForm: React.FC<AdminFormProps> = ({
             </FormControl>
 
             {/* Action Buttons */}
-            <HStack spacing={4} w="full" justify="center" pt={4}>
+            <HStack
+              spacing={4}
+              w="full"
+              justify="center"
+              pt={4}
+            >
               <Button
                 variant="outline"
                 onClick={onCancel}
@@ -210,7 +287,11 @@ export const AdminForm: React.FC<AdminFormProps> = ({
                 type="submit"
                 isLoading={isLoading}
                 isDisabled={!isValid || isLoading}
-                loadingText={mode === 'edit' ? t('loading.updating') : t('loading.creating')}
+                loadingText={
+                  mode === 'edit'
+                    ? t('loading.updating')
+                    : t('loading.creating')
+                }
               >
                 {mode === 'edit' ? t('cta.update') : t('cta.create')}
               </Button>

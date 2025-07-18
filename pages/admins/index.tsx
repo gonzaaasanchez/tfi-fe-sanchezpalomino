@@ -1,12 +1,12 @@
 import { ReactElement, useState } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 import { NextSeo } from 'next-seo';
-import { 
-  Box, 
-  Heading, 
-  Text, 
-  VStack, 
-  Button, 
+import {
+  Box,
+  Heading,
+  Text,
+  VStack,
+  Button,
   Tag,
   AlertDialog,
   AlertDialogBody,
@@ -14,7 +14,7 @@ import {
   AlertDialogHeader,
   AlertDialogContent,
   AlertDialogOverlay,
-  useDisclosure
+  useDisclosure,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
@@ -34,12 +34,12 @@ const AdminPage: NextPageWithLayout = () => {
   const t = useTranslations('pages.admins.index');
   const router = useRouter();
   const { admins, search, setSearch, isPending } = useGetAdmins({ limit: 10 });
-  
+
   // Estados para el modal de confirmación
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [adminToDelete, setAdminToDelete] = useState<Admin | null>(null);
   const cancelRef = useRef<HTMLButtonElement>(null);
-  
+
   // Hook para eliminar administrador
   const deleteAdminMutation = useDeleteAdmin();
 
@@ -50,25 +50,25 @@ const AdminPage: NextPageWithLayout = () => {
       width: '80px',
       align: 'center' as const,
       sortable: true,
-      sortKey: 'id'
+      sortKey: 'id',
     },
     {
       key: 'firstName',
       label: t('columns.firstName'),
       sortable: true,
-      sortKey: 'firstName'
+      sortKey: 'firstName',
     },
     {
       key: 'lastName',
       label: t('columns.lastName'),
       sortable: true,
-      sortKey: 'lastName'
+      sortKey: 'lastName',
     },
     {
       key: 'email',
       label: t('columns.email'),
       sortable: true,
-      sortKey: 'email'
+      sortKey: 'email',
     },
     {
       key: 'role.name',
@@ -85,20 +85,30 @@ const AdminPage: NextPageWithLayout = () => {
         >
           {item.role?.name || '-'}
         </Tag>
-      )
-    }
+      ),
+    },
   ];
 
   const actions: Action[] = createStandardTableActions({
     module: 'admins',
     translations: {
-      view: { label: t('actions.view.label'), tooltip: t('actions.view.tooltip') },
-      edit: { label: t('actions.edit.label'), tooltip: t('actions.edit.tooltip') },
-      delete: { label: t('actions.delete.label'), tooltip: t('actions.delete.tooltip') }
+      view: {
+        label: t('actions.view.label'),
+        tooltip: t('actions.view.tooltip'),
+      },
+      edit: {
+        label: t('actions.edit.label'),
+        tooltip: t('actions.edit.tooltip'),
+      },
+      delete: {
+        label: t('actions.delete.label'),
+        tooltip: t('actions.delete.tooltip'),
+      },
     },
     customDisabledRules: {
-      delete: (item: Admin) => item.role?.name === 'superadmin'
-    }
+      delete: (item: Admin) => item.role?.isSystem,
+      edit: (item: Admin) => item.role?.isSystem,
+    },
   });
 
   const handleAction = (actionName: string, item: Admin) => {
@@ -120,7 +130,7 @@ const AdminPage: NextPageWithLayout = () => {
 
   const handleDeleteConfirm = async () => {
     if (!adminToDelete) return;
-    
+
     try {
       await deleteAdminMutation.mutateAsync(adminToDelete.id ?? '');
       onClose();
@@ -141,19 +151,28 @@ const AdminPage: NextPageWithLayout = () => {
         title={t('meta.title')}
         description={t('meta.description')}
       />
-      
-      <VStack spacing={6} align="stretch" p={6}>
+
+      <VStack
+        spacing={6}
+        align="stretch"
+        p={6}
+      >
         <Box>
-          <Heading size="lg" mb={2} color="gray.800">
+          <Heading
+            size="lg"
+            mb={2}
+            color="gray.800"
+          >
             {t('title')}
           </Heading>
-          <Text color="gray.800">
-            {t('description')}
-          </Text>
+          <Text color="gray.800">{t('description')}</Text>
         </Box>
 
         {/* Create new administrator button */}
-        <PermissionGuard module="admins" action="create">
+        <PermissionGuard
+          module="admins"
+          action="create"
+        >
           <Box>
             <Button
               leftIcon={<AddIcon />}
@@ -166,7 +185,10 @@ const AdminPage: NextPageWithLayout = () => {
         </PermissionGuard>
 
         {/* Administrators table */}
-        <PermissionGuard module="admins" action="getAll">
+        <PermissionGuard
+          module="admins"
+          action="getAll"
+        >
           <TableComponent
             rows={admins || []}
             columns={columns}
@@ -189,14 +211,17 @@ const AdminPage: NextPageWithLayout = () => {
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+            <AlertDialogHeader
+              fontSize="lg"
+              fontWeight="bold"
+            >
               {t('deleteDialog.title')}
             </AlertDialogHeader>
 
             <AlertDialogBody>
               {t('deleteDialog.message', {
                 firstName: adminToDelete?.firstName || '',
-                lastName: adminToDelete?.lastName || ''
+                lastName: adminToDelete?.lastName || '',
               })}
               <br />
               <br />
@@ -204,7 +229,10 @@ const AdminPage: NextPageWithLayout = () => {
             </AlertDialogBody>
 
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={handleDeleteCancel}>
+              <Button
+                ref={cancelRef}
+                onClick={handleDeleteCancel}
+              >
                 {t('deleteDialog.cancel')}
               </Button>
               <Button
@@ -244,10 +272,10 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.shared.permission-guard',
         'components.shared.pagination',
         'components.shared.table',
-        'general.common'
-      ])
-    }
+        'general.common',
+      ]),
+    },
   };
-}
+};
 
 export default AdminPage;

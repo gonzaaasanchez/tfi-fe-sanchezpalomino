@@ -38,7 +38,8 @@
         },
         "loading": {
           "creating": "Creando...",
-          "updating": "Actualizando..."
+          "updating": "Actualizando...",
+          "roles": "Cargando roles..."
         },
         "options": {
           "admin": "Administrador"

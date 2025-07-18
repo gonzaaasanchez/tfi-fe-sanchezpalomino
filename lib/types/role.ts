@@ -2,6 +2,7 @@ export interface Role {
   id?: string;
   name: string;
   description?: string;
+  isSystem: boolean;
   permissions: {
     users: {
       create: boolean;

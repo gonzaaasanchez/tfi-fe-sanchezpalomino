@@ -74,13 +74,13 @@ export const sidebarModules: SidebarModule[] = [
     module: 'reservations',
     action: 'getAll',
   },
-  {
-    name: 'Reseñas',
-    path: '/reviews',
-    icon: ChatIcon,
-    module: 'reviews',
-    action: 'getAll',
-  },
+  // {
+  //   name: 'Reseñas',
+  //   path: '/reviews',
+  //   icon: ChatIcon,
+  //   module: 'reviews',
+  //   action: 'getAll',
+  // },
   {
     name: 'Logs',
     path: '/logs',

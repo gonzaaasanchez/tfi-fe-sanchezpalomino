@@ -132,7 +132,7 @@ const EditAdminPage: NextPageWithLayout<EditAdminPageProps> = ({ id }) => {
               lastName: admin.lastName,
               email: admin.email,
               password: '',
-              role: admin.role?.id || 'admin',
+              role: admin.role?.id || '',
             }}
             id={id as string}
           />

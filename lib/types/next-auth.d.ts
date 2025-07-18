@@ -12,7 +12,7 @@ declare module 'next-auth' {
       lastName: string;
       email: string;
       role: {
-        _id: string;
+        id: string;
         name: string;
         description?: string;
         permissions: Record<string, any>;
@@ -34,7 +34,7 @@ declare module 'next-auth' {
       lastName: string;
       email: string;
       role: {
-        _id: string;
+        id: string;
         name: string;
         description?: string;
         permissions: Record<string, any>;
