@@ -369,7 +369,6 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
           {/* Audit Card */}
           <AuditPage
             logs={logsData?.data || []}
-            title="Historial de Cambios"
             subtitle={t('audit.description')}
             t={t}
             isLoading={isLogsPending}

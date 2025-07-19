@@ -6,8 +6,7 @@ import { useTranslations } from 'next-intl';
 
 interface AuditPageProps {
   logs: Log[];
-  title: string;
-  subtitle?: string;
+  subtitle: string;
   t: (key: string) => string;
   isLoading?: boolean;
   emptyText?: string;
@@ -15,7 +14,6 @@ interface AuditPageProps {
 
 export const AuditPage: React.FC<AuditPageProps> = ({
   logs,
-  title,
   subtitle,
   t,
   isLoading,
@@ -48,7 +46,7 @@ export const AuditPage: React.FC<AuditPageProps> = ({
               size="sm"
               color="brand1.700"
             >
-              {title}
+              {generalT('title')}
             </Heading>
             <Text
               color="gray.500"
@@ -75,7 +73,7 @@ export const AuditPage: React.FC<AuditPageProps> = ({
               size="sm"
               color="brand1.700"
             >
-              {title}
+              {generalT('title')}
             </Heading>
             {subtitle && (
               <Text
@@ -109,7 +107,7 @@ export const AuditPage: React.FC<AuditPageProps> = ({
             size="sm"
             color="brand1.700"
           >
-            {title}
+            {generalT('title')}
           </Heading>
           {subtitle && (
             <Text

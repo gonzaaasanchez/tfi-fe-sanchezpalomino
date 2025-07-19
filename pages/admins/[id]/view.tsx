@@ -24,8 +24,9 @@ import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
 import { useGetAdmin } from '@hooks/use-admins';
+import { useGetEntityLogs } from 'lib/hooks';
 import { PermissionGuard } from 'components/shared/permission-guard';
-import { Loader } from 'components/shared';
+import { Loader, AuditPage } from 'components/shared';
 import { ReactElement } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 
@@ -40,6 +41,11 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
   const { admin, isPending: isLoadingAdmin } = useGetAdmin({
     id: id as string,
   });
+
+  const { data: logsData, isPending: isLogsPending } = useGetEntityLogs(
+    'Admin',
+    id
+  );
 
   const handleEdit = () => {
     router.push(`/admins/${id}/edit`);
@@ -270,6 +276,15 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
               </VStack>
             </CardBody>
           </Card>
+
+          {/* Audit Card */}
+          <AuditPage
+            logs={logsData?.data || []}
+            subtitle={t('audit.description')}
+            t={t}
+            isLoading={isLogsPending}
+            emptyText={t('audit.noChanges')}
+          />
         </VStack>
       </Container>
     </>
@@ -301,6 +316,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'pages.admins.index',
         'components.shared.permission-guard',
         'general.common',
+        'general.audit',
       ]),
     },
   };

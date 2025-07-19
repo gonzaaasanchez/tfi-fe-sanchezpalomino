@@ -484,6 +484,10 @@
           "role": "Rol",
           "createdAt": "Fecha de Creación",
           "updatedAt": "Última Actualización"
+        },
+        "audit": {
+          "description": "Registro de todas las modificaciones realizadas en este administrador",
+          "noChanges": "No se han registrado cambios en este administrador"
         }
       }
     },
