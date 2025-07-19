@@ -81,8 +81,6 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
     </Badge>
   );
 
-
-
   const renderModuleCard = (moduleName: string, permissions: any) => {
     const permissionKeys = Object.keys(permissions);
 
@@ -252,17 +250,17 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
                     <Text color="gray.600">{role.name}</Text>
                   </HStack>
 
-                  {role.description && (
-                    <HStack justify="space-between">
-                      <Text
-                        fontWeight="semibold"
-                        color="gray.700"
-                      >
-                        {t('fields.description')}:
-                      </Text>
-                      <Text color="gray.600">{role.description}</Text>
-                    </HStack>
-                  )}
+                  <HStack justify="space-between" align="flex-start">
+                    <Text
+                      fontWeight="semibold"
+                      color="gray.700"
+                    >
+                      {t('fields.description')}:
+                    </Text>
+                    <Text color="gray.600" textAlign="right">
+                      {role.description}
+                    </Text>
+                  </HStack>
 
                   <HStack justify="space-between">
                     <Text
