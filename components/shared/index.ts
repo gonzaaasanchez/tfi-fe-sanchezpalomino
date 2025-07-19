@@ -1,7 +1,8 @@
-export { default as TableComponent } from './table';
-export type { Column, Action, TableProps } from './table';
-export { default as Filters } from './filters';
-export { default as Pagination } from './pagination';
+export * from './pagination';
+export * from './table';
+export * from './permission-guard';
+export { default as Loader } from './loader';
+export type { TableProps, Column, Action } from './table';
 export type { PaginationProps } from './pagination';
-export { PermissionGuard } from './permission-guard';
-export { default as Loader } from './loader'; 
+export { AuditChangeCard } from './audit-change-card';
+export { AuditPage } from './audit-page';

@@ -15,7 +15,6 @@ import {
   HStack,
   Badge,
   Divider,
-  SimpleGrid,
   Card,
   CardBody,
   Grid,
@@ -28,8 +27,8 @@ import { GetServerSideProps } from 'next';
 import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
 import { useRouter } from 'next/router';
-import { useGetRole } from 'lib/hooks';
-import { Loader } from 'components/shared';
+import { useGetRole, useGetEntityLogs } from 'lib/hooks';
+import { Loader, AuditPage } from 'components/shared';
 
 interface ViewRolePageProps {
   id: string;
@@ -40,6 +39,10 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
   const tGeneral = useTranslations('general');
   const router = useRouter();
   const { role, isPending } = useGetRole({ id });
+  const { data: logsData, isPending: isLogsPending } = useGetEntityLogs(
+    'Role',
+    id
+  );
 
   const handleEdit = () => {
     router.push(`/roles/${id}/edit`);
@@ -72,9 +75,13 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
       py={1}
       fontSize="12px"
     >
-      {hasPermission ? tGeneral('permissions.status.allowed') : tGeneral('permissions.status.denied')}
+      {hasPermission
+        ? tGeneral('permissions.status.allowed')
+        : tGeneral('permissions.status.denied')}
     </Badge>
   );
+
+
 
   const renderModuleCard = (moduleName: string, permissions: any) => {
     const permissionKeys = Object.keys(permissions);
@@ -347,15 +354,27 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
                   templateColumns="repeat(auto-fit, minmax(300px, 1fr))"
                   gap={4}
                 >
-                  {Object.entries(role.permissions).map(([moduleName, permissions]) => (
-                    <GridItem key={moduleName}>
-                      {renderModuleCard(moduleName, permissions)}
-                    </GridItem>
-                  ))}
+                  {Object.entries(role.permissions).map(
+                    ([moduleName, permissions]) => (
+                      <GridItem key={moduleName}>
+                        {renderModuleCard(moduleName, permissions)}
+                      </GridItem>
+                    )
+                  )}
                 </Grid>
               </VStack>
             </CardBody>
           </Card>
+
+          {/* Audit Card */}
+          <AuditPage
+            logs={logsData?.data || []}
+            title="Historial de Cambios"
+            subtitle={t('audit.description')}
+            t={t}
+            isLoading={isLogsPending}
+            emptyText={t('audit.noChanges')}
+          />
         </VStack>
       </Container>
     </>
@@ -387,6 +406,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'layouts.private.header',
         'general.common',
         'general.permissions',
+        'general.audit',
       ]),
     },
   };

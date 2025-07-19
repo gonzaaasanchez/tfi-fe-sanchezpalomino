@@ -29,6 +29,19 @@
         "denied": "Denegado"
       }
     },
+    "audit": {
+      "title": "Historial de Cambios",
+      "loading": "Cargando historial de cambios...",
+      "noChanges": "No se han registrado cambios",
+      "labels": {
+        "oldValue": "Valor anterior",
+        "newValue": "Nuevo valor"
+      },
+      "text": {
+        "userPrefix": "El usuario ",
+        "changesSuffix": " hizo los siguientes cambios el "
+      }
+    },
     "form": {
       "errors": {
         "email": "Correo electrónico inválido",
@@ -837,7 +850,7 @@
           "back": "Volver",
           "edit": "Editar"
         },
-        "sections": {
+                "sections": {
           "roleInfo": "Información del Rol",
           "permissions": "Permisos",
           "timestamps": "Fechas"
@@ -851,6 +864,10 @@
           "customRole": "Rol Personalizado",
           "createdAt": "Fecha de Creación",
           "updatedAt": "Última Actualización"
+        },
+        "audit": {
+          "description": "Registro de todas las modificaciones realizadas en este rol",
+          "noChanges": "No se han registrado cambios en este rol"
         },
         "permissions": {
           "allowed": "Permitido",

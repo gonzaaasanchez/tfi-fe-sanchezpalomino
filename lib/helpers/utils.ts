@@ -33,3 +33,46 @@ export const getReservationStatusConfig = (
       return { label: status, color: 'gray' };
   }
 };
+
+export interface PermissionChange {
+  module: string;
+  action: string;
+  oldValue: boolean;
+  newValue: boolean;
+  changeType: 'enabled' | 'disabled';
+}
+
+export function detectPermissionChanges(oldPermissions: any, newPermissions: any): PermissionChange[] {
+  const changes: PermissionChange[] = [];
+  
+  // Iterar sobre todos los módulos
+  for (const moduleName in oldPermissions) {
+    const oldModule = oldPermissions[moduleName];
+    const newModule = newPermissions[moduleName];
+    
+    // Si el módulo no existe en el nuevo objeto, saltar
+    if (!newModule) continue;
+    
+    // Iterar sobre todas las acciones del módulo
+    for (const actionName in oldModule) {
+      const oldValue = oldModule[actionName];
+      const newValue = newModule[actionName];
+      
+      // Si la acción no existe en el nuevo módulo, saltar
+      if (newValue === undefined) continue;
+      
+      // Si los valores son diferentes, registrar el cambio
+      if (oldValue !== newValue) {
+        changes.push({
+          module: moduleName,
+          action: actionName,
+          oldValue,
+          newValue,
+          changeType: newValue ? 'enabled' : 'disabled'
+        });
+      }
+    }
+  }
+  
+  return changes;
+}
