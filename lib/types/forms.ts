@@ -37,3 +37,23 @@ export type RoleFormType = {
   description?: string;
   permissions: Permissions;
 };
+export interface FilterField {
+  name: string;
+  label: string;
+  tooltip?: string;
+  value?: any;
+  component: React.ComponentType<any>;
+  componentProps?: Record<string, any>;
+}
+
+export interface FiltersFormData {
+  [key: string]: any;
+}
+
+export interface FiltersProps {
+  title?: string;
+  filters: FilterField[];
+  onSubmit: (filters: FiltersFormData) => void;
+  onReset: () => void;
+  loading?: boolean;
+}

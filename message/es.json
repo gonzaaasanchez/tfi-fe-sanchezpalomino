@@ -300,6 +300,16 @@
       }
     },
     "shared": {
+      "filters": {
+        "title": "Filtros de búsqueda",
+        "reset": "Limpiar filtros",
+        "apply": "Aplicar filtros",
+        "search": {
+          "label": "Buscar",
+          "tooltip": "Buscar por nombre, apellido, email",
+          "placeholder": "Buscar..."
+        }
+      },
       "pagination": {
         "showingResults": "Mostrando {startItem} a {endItem} de {total} resultados",
         "perPage": "Por página:",

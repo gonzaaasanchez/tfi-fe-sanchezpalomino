@@ -15,6 +15,7 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   useDisclosure,
+  Input,
 } from '@chakra-ui/react';
 import { AddIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
@@ -29,19 +30,24 @@ import { User } from 'lib/types/user';
 import TableComponent, { Column, Action } from 'components/shared/table';
 import { createStandardTableActions } from 'lib/helpers/table-utils';
 import { useRef } from 'react';
+import { FiltersFormData, FilterField } from '@interfaces/forms';
+import Filters from 'components/shared/filters';
 
 const UsersPage: NextPageWithLayout = () => {
   const t = useTranslations('pages.users.index');
+  const tFilters = useTranslations('components.shared.filters');
   const router = useRouter();
   const {
     users,
     pagination,
+    setCurrentPage,
     search,
     setSearch,
-    currentPage,
-    setCurrentPage,
     isPending,
   } = useGetUsers({ limit: 10 });
+
+  // Estado para controlar el loading específico de los filtros
+  const [isFiltersLoading, setIsFiltersLoading] = useState(false);
 
   // Estados para el modal de confirmación
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,6 +56,20 @@ const UsersPage: NextPageWithLayout = () => {
 
   // Hook para eliminar usuario
   const deleteUserMutation = useDeleteUser();
+
+  const filters: FilterField[] = [
+    {
+      name: 'search',
+      label: tFilters('search.label'),
+      tooltip: tFilters('search.tooltip'),
+      value: search,
+      component: Input,
+      componentProps: {
+        placeholder: tFilters('search.placeholder'),
+        size: 'md',
+      },
+    },
+  ];
 
   const columns: Column[] = [
     {
@@ -143,6 +163,22 @@ const UsersPage: NextPageWithLayout = () => {
     setUserToDelete(null);
   };
 
+  const handleFiltersSubmit = async (filters: FiltersFormData) => {
+    setIsFiltersLoading(true);
+    try {
+      const searchValue = filters.search as string;
+      setSearch(searchValue || '');
+      setCurrentPage(1);
+    } finally {
+      setIsFiltersLoading(false);
+    }
+  };
+
+  const handleFiltersReset = () => {
+    setSearch('');
+    setCurrentPage(1);
+  };
+
   return (
     <>
       <NextSeo
@@ -181,6 +217,14 @@ const UsersPage: NextPageWithLayout = () => {
             </Button>
           </Box>
         </PermissionGuard>
+
+        <Filters
+          title={tFilters('title')}
+          filters={filters}
+          onSubmit={handleFiltersSubmit}
+          onReset={handleFiltersReset}
+          loading={isFiltersLoading}
+        />
 
         {/* Users table */}
         <PermissionGuard
@@ -268,6 +312,9 @@ export const getServerSideProps: GetServerSideProps = async ({
       messages: pick(await import(`../../message/${locale}.json`), [
         'pages.users.index',
         'layouts.private.header',
+        'lib.hooks.users',
+        'components.shared.filters',
+        'components.shared.loader',
         'components.shared.permission-guard',
         'components.shared.pagination',
         'components.shared.table',

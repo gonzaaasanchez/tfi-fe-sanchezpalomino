@@ -164,8 +164,13 @@ export const getServerSideProps: GetServerSideProps = async ({
       messages: pick(await import(`../../message/${locale}.json`), [
         'pages.pets.index',
         'layouts.private.header',
-        'components.shared.table',
+        'lib.hooks.pets',
+        'components.shared.filters',
+        'components.shared.loader',
+        'components.shared.permission-guard',
         'components.shared.pagination',
+        'components.shared.table',
+        'general.common'
       ]),
     },
   };

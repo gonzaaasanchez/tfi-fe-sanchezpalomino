@@ -13,7 +13,7 @@ export const Table: ComponentStyleConfig = {
         fontSize: '14px',
         fontWeight: '600',
         lineHeight: '22px',
-        color: 'brand1.500',
+        color: 'brand1.700',
         verticalAlign: 'middle'
       }
     },
@@ -131,7 +131,7 @@ export const TableStates: ComponentStyleConfig = {
   },
   variants: {
     loading: {
-      color: 'brand1.500'
+      color: 'brand1.700'
     },
     empty: {
       color: 'gray.500',
@@ -210,7 +210,7 @@ export const TableSortIndicator: ComponentStyleConfig = {
   baseStyle: {
     ml: 2,
     fontSize: '12px',
-    color: 'brand1.500'
+    color: 'brand1.700'
   }
 };
 

@@ -244,12 +244,12 @@ const TableComponent: React.FC<TableProps> = ({
                       {column.sortDirection === 'ASC' ? (
                         <ChevronUpIcon
                           boxSize={4}
-                          color="brand1.500"
+                          color="brand1.700"
                         />
                       ) : (
                         <ChevronDownIcon
                           boxSize={4}
-                          color="brand1.500"
+                          color="brand1.700"
                         />
                       )}
                     </Box>
