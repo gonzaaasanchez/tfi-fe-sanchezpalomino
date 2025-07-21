@@ -28,6 +28,7 @@ import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
 import { useRouter } from 'next/router';
 import { useGetUser, useGetUserSessions } from 'lib/hooks';
+import { usePermissions } from 'lib/hooks/use-permissions';
 import { Loader, SessionAuditPage } from 'components/shared';
 
 interface ViewUserPageProps {
@@ -38,10 +39,13 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
   const t = useTranslations('pages.users.view');
   const router = useRouter();
   const [sessionsPage, setSessionsPage] = useState(1);
+  const { canRead, isSuperAdmin } = usePermissions();
 
   const { user, isPending } = useGetUser({ id });
   const { data: sessionsData, isPending: isSessionsPending } =
     useGetUserSessions(id, sessionsPage, 10);
+
+  const canViewSessionAudit = isSuperAdmin() || canRead('audit');
 
   const handleEdit = () => {
     router.push(`/users/${id}/edit`);
@@ -170,18 +174,20 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
               >
                 {t('tabs.information')}
               </Tab>
-              <Tab
-                bg="brand1.200"
-                color="brand1.700"
-                fontSize="sm"
-                _selected={{
-                  bg: 'brand1.600',
-                  color: 'white',
-                }}
-                _hover={{ bg: 'brand1.300' }}
-              >
-                {t('tabs.sessionAudit')}
-              </Tab>
+              {canViewSessionAudit && (
+                <Tab
+                  bg="brand1.200"
+                  color="brand1.700"
+                  fontSize="sm"
+                  _selected={{
+                    bg: 'brand1.600',
+                    color: 'white',
+                  }}
+                  _hover={{ bg: 'brand1.300' }}
+                >
+                  {t('tabs.sessionAudit')}
+                </Tab>
+              )}
             </TabList>
 
             <TabPanels>
@@ -340,16 +346,18 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
               </TabPanel>
 
               {/* Session Audit Tab */}
-              <TabPanel>
-                <SessionAuditPage
-                  sessions={sessionsData?.items || []}
-                  subtitle={t('sessionAudit.description')}
-                  isLoading={isSessionsPending}
-                  emptyText={t('sessionAudit.noSessions')}
-                  pagination={sessionsData?.pagination}
-                  onChangePage={handleSessionsPageChange}
-                />
-              </TabPanel>
+              {canViewSessionAudit && (
+                <TabPanel>
+                  <SessionAuditPage
+                    sessions={sessionsData?.items || []}
+                    subtitle={t('sessionAudit.description')}
+                    isLoading={isSessionsPending}
+                    emptyText={t('sessionAudit.noSessions')}
+                    pagination={sessionsData?.pagination}
+                    onChangePage={handleSessionsPageChange}
+                  />
+                </TabPanel>
+              )}
             </TabPanels>
           </Tabs>
         </VStack>

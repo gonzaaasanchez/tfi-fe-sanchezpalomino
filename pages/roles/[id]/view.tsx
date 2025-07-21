@@ -32,7 +32,7 @@ import { GetServerSideProps } from 'next';
 import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
 import { useRouter } from 'next/router';
-import { useGetRole, useGetEntityLogs } from 'lib/hooks';
+import { useGetRole, useGetEntityLogs, usePermissions } from 'lib/hooks';
 import { Loader, AuditPage } from 'components/shared';
 
 interface ViewRolePageProps {
@@ -43,11 +43,14 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
   const t = useTranslations('pages.roles.view');
   const tGeneral = useTranslations('general');
   const router = useRouter();
+  const { canRead, isSuperAdmin } = usePermissions();
   const { role, isPending } = useGetRole({ id });
   const { data: logsData, isPending: isLogsPending } = useGetEntityLogs(
     'Role',
     id
   );
+
+  const canViewChangesLogs = isSuperAdmin() || canRead('logs');
 
   const handleEdit = () => {
     router.push(`/roles/${id}/edit`);
@@ -236,18 +239,20 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
               >
                 {t('tabs.information')}
               </Tab>
-              <Tab
-                bg="brand1.200"
-                color="brand1.700"
-                fontSize="sm"
-                _selected={{
-                  bg: 'brand1.600',
-                  color: 'white',
-                }}
-                _hover={{ bg: 'brand1.300' }}
-              >
-                {t('tabs.audit')}
-              </Tab>
+              {canViewChangesLogs && (
+                <Tab
+                  bg="brand1.200"
+                  color="brand1.700"
+                  fontSize="sm"
+                  _selected={{
+                    bg: 'brand1.600',
+                    color: 'white',
+                  }}
+                  _hover={{ bg: 'brand1.300' }}
+                >
+                  {t('tabs.audit')}
+                </Tab>
+              )}
             </TabList>
 
             <TabPanels>
@@ -424,15 +429,17 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
               </TabPanel>
 
               {/* Audit Tab */}
-              <TabPanel>
-                <AuditPage
-                  logs={logsData?.data || []}
-                  subtitle={t('audit.description')}
-                  t={t}
-                  isLoading={isLogsPending}
-                  emptyText={t('audit.noChanges')}
-                />
-              </TabPanel>
+              {canViewChangesLogs && (
+                <TabPanel>
+                  <AuditPage
+                    logs={logsData?.data || []}
+                    subtitle={t('audit.description')}
+                    t={t}
+                    isLoading={isLogsPending}
+                    emptyText={t('audit.noChanges')}
+                  />
+                </TabPanel>
+              )}
             </TabPanels>
           </Tabs>
         </VStack>

@@ -14,7 +14,8 @@
         "reviews": "Reseñas",
         "posts": "Publicaciones",
         "comments": "Comentarios",
-        "likes": "Me Gusta"
+        "likes": "Me Gusta",
+        "audit": "Auditoría de sesiones"
       },
       "actions": {
         "create": "Crear",
@@ -60,6 +61,12 @@
     },
     "common": {
       "notFound": "No encontrado"
+    },
+    "auth": {
+      "logout": {
+        "error": "Error al cerrar sesión en el servidor",
+        "success": "Sesión cerrada exitosamente"
+      }
     }
   },
   "components": {
@@ -358,6 +365,7 @@
     "private": {
       "header": {
         "signOut": "Cerrar Sesión",
+        "signingOut": "Cerrando sesión...",
         "profile": "Perfil",
         "toggleSidebar": "Alternar barra lateral"
       }

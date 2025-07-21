@@ -15,7 +15,7 @@ export const usePermissions = () => {
   const canUpdate = (module: string): boolean => hasPermission(module, 'update');
   const canDelete = (module: string): boolean => hasPermission(module, 'delete');
   const canGetAll = (module: string): boolean => hasPermission(module, 'getAll');
-  const canAdmin = (module: string): boolean => hasPermission(module, 'admin');
+  // const canAdmin = (module: string): boolean => hasPermission(module, 'admin');
   
   const isSuperAdmin = (): boolean => {
     return session?.user?.role?.name === 'superadmin';
@@ -29,7 +29,7 @@ export const usePermissions = () => {
     canUpdate,
     canDelete,
     canGetAll,
-    canAdmin,
+    // canAdmin,
     isSuperAdmin,
     user: session?.user
   };

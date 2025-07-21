@@ -30,6 +30,7 @@ import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
 import { useGetAdmin } from '@hooks/use-admins';
 import { useGetEntityLogs, useGetAdminSessions } from 'lib/hooks';
+import { usePermissions } from 'lib/hooks/use-permissions';
 import { PermissionGuard } from 'components/shared/permission-guard';
 import { Loader, AuditPage, SessionAuditPage } from 'components/shared';
 import { ReactElement, useState } from 'react';
@@ -43,6 +44,7 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
   const t = useTranslations('pages.admins.view');
   const router = useRouter();
   const [sessionsPage, setSessionsPage] = useState(1);
+  const { canRead, isSuperAdmin } = usePermissions();
 
   const { admin, isPending: isLoadingAdmin } = useGetAdmin({
     id: id as string,
@@ -55,6 +57,9 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
 
   const { data: sessionsData, isPending: isSessionsPending } =
     useGetAdminSessions(id, sessionsPage, 10);
+
+  const canViewSessionAudit = isSuperAdmin() || canRead('audit');
+  const canViewChangesLogs = isSuperAdmin() || canRead('logs');
 
   const handleEdit = () => {
     router.push(`/admins/${id}/edit`);
@@ -188,30 +193,34 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
               >
                 {t('tabs.information')}
               </Tab>
-              <Tab
-                bg="brand1.200"
-                color="brand1.700"
-                fontSize="sm"
-                _selected={{
-                  bg: 'brand1.600',
-                  color: 'white',
-                }}
-                _hover={{ bg: 'brand1.300' }}
-              >
-                {t('tabs.audit')}
-              </Tab>
-              <Tab
-                bg="brand1.200"
-                color="brand1.700"
-                fontSize="sm"
-                _selected={{
-                  bg: 'brand1.600',
-                  color: 'white',
-                }}
-                _hover={{ bg: 'brand1.300' }}
-              >
-                {t('tabs.sessionAudit')}
-              </Tab>
+              {canViewChangesLogs && (
+                <Tab
+                  bg="brand1.200"
+                  color="brand1.700"
+                  fontSize="sm"
+                  _selected={{
+                    bg: 'brand1.600',
+                    color: 'white',
+                  }}
+                  _hover={{ bg: 'brand1.300' }}
+                >
+                  {t('tabs.audit')}
+                </Tab>
+              )}
+              {canViewSessionAudit && (
+                <Tab
+                  bg="brand1.200"
+                  color="brand1.700"
+                  fontSize="sm"
+                  _selected={{
+                    bg: 'brand1.600',
+                    color: 'white',
+                  }}
+                  _hover={{ bg: 'brand1.300' }}
+                >
+                  {t('tabs.sessionAudit')}
+                </Tab>
+              )}
             </TabList>
 
             <TabPanels>
@@ -341,27 +350,31 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
               </TabPanel>
 
               {/* Audit Tab */}
-              <TabPanel>
-                <AuditPage
-                  logs={logsData?.data || []}
-                  subtitle={t('audit.description')}
-                  t={t}
-                  isLoading={isLogsPending}
-                  emptyText={t('audit.noChanges')}
-                />
-              </TabPanel>
+              {canViewChangesLogs && (
+                <TabPanel>
+                  <AuditPage
+                    logs={logsData?.data || []}
+                    subtitle={t('audit.description')}
+                    t={t}
+                    isLoading={isLogsPending}
+                    emptyText={t('audit.noChanges')}
+                  />
+                </TabPanel>
+              )}
 
               {/* Session Audit Tab */}
-              <TabPanel>
-                <SessionAuditPage
-                  sessions={sessionsData?.items || []}
-                  subtitle={t('sessionAudit.description')}
-                  isLoading={isSessionsPending}
-                  emptyText={t('sessionAudit.noSessions')}
-                  pagination={sessionsData?.pagination}
-                  onChangePage={handleSessionsPageChange}
-                />
-              </TabPanel>
+              {canViewSessionAudit && (
+                <TabPanel>
+                  <SessionAuditPage
+                    sessions={sessionsData?.items || []}
+                    subtitle={t('sessionAudit.description')}
+                    isLoading={isSessionsPending}
+                    emptyText={t('sessionAudit.noSessions')}
+                    pagination={sessionsData?.pagination}
+                    onChangePage={handleSessionsPageChange}
+                  />
+                </TabPanel>
+              )}
             </TabPanels>
           </Tabs>
         </VStack>

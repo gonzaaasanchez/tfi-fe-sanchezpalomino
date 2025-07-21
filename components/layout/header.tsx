@@ -13,8 +13,9 @@ import {
 } from '@chakra-ui/react';
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons';
 import { FaSignOutAlt } from 'react-icons/fa';
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
+import { useLogout } from 'lib/hooks/use-auth';
 
 interface HeaderProps {
   onToggleSidebar: () => void;
@@ -27,6 +28,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const { data: session } = useSession();
   const t = useTranslations('layouts.private.header');
+  const { mutate: logout, isPending: isLoggingOut } = useLogout();
 
   const bgColor = 'brand1.700';
 
@@ -101,12 +103,13 @@ export const Header: React.FC<HeaderProps> = ({
             </MenuButton>
             <MenuList minW="140px">
               <MenuItem
-                onClick={() => signOut({ callbackUrl: '/auth/login' })}
+                onClick={() => logout()}
                 color="gray.900"
                 justifyContent="center"
                 icon={<Icon as={FaSignOutAlt} color="brand1.600" boxSize={4} />}
+                isDisabled={isLoggingOut}
               >
-                {t('signOut')}
+                {isLoggingOut ? t('signingOut') : t('signOut')}
               </MenuItem>
             </MenuList>
           </Menu>

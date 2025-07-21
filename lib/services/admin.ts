@@ -12,6 +12,10 @@ export const login = async (body: AdminSignInService) => {
   return await ClientApi.post<BaseResponse<AdminLoginResponse>>('admins/login', body);
 };
 
+export const logout = async () => {
+  return await ClientApi.post<BaseResponse<any>>('admins/logout');
+};
+
 export class AdminService {
   private static readonly BASE_URL = '/admins';
 
