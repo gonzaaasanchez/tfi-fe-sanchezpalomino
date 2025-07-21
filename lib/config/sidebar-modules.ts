@@ -78,11 +78,11 @@ export const sidebarModules: SidebarModule[] = [
   //   module: 'reviews',
   //   action: 'getAll',
   // },
-  {
-    name: 'Logs',
-    path: '/logs',
-    icon: FaFileAlt,
-    module: 'logs',
-    action: 'getAll',
-  },
+  // {
+  //   name: 'Logs',
+  //   path: '/logs',
+  //   icon: FaFileAlt,
+  //   module: 'logs',
+  //   action: 'getAll',
+  // },
 ];
