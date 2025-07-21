@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 import { NextSeo } from 'next-seo';
 import {
@@ -14,6 +14,11 @@ import {
   Container,
   HStack,
   Divider,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from '@chakra-ui/react';
 import { ChevronRightIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
@@ -22,8 +27,8 @@ import { GetServerSideProps } from 'next';
 import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
 import { useRouter } from 'next/router';
-import { useGetUser } from 'lib/hooks';
-import { Loader } from 'components/shared';
+import { useGetUser, useGetUserSessions } from 'lib/hooks';
+import { Loader, SessionAuditPage } from 'components/shared';
 
 interface ViewUserPageProps {
   id: string;
@@ -32,7 +37,11 @@ interface ViewUserPageProps {
 const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
   const t = useTranslations('pages.users.view');
   const router = useRouter();
+  const [sessionsPage, setSessionsPage] = useState(1);
+
   const { user, isPending } = useGetUser({ id });
+  const { data: sessionsData, isPending: isSessionsPending } =
+    useGetUserSessions(id, sessionsPage, 10);
 
   const handleEdit = () => {
     router.push(`/users/${id}/edit`);
@@ -40,6 +49,10 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
 
   const handleBack = () => {
     router.push('/users');
+  };
+
+  const handleSessionsPageChange = (page: number) => {
+    setSessionsPage(page);
   };
 
   if (isPending) {
@@ -138,151 +151,207 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
             </HStack>
           </Box>
 
-          {/* User Details */}
-          <Box
-            bg="white"
-            border="1px"
-            borderColor="gray.200"
-            borderRadius="lg"
-            p={6}
-            shadow="sm"
+          {/* Tabs */}
+          <Tabs
+            variant="enclosed"
+            colorScheme="brand1"
+            borderColor="brand1.300"
           >
-            <VStack
-              spacing={6}
-              align="stretch"
-            >
-              <Heading
-                size="sm"
+            <TabList>
+              <Tab
+                bg="brand1.200"
                 color="brand1.700"
+                fontSize="sm"
+                _selected={{
+                  bg: 'brand1.600',
+                  color: 'white',
+                }}
+                _hover={{ bg: 'brand1.300' }}
               >
-                {t('sections.userInfo')}
-              </Heading>
-
-              <VStack
-                spacing={4}
-                align="stretch"
+                {t('tabs.information')}
+              </Tab>
+              <Tab
+                bg="brand1.200"
+                color="brand1.700"
+                fontSize="sm"
+                _selected={{
+                  bg: 'brand1.600',
+                  color: 'white',
+                }}
+                _hover={{ bg: 'brand1.300' }}
               >
-                <HStack justify="space-between">
-                  <Text
-                    fontWeight="semibold"
-                    color="gray.700"
-                  >
-                    {t('fields.id')}:
-                  </Text>
-                  <Text color="gray.600">{user.id}</Text>
-                </HStack>
+                {t('tabs.sessionAudit')}
+              </Tab>
+            </TabList>
 
-                <HStack justify="space-between">
-                  <Text
-                    fontWeight="semibold"
-                    color="gray.700"
+            <TabPanels>
+              {/* Information Tab */}
+              <TabPanel>
+                <Box
+                  bg="white"
+                  border="1px"
+                  borderColor="gray.200"
+                  borderRadius="lg"
+                  p={6}
+                  shadow="sm"
+                >
+                  <VStack
+                    spacing={6}
+                    align="stretch"
                   >
-                    {t('fields.firstName')}:
-                  </Text>
-                  <Text color="gray.600">{user.firstName}</Text>
-                </HStack>
-
-                <HStack justify="space-between">
-                  <Text
-                    fontWeight="semibold"
-                    color="gray.700"
-                  >
-                    {t('fields.lastName')}:
-                  </Text>
-                  <Text color="gray.600">{user.lastName}</Text>
-                </HStack>
-
-                <HStack justify="space-between">
-                  <Text
-                    fontWeight="semibold"
-                    color="gray.700"
-                  >
-                    {t('fields.email')}:
-                  </Text>
-                  <Text color="gray.600">{user.email}</Text>
-                </HStack>
-
-                <HStack justify="space-between">
-                  <Text
-                    fontWeight="semibold"
-                    color="gray.700"
-                  >
-                    {t('fields.role')}:
-                  </Text>
-                  <Tag
-                    colorScheme={
-                      user.role?.name === 'admin' ? 'orange' : 'blue'
-                    }
-                    variant="subtle"
-                    px={3}
-                    py={1}
-                  >
-                    {user.role?.name || '-'}
-                  </Tag>
-                </HStack>
-
-                {user.phoneNumber && (
-                  <HStack justify="space-between">
-                    <Text
-                      fontWeight="semibold"
-                      color="gray.700"
+                    <Heading
+                      size="sm"
+                      color="brand1.700"
                     >
-                      {t('fields.phoneNumber')}:
-                    </Text>
-                    <Text color="gray.600">{user.phoneNumber}</Text>
-                  </HStack>
-                )}
-              </VStack>
+                      {t('sections.userInfo')}
+                    </Heading>
 
-              <Divider />
-
-              {/* Timestamps */}
-              <VStack
-                spacing={4}
-                align="stretch"
-              >
-                {user.createdAt && (
-                  <HStack justify="space-between">
-                    <Text
-                      fontWeight="semibold"
-                      color="gray.700"
+                    <VStack
+                      spacing={4}
+                      align="stretch"
                     >
-                      {t('fields.createdAt')}:
-                    </Text>
-                    <Text color="gray.600">
-                      {new Date(user.createdAt).toLocaleDateString('es-ES', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </Text>
-                  </HStack>
-                )}
+                      <HStack justify="space-between">
+                        <Text
+                          fontWeight="semibold"
+                          color="gray.700"
+                        >
+                          {t('fields.id')}:
+                        </Text>
+                        <Text color="gray.600">{user.id}</Text>
+                      </HStack>
 
-                {user.updatedAt && (
-                  <HStack justify="space-between">
-                    <Text
-                      fontWeight="semibold"
-                      color="gray.700"
+                      <HStack justify="space-between">
+                        <Text
+                          fontWeight="semibold"
+                          color="gray.700"
+                        >
+                          {t('fields.firstName')}:
+                        </Text>
+                        <Text color="gray.600">{user.firstName}</Text>
+                      </HStack>
+
+                      <HStack justify="space-between">
+                        <Text
+                          fontWeight="semibold"
+                          color="gray.700"
+                        >
+                          {t('fields.lastName')}:
+                        </Text>
+                        <Text color="gray.600">{user.lastName}</Text>
+                      </HStack>
+
+                      <HStack justify="space-between">
+                        <Text
+                          fontWeight="semibold"
+                          color="gray.700"
+                        >
+                          {t('fields.email')}:
+                        </Text>
+                        <Text color="gray.600">{user.email}</Text>
+                      </HStack>
+
+                      <HStack justify="space-between">
+                        <Text
+                          fontWeight="semibold"
+                          color="gray.700"
+                        >
+                          {t('fields.role')}:
+                        </Text>
+                        <Tag
+                          colorScheme={
+                            user.role?.name === 'admin' ? 'orange' : 'blue'
+                          }
+                          variant="subtle"
+                          px={3}
+                          py={1}
+                        >
+                          {user.role?.name || '-'}
+                        </Tag>
+                      </HStack>
+
+                      {user.phoneNumber && (
+                        <HStack justify="space-between">
+                          <Text
+                            fontWeight="semibold"
+                            color="gray.700"
+                          >
+                            {t('fields.phoneNumber')}:
+                          </Text>
+                          <Text color="gray.600">{user.phoneNumber}</Text>
+                        </HStack>
+                      )}
+                    </VStack>
+
+                    <Divider />
+
+                    {/* Timestamps */}
+                    <VStack
+                      spacing={4}
+                      align="stretch"
                     >
-                      {t('fields.updatedAt')}:
-                    </Text>
-                    <Text color="gray.600">
-                      {new Date(user.updatedAt).toLocaleDateString('es-ES', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </Text>
-                  </HStack>
-                )}
-              </VStack>
-            </VStack>
-          </Box>
+                      {user.createdAt && (
+                        <HStack justify="space-between">
+                          <Text
+                            fontWeight="semibold"
+                            color="gray.700"
+                          >
+                            {t('fields.createdAt')}:
+                          </Text>
+                          <Text color="gray.600">
+                            {new Date(user.createdAt).toLocaleDateString(
+                              'es-ES',
+                              {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              }
+                            )}
+                          </Text>
+                        </HStack>
+                      )}
+
+                      {user.updatedAt && (
+                        <HStack justify="space-between">
+                          <Text
+                            fontWeight="semibold"
+                            color="gray.700"
+                          >
+                            {t('fields.updatedAt')}:
+                          </Text>
+                          <Text color="gray.600">
+                            {new Date(user.updatedAt).toLocaleDateString(
+                              'es-ES',
+                              {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              }
+                            )}
+                          </Text>
+                        </HStack>
+                      )}
+                    </VStack>
+                  </VStack>
+                </Box>
+              </TabPanel>
+
+              {/* Session Audit Tab */}
+              <TabPanel>
+                <SessionAuditPage
+                  sessions={sessionsData?.items || []}
+                  subtitle={t('sessionAudit.description')}
+                  isLoading={isSessionsPending}
+                  emptyText={t('sessionAudit.noSessions')}
+                  pagination={sessionsData?.pagination}
+                  onChangePage={handleSessionsPageChange}
+                />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </VStack>
       </Container>
     </>
@@ -315,6 +384,10 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.forms.user',
         'general.form.errors',
         'general.common',
+        'components.shared.pagination',
+        'components.shared.table',
+        'components.shared.sessionAudit',
+        'sessionAudit',
       ]),
     },
   };

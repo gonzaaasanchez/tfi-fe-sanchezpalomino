@@ -175,7 +175,7 @@ const TableComponent: React.FC<TableProps> = ({
     <Center py={12}>
       <Text
         color="gray.500"
-        fontSize="lg"
+        fontSize="sm"
       >
         {emptyText}
       </Text>
@@ -191,24 +191,12 @@ const TableComponent: React.FC<TableProps> = ({
   const renderPagination = () => {
     if (!metadata || !onChangePage) return null;
 
-    const paginationTranslations = {
-      showingResults: t('showingResults', {
-        startItem: (metadata.page - 1) * metadata.limit + 1,
-        endItem: Math.min(metadata.page * metadata.limit, metadata.total),
-        total: metadata.total,
-      }),
-      perPage: t('perPage'),
-      previousPage: t('previousPage'),
-      nextPage: t('nextPage'),
-    };
-
     return (
       <Pagination
         metadata={metadata}
         pageSizeOptions={pageSizeOptions}
         onPageChange={onChangePage}
         onPageSizeChange={onPageSizeChange}
-        translations={paginationTranslations}
       />
     );
   };

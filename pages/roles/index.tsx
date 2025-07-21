@@ -26,20 +26,20 @@ const Roles: NextPageWithLayout = () => {
       label: t('columns.id'),
       width: '80px',
       sortable: true,
-      sortKey: 'id'
+      sortKey: 'id',
     },
     {
       key: 'name',
       label: t('columns.name'),
       sortable: true,
-      sortKey: 'name'
+      sortKey: 'name',
     },
     {
       key: 'description',
       label: t('columns.description'),
       sortable: true,
-      sortKey: 'description'
-    }
+      sortKey: 'description',
+    },
   ];
 
   const actions: Action[] = createStandardTableActions({
@@ -47,7 +47,7 @@ const Roles: NextPageWithLayout = () => {
     translations: {
       view: { label: t('actions.view'), tooltip: t('tooltips.view') },
       edit: { label: t('actions.edit'), tooltip: t('tooltips.edit') },
-      delete: { label: t('actions.delete'), tooltip: t('tooltips.delete') }
+      delete: { label: t('actions.delete'), tooltip: t('tooltips.delete') },
     },
     customDisabledRules: {
       delete: (item: Role) => item.isSystem,
@@ -64,7 +64,6 @@ const Roles: NextPageWithLayout = () => {
         router.push(`/roles/${item.id}/edit`);
         break;
       case 'delete':
-        console.log(t('console.delete'), item);
         // Here would go delete confirmation
         break;
       default:
@@ -88,14 +87,19 @@ const Roles: NextPageWithLayout = () => {
         title={t('meta.title')}
         description={t('meta.description')}
       />
-      <VStack spacing={6} align="stretch" p={6}>
+      <VStack
+        spacing={6}
+        align="stretch"
+        p={6}
+      >
         <Box>
-          <Heading size="lg" mb={2}>
+          <Heading
+            size="lg"
+            mb={2}
+          >
             {t('title')}
           </Heading>
-          <Text color="gray.600">
-            {t('description')}
-          </Text>
+          <Text color="gray.600">{t('description')}</Text>
         </Box>
 
         {/* Create new role button */}
@@ -149,10 +153,10 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.shared.permission-guard',
         'components.shared.pagination',
         'components.shared.table',
-        'general.common'
-      ])
-    }
+        'general.common',
+      ]),
+    },
   };
 };
 
-export default Roles; 
+export default Roles;

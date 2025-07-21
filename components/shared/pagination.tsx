@@ -6,23 +6,17 @@ import {
   IconButton,
   Text,
   Select,
-  useColorModeValue
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { PaginationMetadata } from '@interfaces/response';
-
+import { useTranslations } from 'next-intl';
 
 export interface PaginationProps {
   metadata: PaginationMetadata;
   pageSizeOptions?: number[];
   onPageChange: (page: number) => void;
   onPageSizeChange?: (pageSize: number) => void;
-  translations?: {
-    showingResults: string;
-    perPage: string;
-    previousPage: string;
-    nextPage: string;
-  };
 }
 
 const Pagination: React.FC<PaginationProps> = ({
@@ -30,24 +24,74 @@ const Pagination: React.FC<PaginationProps> = ({
   pageSizeOptions = [10, 25, 50, 100],
   onPageChange,
   onPageSizeChange,
-  translations
 }) => {
-  const { page, limit, total } = metadata;
+  const { page, limit, total, totalPages } = metadata;
   const startItem = (page - 1) * limit + 1;
   const endItem = Math.min(page * limit, total);
-  
+
   const borderColor = useColorModeValue('gray.200', 'gray.700');
   const bgColor = useColorModeValue('white', 'gray.800');
 
-  // Default translations
-  const defaultTranslations = {
-    showingResults: `Mostrando ${startItem} a ${endItem} de ${total} resultados`,
-    perPage: 'Por página:',
-    previousPage: 'Página anterior',
-    nextPage: 'Página siguiente'
+  const t = useTranslations('components.shared.pagination');
+
+  const translations = {
+    showingResults: t('showingResults', {
+      startItem,
+      endItem,
+      total,
+    }),
+    perPage: t('perPage'),
+    previousPage: t('previousPage'),
+    nextPage: t('nextPage'),
   };
 
-  const t = translations || defaultTranslations;
+  // Don't render pagination controls if there's only one page or no pages
+  if (totalPages <= 1) {
+    return (
+      <Flex
+        justify="space-between"
+        align="center"
+        px={6}
+        py={4}
+        borderTop="1px"
+        borderColor={borderColor}
+        bg={bgColor}
+      >
+        <Text
+          fontSize="sm"
+          color="gray.600"
+        >
+          {translations.showingResults}
+        </Text>
+
+        {onPageSizeChange && (
+          <HStack spacing={2}>
+            <Text
+              fontSize="sm"
+              color="gray.600"
+            >
+              {translations.perPage}
+            </Text>
+            <Select
+              size="sm"
+              w="70px"
+              value={metadata.limit}
+              onChange={(e) => onPageSizeChange(Number(e.target.value))}
+            >
+              {pageSizeOptions.map((size) => (
+                <option
+                  key={size}
+                  value={size}
+                >
+                  {size}
+                </option>
+              ))}
+            </Select>
+          </HStack>
+        )}
+      </Flex>
+    );
+  }
 
   return (
     <Flex
@@ -59,15 +103,21 @@ const Pagination: React.FC<PaginationProps> = ({
       borderColor={borderColor}
       bg={bgColor}
     >
-      <Text fontSize="sm" color="gray.600">
-        {t.showingResults}
+      <Text
+        fontSize="sm"
+        color="gray.600"
+      >
+        {translations.showingResults}
       </Text>
 
       <HStack spacing={2}>
         {onPageSizeChange && (
           <HStack spacing={2}>
-            <Text fontSize="sm" color="gray.600">
-              {t.perPage}
+            <Text
+              fontSize="sm"
+              color="gray.600"
+            >
+              {translations.perPage}
             </Text>
             <Select
               size="sm"
@@ -76,7 +126,10 @@ const Pagination: React.FC<PaginationProps> = ({
               onChange={(e) => onPageSizeChange(Number(e.target.value))}
             >
               {pageSizeOptions.map((size) => (
-                <option key={size} value={size}>
+                <option
+                  key={size}
+                  value={size}
+                >
                   {size}
                 </option>
               ))}
@@ -88,20 +141,20 @@ const Pagination: React.FC<PaginationProps> = ({
           <IconButton
             size="sm"
             icon={<ChevronLeftIcon />}
-            aria-label={t.previousPage}
+            aria-label={translations.previousPage}
             isDisabled={page <= 1}
             onClick={() => onPageChange(page - 1)}
             variant="ghost"
           />
-          
-          {Array.from({ length: Math.min(5, metadata.totalPages) }, (_, i) => {
+
+          {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
             let pageNum: number;
-            if (metadata.totalPages <= 5) {
+            if (totalPages <= 5) {
               pageNum = i + 1;
             } else if (page <= 3) {
               pageNum = i + 1;
-            } else if (page >= metadata.totalPages - 2) {
-              pageNum = metadata.totalPages - 4 + i;
+            } else if (page >= totalPages - 2) {
+              pageNum = totalPages - 4 + i;
             } else {
               pageNum = page - 2 + i;
             }
@@ -123,8 +176,8 @@ const Pagination: React.FC<PaginationProps> = ({
           <IconButton
             size="sm"
             icon={<ChevronRightIcon />}
-            aria-label={t.nextPage}
-            isDisabled={page >= metadata.totalPages}
+            aria-label={translations.nextPage}
+            isDisabled={page >= totalPages}
             onClick={() => onPageChange(page + 1)}
             variant="ghost"
           />
@@ -134,4 +187,4 @@ const Pagination: React.FC<PaginationProps> = ({
   );
 };
 
-export default Pagination; 
+export default Pagination;

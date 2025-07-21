@@ -29,10 +29,10 @@ import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
 import { useGetAdmin } from '@hooks/use-admins';
-import { useGetEntityLogs } from 'lib/hooks';
+import { useGetEntityLogs, useGetAdminSessions } from 'lib/hooks';
 import { PermissionGuard } from 'components/shared/permission-guard';
-import { Loader, AuditPage } from 'components/shared';
-import { ReactElement } from 'react';
+import { Loader, AuditPage, SessionAuditPage } from 'components/shared';
+import { ReactElement, useState } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 
 interface ViewAdminPageProps {
@@ -42,6 +42,7 @@ interface ViewAdminPageProps {
 const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
   const t = useTranslations('pages.admins.view');
   const router = useRouter();
+  const [sessionsPage, setSessionsPage] = useState(1);
 
   const { admin, isPending: isLoadingAdmin } = useGetAdmin({
     id: id as string,
@@ -52,12 +53,19 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
     id
   );
 
+  const { data: sessionsData, isPending: isSessionsPending } =
+    useGetAdminSessions(id, sessionsPage, 10);
+
   const handleEdit = () => {
     router.push(`/admins/${id}/edit`);
   };
 
   const handleBack = () => {
     router.push('/admins');
+  };
+
+  const handleSessionsPageChange = (page: number) => {
+    setSessionsPage(page);
   };
 
   if (isLoadingAdmin) {
@@ -192,6 +200,18 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
               >
                 {t('tabs.audit')}
               </Tab>
+              <Tab
+                bg="brand1.200"
+                color="brand1.700"
+                fontSize="sm"
+                _selected={{
+                  bg: 'brand1.600',
+                  color: 'white',
+                }}
+                _hover={{ bg: 'brand1.300' }}
+              >
+                {t('tabs.sessionAudit')}
+              </Tab>
             </TabList>
 
             <TabPanels>
@@ -261,7 +281,9 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
                             </Text>
                             <Badge
                               colorScheme={
-                                admin.role?.name === 'superadmin' ? 'orange' : 'blue'
+                                admin.role?.name === 'superadmin'
+                                  ? 'orange'
+                                  : 'blue'
                               }
                               variant="subtle"
                               px={3}
@@ -328,6 +350,18 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
                   emptyText={t('audit.noChanges')}
                 />
               </TabPanel>
+
+              {/* Session Audit Tab */}
+              <TabPanel>
+                <SessionAuditPage
+                  sessions={sessionsData?.items || []}
+                  subtitle={t('sessionAudit.description')}
+                  isLoading={isSessionsPending}
+                  emptyText={t('sessionAudit.noSessions')}
+                  pagination={sessionsData?.pagination}
+                  onChangePage={handleSessionsPageChange}
+                />
+              </TabPanel>
             </TabPanels>
           </Tabs>
         </VStack>
@@ -360,8 +394,12 @@ export const getServerSideProps: GetServerSideProps = async ({
         'pages.admins.view',
         'pages.admins.index',
         'components.shared.permission-guard',
+        'components.shared.pagination',
+        'components.shared.table',
+        'components.shared.sessionAudit',
         'general.common',
         'general.audit',
+        'sessionAudit',
       ]),
     },
   };

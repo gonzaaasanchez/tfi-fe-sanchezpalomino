@@ -10,7 +10,6 @@ const ClientApiSSR = async (
   url: string
 ) => {
   const session = await getServerSession(req, res, authOptions);
-  console.log(session);
 
   const config: AxiosRequestConfig = {
     url,

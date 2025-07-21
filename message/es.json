@@ -334,6 +334,23 @@
         "active": "Activo",
         "inactive": "Inactivo",
         "actions": "Acciones"
+      },
+      "sessionAudit": {
+        "actions": {
+          "login": "Inicio de Sesión",
+          "logout": "Cierre de Sesión",
+          "loginFailed": "Inicio Fallido",
+          "tokenInvalidated": "Token Invalidado"
+        },
+        "fields": {
+          "action": "Acción",
+          "createdAt": "Fecha de Creación",
+          "failureReason": "Razón del Fallo"
+        },
+        "sections": {
+          "sessionAudit": "Auditoría de Sesiones"
+        },
+        "noSessions": "No se han registrado sesiones"
       }
     }
   },
@@ -487,11 +504,16 @@
         },
         "tabs": {
           "information": "Información",
-          "audit": "Auditoría"
+          "audit": "Auditoría de cambios",
+          "sessionAudit": "Auditoría de Sesiones"
         },
         "audit": {
           "description": "Registro de todas las modificaciones realizadas en este administrador",
           "noChanges": "No se han registrado cambios en este administrador"
+        },
+        "sessionAudit": {
+          "noSessions": "No se han registrado sesiones para este administrador",
+          "description": "Registro de todas las sesiones del administrador"
         }
       }
     },
@@ -578,6 +600,14 @@
           "phoneNumber": "Teléfono",
           "createdAt": "Fecha de Creación",
           "updatedAt": "Última Actualización"
+        },
+        "tabs": {
+          "information": "Información",
+          "sessionAudit": "Auditoría de Sesiones"
+        },
+        "sessionAudit": {
+          "noSessions": "No se han registrado sesiones para este usuario",
+          "description": "Registro de todas las sesiones del usuario"
         },
         "notFound": "Usuario no encontrado"
       },
@@ -875,7 +905,7 @@
         },
         "tabs": {
           "information": "Información",
-          "audit": "Auditoría"
+          "audit": "Auditoría de cambios"
         },
         "audit": {
           "description": "Registro de todas las modificaciones realizadas en este rol",

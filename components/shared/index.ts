@@ -6,3 +6,4 @@ export type { TableProps, Column, Action } from './table';
 export type { PaginationProps } from './pagination';
 export { AuditChangeCard } from './audit-change-card';
 export { AuditPage } from './audit-page';
+export { SessionAuditPage } from './session-audit-page';

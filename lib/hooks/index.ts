@@ -8,3 +8,4 @@ export * from './use-pet-characteristics';
 export * from './use-pets';
 export * from './use-reservations';
 export * from './use-logs';
+export * from './use-sessions';
