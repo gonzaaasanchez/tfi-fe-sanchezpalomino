@@ -13,6 +13,11 @@ import {
   CardBody,
   Badge,
   Divider,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
 import { EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
@@ -156,135 +161,175 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
             </HStack>
           </Box>
 
-          {/* Admin Details Card */}
-          <Card>
-            <CardBody>
-              <VStack
-                spacing={6}
-                align="stretch"
+          {/* Tabs */}
+          <Tabs
+            variant="enclosed"
+            colorScheme="brand1"
+            borderColor="brand1.300"
+          >
+            <TabList>
+              <Tab
+                bg="brand1.200"
+                color="brand1.700"
+                fontSize="sm"
+                _selected={{
+                  bg: 'brand1.600',
+                  color: 'white',
+                }}
+                _hover={{ bg: 'brand1.300' }}
               >
-                {/* Basic Information */}
-                <Box>
-                  <Heading
-                    size="sm"
-                    color="brand1.700"
-                    mb={4}
-                  >
-                    {t('sections.basicInfo')}
-                  </Heading>
-                  <VStack
-                    spacing={4}
-                    align="stretch"
-                  >
-                    <HStack justify="space-between">
-                      <Text
-                        fontWeight="semibold"
-                        color="gray.700"
-                      >
-                        {t('fields.id')}:
-                      </Text>
-                      <Text color="gray.600">{admin.id}</Text>
-                    </HStack>
-                    <HStack justify="space-between">
-                      <Text
-                        fontWeight="semibold"
-                        color="gray.700"
-                      >
-                        {t('fields.firstName')}:
-                      </Text>
-                      <Text color="gray.600">{admin.firstName}</Text>
-                    </HStack>
-                    <HStack justify="space-between">
-                      <Text
-                        fontWeight="semibold"
-                        color="gray.700"
-                      >
-                        {t('fields.lastName')}:
-                      </Text>
-                      <Text color="gray.600">{admin.lastName}</Text>
-                    </HStack>
-                    <HStack justify="space-between">
-                      <Text
-                        fontWeight="semibold"
-                        color="gray.700"
-                      >
-                        {t('fields.email')}:
-                      </Text>
-                      <Text color="gray.600">{admin.email}</Text>
-                    </HStack>
-                    <HStack justify="space-between">
-                      <Text
-                        fontWeight="semibold"
-                        color="gray.700"
-                      >
-                        {t('fields.role')}:
-                      </Text>
-                      <Badge
-                        colorScheme={
-                          admin.role?.name === 'superadmin' ? 'orange' : 'blue'
-                        }
-                        variant="subtle"
-                        px={3}
-                        py={1}
-                      >
-                        {admin.role?.name || '-'}
-                      </Badge>
-                    </HStack>
-                  </VStack>
-                </Box>
+                {t('tabs.information')}
+              </Tab>
+              <Tab
+                bg="brand1.200"
+                color="brand1.700"
+                fontSize="sm"
+                _selected={{
+                  bg: 'brand1.600',
+                  color: 'white',
+                }}
+                _hover={{ bg: 'brand1.300' }}
+              >
+                {t('tabs.audit')}
+              </Tab>
+            </TabList>
 
-                <Divider />
+            <TabPanels>
+              {/* Information Tab */}
+              <TabPanel>
+                <Card>
+                  <CardBody>
+                    <VStack
+                      spacing={6}
+                      align="stretch"
+                    >
+                      {/* Basic Information */}
+                      <Box>
+                        <Heading
+                          size="sm"
+                          color="brand1.700"
+                          mb={4}
+                        >
+                          {t('sections.basicInfo')}
+                        </Heading>
+                        <VStack
+                          spacing={4}
+                          align="stretch"
+                        >
+                          <HStack justify="space-between">
+                            <Text
+                              fontWeight="semibold"
+                              color="gray.700"
+                            >
+                              {t('fields.id')}:
+                            </Text>
+                            <Text color="gray.600">{admin.id}</Text>
+                          </HStack>
+                          <HStack justify="space-between">
+                            <Text
+                              fontWeight="semibold"
+                              color="gray.700"
+                            >
+                              {t('fields.firstName')}:
+                            </Text>
+                            <Text color="gray.600">{admin.firstName}</Text>
+                          </HStack>
+                          <HStack justify="space-between">
+                            <Text
+                              fontWeight="semibold"
+                              color="gray.700"
+                            >
+                              {t('fields.lastName')}:
+                            </Text>
+                            <Text color="gray.600">{admin.lastName}</Text>
+                          </HStack>
+                          <HStack justify="space-between">
+                            <Text
+                              fontWeight="semibold"
+                              color="gray.700"
+                            >
+                              {t('fields.email')}:
+                            </Text>
+                            <Text color="gray.600">{admin.email}</Text>
+                          </HStack>
+                          <HStack justify="space-between">
+                            <Text
+                              fontWeight="semibold"
+                              color="gray.700"
+                            >
+                              {t('fields.role')}:
+                            </Text>
+                            <Badge
+                              colorScheme={
+                                admin.role?.name === 'superadmin' ? 'orange' : 'blue'
+                              }
+                              variant="subtle"
+                              px={3}
+                              py={1}
+                            >
+                              {admin.role?.name || '-'}
+                            </Badge>
+                          </HStack>
+                        </VStack>
+                      </Box>
 
-                {/* Additional Information */}
-                <Box>
-                  <VStack
-                    spacing={4}
-                    align="stretch"
-                  >
-                    <HStack justify="space-between">
-                      <Text
-                        fontWeight="semibold"
-                        color="gray.700"
-                      >
-                        {t('fields.createdAt')}:
-                      </Text>
-                      <Text color="gray.600">
-                        {admin.createdAt
-                          ? new Date(admin.createdAt).toLocaleDateString(
-                              'es-ES'
-                            )
-                          : '-'}
-                      </Text>
-                    </HStack>
-                    <HStack justify="space-between">
-                      <Text
-                        fontWeight="semibold"
-                        color="gray.700"
-                      >
-                        {t('fields.updatedAt')}:
-                      </Text>
-                      <Text color="gray.600">
-                        {admin.updatedAt
-                          ? new Date(admin.updatedAt).toLocaleDateString(
-                              'es-ES'
-                            )
-                          : '-'}
-                      </Text>
-                    </HStack>
-                  </VStack>
-                </Box>
-              </VStack>
-            </CardBody>
-          </Card>
+                      <Divider />
 
-          {/* Audit Card */}
-          <AuditPage
-            logs={logsData?.data || []}
-            subtitle={t('audit.description')}
-            t={t}
-            isLoading={isLogsPending}
-            emptyText={t('audit.noChanges')}
-          />
+                      {/* Additional Information */}
+                      <Box>
+                        <VStack
+                          spacing={4}
+                          align="stretch"
+                        >
+                          <HStack justify="space-between">
+                            <Text
+                              fontWeight="semibold"
+                              color="gray.700"
+                            >
+                              {t('fields.createdAt')}:
+                            </Text>
+                            <Text color="gray.600">
+                              {admin.createdAt
+                                ? new Date(admin.createdAt).toLocaleDateString(
+                                    'es-ES'
+                                  )
+                                : '-'}
+                            </Text>
+                          </HStack>
+                          <HStack justify="space-between">
+                            <Text
+                              fontWeight="semibold"
+                              color="gray.700"
+                            >
+                              {t('fields.updatedAt')}:
+                            </Text>
+                            <Text color="gray.600">
+                              {admin.updatedAt
+                                ? new Date(admin.updatedAt).toLocaleDateString(
+                                    'es-ES'
+                                  )
+                                : '-'}
+                            </Text>
+                          </HStack>
+                        </VStack>
+                      </Box>
+                    </VStack>
+                  </CardBody>
+                </Card>
+              </TabPanel>
+
+              {/* Audit Tab */}
+              <TabPanel>
+                <AuditPage
+                  logs={logsData?.data || []}
+                  subtitle={t('audit.description')}
+                  t={t}
+                  isLoading={isLogsPending}
+                  emptyText={t('audit.noChanges')}
+                />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </VStack>
       </Container>
     </>

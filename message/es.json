@@ -5,7 +5,7 @@
         "users": "Usuarios",
         "roles": "Roles",
         "admins": "Administradores",
-        "logs": "Registros",
+        "logs": "Logs",
         "petTypes": "Tipos de Mascota",
         "petCharacteristics": "Características de Mascota",
         "pets": "Mascotas",
@@ -485,6 +485,10 @@
           "createdAt": "Fecha de Creación",
           "updatedAt": "Última Actualización"
         },
+        "tabs": {
+          "information": "Información",
+          "audit": "Auditoría"
+        },
         "audit": {
           "description": "Registro de todas las modificaciones realizadas en este administrador",
           "noChanges": "No se han registrado cambios en este administrador"
@@ -868,6 +872,10 @@
           "customRole": "Rol Personalizado",
           "createdAt": "Fecha de Creación",
           "updatedAt": "Última Actualización"
+        },
+        "tabs": {
+          "information": "Información",
+          "audit": "Auditoría"
         },
         "audit": {
           "description": "Registro de todas las modificaciones realizadas en este rol",

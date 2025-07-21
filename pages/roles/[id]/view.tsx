@@ -19,6 +19,11 @@ import {
   CardBody,
   Grid,
   GridItem,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
 } from '@chakra-ui/react';
 import { ChevronRightIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
@@ -212,166 +217,224 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
             </HStack>
           </Box>
 
-          {/* Role Information Card */}
-          <Card variant="outline">
-            <CardBody p={4}>
-              <VStack
-                spacing={4}
-                align="stretch"
+          {/* Tabs */}
+          <Tabs
+            variant="enclosed"
+            colorScheme="brand1"
+            borderColor="brand1.300"
+          >
+            <TabList>
+              <Tab
+                bg="brand1.200"
+                color="brand1.700"
+                fontSize="sm"
+                _selected={{
+                  bg: 'brand1.600',
+                  color: 'white',
+                }}
+                _hover={{ bg: 'brand1.300' }}
               >
-                <Heading
-                  size="sm"
-                  color="brand1.700"
-                >
-                  {t('sections.roleInfo')}
-                </Heading>
+                {t('tabs.information')}
+              </Tab>
+              <Tab
+                bg="brand1.200"
+                color="brand1.700"
+                fontSize="sm"
+                _selected={{
+                  bg: 'brand1.600',
+                  color: 'white',
+                }}
+                _hover={{ bg: 'brand1.300' }}
+              >
+                {t('tabs.audit')}
+              </Tab>
+            </TabList>
 
+            <TabPanels>
+              {/* Information Tab */}
+              <TabPanel>
                 <VStack
-                  spacing={4}
+                  spacing={6}
                   align="stretch"
                 >
-                  <HStack justify="space-between">
-                    <Text
-                      fontWeight="semibold"
-                      color="gray.700"
-                    >
-                      {t('fields.id')}:
-                    </Text>
-                    <Text color="gray.600">{role.id}</Text>
-                  </HStack>
-
-                  <HStack justify="space-between">
-                    <Text
-                      fontWeight="semibold"
-                      color="gray.700"
-                    >
-                      {t('fields.name')}:
-                    </Text>
-                    <Text color="gray.600">{role.name}</Text>
-                  </HStack>
-
-                  <HStack justify="space-between" align="flex-start">
-                    <Text
-                      fontWeight="semibold"
-                      color="gray.700"
-                    >
-                      {t('fields.description')}:
-                    </Text>
-                    <Text color="gray.600" textAlign="right">
-                      {role.description}
-                    </Text>
-                  </HStack>
-
-                  <HStack justify="space-between">
-                    <Text
-                      fontWeight="semibold"
-                      color="gray.700"
-                    >
-                      {t('fields.type')}:
-                    </Text>
-                    <Tag
-                      colorScheme={role.isSystem ? 'orange' : 'blue'}
-                      variant="subtle"
-                      size="sm"
-                      px={2}
-                      py={1}
-                    >
-                      {role.isSystem
-                        ? t('fields.systemRole')
-                        : t('fields.customRole')}
-                    </Tag>
-                  </HStack>
-                </VStack>
-
-                <Divider />
-
-                {/* Timestamps */}
-                <VStack
-                  spacing={4}
-                  align="stretch"
-                >
-                  {role.createdAt && (
-                    <HStack justify="space-between">
-                      <Text
-                        fontWeight="semibold"
-                        color="gray.700"
+                  {/* Role Information Card */}
+                  <Card variant="outline">
+                    <CardBody p={4}>
+                      <VStack
+                        spacing={4}
+                        align="stretch"
                       >
-                        {t('fields.createdAt')}:
-                      </Text>
-                      <Text color="gray.600">
-                        {new Date(role.createdAt).toLocaleDateString('es-ES', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </Text>
-                    </HStack>
-                  )}
+                        <Heading
+                          size="sm"
+                          color="brand1.700"
+                        >
+                          {t('sections.roleInfo')}
+                        </Heading>
 
-                  {role.updatedAt && (
-                    <HStack justify="space-between">
-                      <Text
-                        fontWeight="semibold"
-                        color="gray.700"
+                        <VStack
+                          spacing={4}
+                          align="stretch"
+                        >
+                          <HStack justify="space-between">
+                            <Text
+                              fontWeight="semibold"
+                              color="gray.700"
+                            >
+                              {t('fields.id')}:
+                            </Text>
+                            <Text color="gray.600">{role.id}</Text>
+                          </HStack>
+
+                          <HStack justify="space-between">
+                            <Text
+                              fontWeight="semibold"
+                              color="gray.700"
+                            >
+                              {t('fields.name')}:
+                            </Text>
+                            <Text color="gray.600">{role.name}</Text>
+                          </HStack>
+
+                          <HStack
+                            justify="space-between"
+                            align="flex-start"
+                          >
+                            <Text
+                              fontWeight="semibold"
+                              color="gray.700"
+                            >
+                              {t('fields.description')}:
+                            </Text>
+                            <Text
+                              color="gray.600"
+                              textAlign="right"
+                            >
+                              {role.description}
+                            </Text>
+                          </HStack>
+
+                          <HStack justify="space-between">
+                            <Text
+                              fontWeight="semibold"
+                              color="gray.700"
+                            >
+                              {t('fields.type')}:
+                            </Text>
+                            <Tag
+                              colorScheme={role.isSystem ? 'orange' : 'blue'}
+                              variant="subtle"
+                              size="sm"
+                              px={2}
+                              py={1}
+                            >
+                              {role.isSystem
+                                ? t('fields.systemRole')
+                                : t('fields.customRole')}
+                            </Tag>
+                          </HStack>
+                        </VStack>
+
+                        <Divider />
+
+                        {/* Timestamps */}
+                        <VStack
+                          spacing={4}
+                          align="stretch"
+                        >
+                          {role.createdAt && (
+                            <HStack justify="space-between">
+                              <Text
+                                fontWeight="semibold"
+                                color="gray.700"
+                              >
+                                {t('fields.createdAt')}:
+                              </Text>
+                              <Text color="gray.600">
+                                {new Date(role.createdAt).toLocaleDateString(
+                                  'es-ES',
+                                  {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                  }
+                                )}
+                              </Text>
+                            </HStack>
+                          )}
+
+                          {role.updatedAt && (
+                            <HStack justify="space-between">
+                              <Text
+                                fontWeight="semibold"
+                                color="gray.700"
+                              >
+                                {t('fields.updatedAt')}:
+                              </Text>
+                              <Text color="gray.600">
+                                {new Date(role.updatedAt).toLocaleDateString(
+                                  'es-ES',
+                                  {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                  }
+                                )}
+                              </Text>
+                            </HStack>
+                          )}
+                        </VStack>
+                      </VStack>
+                    </CardBody>
+                  </Card>
+
+                  {/* Permissions Card */}
+                  <Card variant="outline">
+                    <CardBody p={4}>
+                      <VStack
+                        spacing={4}
+                        align="stretch"
                       >
-                        {t('fields.updatedAt')}:
-                      </Text>
-                      <Text color="gray.600">
-                        {new Date(role.updatedAt).toLocaleDateString('es-ES', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </Text>
-                    </HStack>
-                  )}
+                        <Heading
+                          size="sm"
+                          color="brand1.700"
+                        >
+                          {t('sections.permissions')}
+                        </Heading>
+
+                        <Grid
+                          templateColumns="repeat(auto-fit, minmax(300px, 1fr))"
+                          gap={4}
+                        >
+                          {Object.entries(role.permissions).map(
+                            ([moduleName, permissions]) => (
+                              <GridItem key={moduleName}>
+                                {renderModuleCard(moduleName, permissions)}
+                              </GridItem>
+                            )
+                          )}
+                        </Grid>
+                      </VStack>
+                    </CardBody>
+                  </Card>
                 </VStack>
-              </VStack>
-            </CardBody>
-          </Card>
+              </TabPanel>
 
-          {/* Permissions Card */}
-          <Card variant="outline">
-            <CardBody p={4}>
-              <VStack
-                spacing={4}
-                align="stretch"
-              >
-                <Heading
-                  size="sm"
-                  color="brand1.700"
-                >
-                  {t('sections.permissions')}
-                </Heading>
-
-                <Grid
-                  templateColumns="repeat(auto-fit, minmax(300px, 1fr))"
-                  gap={4}
-                >
-                  {Object.entries(role.permissions).map(
-                    ([moduleName, permissions]) => (
-                      <GridItem key={moduleName}>
-                        {renderModuleCard(moduleName, permissions)}
-                      </GridItem>
-                    )
-                  )}
-                </Grid>
-              </VStack>
-            </CardBody>
-          </Card>
-
-          {/* Audit Card */}
-          <AuditPage
-            logs={logsData?.data || []}
-            subtitle={t('audit.description')}
-            t={t}
-            isLoading={isLogsPending}
-            emptyText={t('audit.noChanges')}
-          />
+              {/* Audit Tab */}
+              <TabPanel>
+                <AuditPage
+                  logs={logsData?.data || []}
+                  subtitle={t('audit.description')}
+                  t={t}
+                  isLoading={isLogsPending}
+                  emptyText={t('audit.noChanges')}
+                />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </VStack>
       </Container>
     </>
