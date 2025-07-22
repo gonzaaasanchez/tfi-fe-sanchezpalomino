@@ -105,17 +105,16 @@ const ReservationViewPage: NextPageWithLayout = () => {
             {/* Información de la Reserva */}
             <Card>
               <CardBody>
-                <Heading
-                  size="sm"
-                  color="brand1.700"
-                  mb={4}
-                >
-                  {t('sections.reservationInfo')}
-                </Heading>
                 <VStack
+                  spacing={6}
                   align="stretch"
-                  spacing={4}
                 >
+                  <Heading
+                    size="sm"
+                    color="brand1.700"
+                  >
+                    {t('sections.reservationInfo')}
+                  </Heading>
                   {/* ID y Estado */}
                   <HStack justify="space-between">
                     <Text fontWeight="semibold">{t('fields.id')}:</Text>
@@ -372,17 +371,16 @@ const ReservationViewPage: NextPageWithLayout = () => {
             >
               <Card width="100%">
                 <CardBody>
-                  <Heading
-                    size="sm"
-                    color="brand1.700"
-                    mb={4}
-                  >
-                    {t('sections.users')}
-                  </Heading>
                   <VStack
+                    spacing={6}
                     align="stretch"
-                    spacing={4}
                   >
+                    <Heading
+                      size="sm"
+                      color="brand1.700"
+                    >
+                      {t('sections.users')}
+                    </Heading>
                     <Box>
                       <Text
                         fontWeight="bold"
@@ -466,17 +464,16 @@ const ReservationViewPage: NextPageWithLayout = () => {
               {/* Segunda Card Derecha - Monto */}
               <Card width="100%">
                 <CardBody>
-                  <Heading
-                    size="sm"
-                    color="brand1.700"
-                    mb={4}
-                  >
-                    {t('sections.pricing')}
-                  </Heading>
                   <VStack
+                    spacing={6}
                     align="stretch"
-                    spacing={3}
                   >
+                    <Heading
+                      size="sm"
+                      color="brand1.700"
+                    >
+                      {t('sections.pricing')}
+                    </Heading>
                     <HStack justify="space-between">
                       <Text fontWeight="bold">{t('fields.totalPrice')}:</Text>
                       <Text>{reservation.totalPrice}</Text>
@@ -502,8 +499,8 @@ const ReservationViewPage: NextPageWithLayout = () => {
               <Card width="100%">
                 <CardBody>
                   <VStack
+                    spacing={6}
                     align="stretch"
-                    spacing={3}
                   >
                     <HStack>
                       <Text fontWeight="bold">{t('fields.createdAt')}:</Text>

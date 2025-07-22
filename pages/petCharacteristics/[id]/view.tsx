@@ -13,7 +13,9 @@ import {
   BreadcrumbLink,
   Container,
   HStack,
-  Divider
+  Divider,
+  Card,
+  CardBody
 } from '@chakra-ui/react';
 import { ChevronRightIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
@@ -119,18 +121,12 @@ const ViewPetCharacteristicPage: NextPageWithLayout<ViewPetCharacteristicPagePro
           </Box>
 
           {/* Pet Characteristic Details */}
-          <Box
-            bg="white"
-            border="1px"
-            borderColor="gray.200"
-            borderRadius="lg"
-            p={6}
-            shadow="sm"
-          >
-            <VStack spacing={6} align="stretch">
-              <Heading size="sm" color="brand1.700">
-                {t('sections.petCharacteristicInfo')}
-              </Heading>
+          <Card>
+            <CardBody>
+              <VStack spacing={6} align="stretch">
+                <Heading size="sm" color="brand1.700">
+                  {t('sections.petCharacteristicInfo')}
+                </Heading>
 
               <VStack spacing={4} align="stretch">
                 <HStack justify="space-between">
@@ -179,8 +175,9 @@ const ViewPetCharacteristicPage: NextPageWithLayout<ViewPetCharacteristicPagePro
                 )}
               </VStack>
             </VStack>
-          </Box>
-        </VStack>
+          </CardBody>
+        </Card>
+      </VStack>
       </Container>
     </>
   );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack, Text, Heading, Badge } from '@chakra-ui/react';
+import { VStack, Text, Heading, Badge, Card, CardBody } from '@chakra-ui/react';
 import { useTranslations } from 'next-intl';
 import { SessionAudit } from 'lib/types/sessionAudit';
 import { PaginationMetadata } from 'lib/types/response';
@@ -100,40 +100,38 @@ export const SessionAuditPage: React.FC<SessionAuditPageProps> = ({
   };
 
   return (
-    <VStack
-      spacing={6}
-      align="stretch"
-      bg="white"
-      border="1px"
-      borderColor="gray.200"
-      borderRadius="lg"
-      p={6}
-      shadow="sm"
-    >
-      <Heading
-        size="sm"
-        color="brand1.700"
-      >
-        {sectionsT('sessionAudit')}
-      </Heading>
-      {subtitle && (
-        <Text
-          color="gray.600"
-          fontSize="sm"
+    <Card>
+      <CardBody>
+        <VStack
+          spacing={6}
+          align="stretch"
         >
-          {subtitle}
-        </Text>
-      )}
+          <Heading
+            size="sm"
+            color="brand1.700"
+          >
+            {sectionsT('sessionAudit')}
+          </Heading>
+          {subtitle && (
+            <Text
+              color="gray.600"
+              fontSize="sm"
+            >
+              {subtitle}
+            </Text>
+          )}
 
-      <TableComponent
-        rows={sessions}
-        columns={columns}
-        loading={isLoading}
-        emptyText={emptyText || sessionAuditT('noSessions')}
-        metadata={pagination}
-        onChangePage={onChangePage}
-        shadow={false}
-      />
-    </VStack>
+          <TableComponent
+            rows={sessions}
+            columns={columns}
+            loading={isLoading}
+            emptyText={emptyText || sessionAuditT('noSessions')}
+            metadata={pagination}
+            onChangePage={onChangePage}
+            shadow={false}
+          />
+        </VStack>
+      </CardBody>
+    </Card>
   );
 };

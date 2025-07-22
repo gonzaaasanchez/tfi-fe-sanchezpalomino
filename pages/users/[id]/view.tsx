@@ -19,6 +19,8 @@ import {
   TabPanels,
   Tab,
   TabPanel,
+  Card,
+  CardBody,
 } from '@chakra-ui/react';
 import { ChevronRightIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
@@ -193,24 +195,18 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
             <TabPanels>
               {/* Information Tab */}
               <TabPanel>
-                <Box
-                  bg="white"
-                  border="1px"
-                  borderColor="gray.200"
-                  borderRadius="lg"
-                  p={6}
-                  shadow="sm"
-                >
-                  <VStack
-                    spacing={6}
-                    align="stretch"
-                  >
-                    <Heading
-                      size="sm"
-                      color="brand1.700"
+                <Card>
+                  <CardBody>
+                    <VStack
+                      spacing={6}
+                      align="stretch"
                     >
-                      {t('sections.userInfo')}
-                    </Heading>
+                      <Heading
+                        size="sm"
+                        color="brand1.700"
+                      >
+                        {t('sections.userInfo')}
+                      </Heading>
 
                     <VStack
                       spacing={4}
@@ -342,8 +338,9 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
                       )}
                     </VStack>
                   </VStack>
-                </Box>
-              </TabPanel>
+                </CardBody>
+              </Card>
+            </TabPanel>
 
               {/* Session Audit Tab */}
               {canViewSessionAudit && (

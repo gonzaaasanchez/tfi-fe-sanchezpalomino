@@ -36,10 +36,10 @@ export const AuditPage: React.FC<AuditPageProps> = ({
 
   if (isLoading) {
     return (
-      <Card variant="outline">
-        <CardBody p={4}>
+      <Card>
+        <CardBody>
           <VStack
-            spacing={4}
+            spacing={6}
             align="stretch"
           >
             <Heading
@@ -63,10 +63,10 @@ export const AuditPage: React.FC<AuditPageProps> = ({
 
   if (!logs || logs.length === 0) {
     return (
-      <Card variant="outline">
-        <CardBody p={4}>
+      <Card>
+        <CardBody>
           <VStack
-            spacing={4}
+            spacing={6}
             align="stretch"
           >
             <Heading
@@ -97,10 +97,10 @@ export const AuditPage: React.FC<AuditPageProps> = ({
   }
 
   return (
-    <Card variant="outline">
-      <CardBody p={4}>
+    <Card>
+      <CardBody>
         <VStack
-          spacing={4}
+          spacing={6}
           align="stretch"
         >
           <Heading

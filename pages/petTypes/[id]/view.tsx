@@ -14,6 +14,8 @@ import {
   Container,
   HStack,
   Divider,
+  Card,
+  CardBody,
 } from '@chakra-ui/react';
 import { ChevronRightIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
@@ -139,24 +141,18 @@ const ViewPetTypePage: NextPageWithLayout<ViewPetTypePageProps> = ({ id }) => {
           </Box>
 
           {/* Pet Type Details */}
-          <Box
-            bg="white"
-            border="1px"
-            borderColor="gray.200"
-            borderRadius="lg"
-            p={6}
-            shadow="sm"
-          >
-            <VStack
-              spacing={6}
-              align="stretch"
-            >
-              <Heading
-                size="sm"
-                color="brand1.700"
+          <Card>
+            <CardBody>
+              <VStack
+                spacing={6}
+                align="stretch"
               >
-                {t('sections.petTypeInfo')}
-              </Heading>
+                <Heading
+                  size="sm"
+                  color="brand1.700"
+                >
+                  {t('sections.petTypeInfo')}
+                </Heading>
 
               <VStack
                 spacing={4}
@@ -231,8 +227,9 @@ const ViewPetTypePage: NextPageWithLayout<ViewPetTypePageProps> = ({ id }) => {
                 )}
               </VStack>
             </VStack>
-          </Box>
-        </VStack>
+          </CardBody>
+        </Card>
+      </VStack>
       </Container>
     </>
   );

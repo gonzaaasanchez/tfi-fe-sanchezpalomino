@@ -96,9 +96,8 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
       <Card
         key={moduleName}
         size="sm"
-        variant="outline"
       >
-        <CardBody p={4}>
+        <CardBody>
           <VStack
             spacing={3}
             align="stretch"
@@ -263,10 +262,10 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
                   align="stretch"
                 >
                   {/* Role Information Card */}
-                  <Card variant="outline">
-                    <CardBody p={4}>
+                  <Card>
+                    <CardBody>
                       <VStack
-                        spacing={4}
+                        spacing={6}
                         align="stretch"
                       >
                         <Heading
@@ -397,10 +396,10 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
                   </Card>
 
                   {/* Permissions Card */}
-                  <Card variant="outline">
-                    <CardBody p={4}>
+                  <Card>
+                    <CardBody>
                       <VStack
-                        spacing={4}
+                        spacing={6}
                         align="stretch"
                       >
                         <Heading
