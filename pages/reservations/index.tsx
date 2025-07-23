@@ -43,6 +43,19 @@ const ReservationsPage: NextPageWithLayout = () => {
       ),
     },
     {
+      key: 'createdAt',
+      label: t('columns.createdAt'),
+      type: 'custom',
+      renderCell: (item: Reservation) => (
+        <Text>
+          {item.createdAt 
+            ? new Date(item.createdAt).toLocaleDateString()
+            : '-'
+          }
+        </Text>
+      ),
+    },
+    {
       key: 'startDate',
       label: t('columns.startDate'),
       type: 'custom',

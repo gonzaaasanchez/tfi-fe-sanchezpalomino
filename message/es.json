@@ -1052,8 +1052,8 @@
         "emptyText": "No hay reservas disponibles",
         "columns": {
           "id": "ID",
-          "startDate": "Fecha de Inicio",
-          "endDate": "Fecha de Fin",
+          "startDate": "Inicio de Cuidado",
+          "endDate": "Fin de Cuidado",
           "careLocation": "Ubicación de Cuidado",
           "user": "Usuario",
           "caregiver": "Cuidador",
