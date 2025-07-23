@@ -1033,7 +1033,28 @@
           "description": "Panel principal"
         },
         "title": "Dashboard",
-        "description": "Panel principal del sistema"
+        "description": "Panel principal del sistema",
+        "indicators": {
+          "totalUsers": "Usuarios Registrados",
+          "totalReservations": "Reservas Totales",
+          "totalPets": "Mascotas Totales"
+        },
+        "charts": {
+          "petTypes": {
+            "title": "Distribución de Tipos de Mascotas",
+            "loading": "Cargando gráficos..."
+          },
+          "newUsers": {
+            "title": "Nuevos Usuarios Registrados por Mes"
+          },
+          "reservations": {
+            "title": "Tendencia de Reservas por Mes"
+          },
+          "revenue": {
+            "title": "Ingresos por Categoría de Servicio",
+            "tooltip": "Ingresos"
+          }
+        }
       }
     },
     "roles": {
