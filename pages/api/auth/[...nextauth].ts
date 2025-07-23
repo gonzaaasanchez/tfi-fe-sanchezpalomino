@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { login } from '@services/admin';
+import { AuthService } from '@services/auth';
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -15,7 +15,7 @@ export const authOptions: NextAuthOptions = {
         if (!credentials) return null;
 
         try {
-          const response = await login(credentials);
+          const response = await AuthService.login(credentials);
           const { data } = response;
 
           if (!data || !data.data || !data.data.admin || !data.data.token) {

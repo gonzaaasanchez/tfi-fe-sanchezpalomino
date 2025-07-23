@@ -414,10 +414,60 @@
           "updateError": "Error al actualizar la característica de mascota",
           "deleteError": "Error al eliminar la característica de mascota"
         }
+      },
+      "auth": {
+        "responses": {
+          "forgotPasswordError": "Error al enviar el código de verificación",
+          "resetPasswordError": "Error al cambiar la contraseña"
+        }
+      }
+    },
+    "shared": {
+      "changePassword": {
+        "title": "Cambiar Contraseña",
+        "description": "Ingresa el código de verificación enviado a tu correo y tu nueva contraseña",
+        "labels": {
+          "code": "Código de Verificación",
+          "newPassword": "Nueva Contraseña"
+        },
+        "placeholders": {
+          "code": "123456",
+          "newPassword": "·················"
+        },
+        "actions": {
+          "resendCode": "Reenviar Código",
+          "submit": "Cambiar Contraseña"
+        },
+        "responses": {
+          "codeSent": "Código enviado exitosamente",
+          "codeResent": "Código reenviado exitosamente",
+          "passwordChanged": "Contraseña cambiada exitosamente"
+        },
+        "validation": {
+          "codePattern": "El código debe tener exactamente 6 dígitos",
+          "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+          "passwordPattern": "La contraseña debe contener al menos una letra mayúscula, una minúscula y un número"
+        }
       }
     }
   },
   "pages": {
+    "profile": {
+      "meta": {
+        "title": "Mi Perfil",
+        "description": "Información de mi perfil de administrador"
+      },
+      "title": "Mi Perfil",
+      "description": "Información personal y configuración de cuenta",
+      "fields": {
+        "firstName": "Nombre",
+        "lastName": "Apellido",
+        "email": "Correo Electrónico"
+      },
+      "actions": {
+        "changePassword": "Cambiar Contraseña"
+      }
+    },
     "admins": {
       "index": {
         "actions": {

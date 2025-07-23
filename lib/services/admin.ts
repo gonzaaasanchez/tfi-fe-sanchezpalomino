@@ -1,20 +1,7 @@
 import { ClientApi } from '@services/api/ssc';
-import {
-  AdminSignInService,
-  AdminLoginResponse,
-  AdminCreateService,
-  AdminUpdateService,
-} from '@interfaces/services';
+import { AdminCreateService, AdminUpdateService } from '@interfaces/services';
 import { Admin } from '@interfaces/user';
-import { BaseResponse, PaginatedResponse } from '@interfaces/response';
-
-export const login = async (body: AdminSignInService) => {
-  return await ClientApi.post<BaseResponse<AdminLoginResponse>>('admins/login', body);
-};
-
-export const logout = async () => {
-  return await ClientApi.post<BaseResponse<any>>('admins/logout');
-};
+import { BaseResponse } from '@interfaces/response';
 
 export class AdminService {
   private static readonly BASE_URL = '/admins';

@@ -12,9 +12,10 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { ChevronDownIcon, HamburgerIcon } from '@chakra-ui/icons';
-import { FaSignOutAlt } from 'react-icons/fa';
+import { FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/router';
 import { useLogout } from 'lib/hooks/use-auth';
 
 interface HeaderProps {
@@ -29,12 +30,17 @@ export const Header: React.FC<HeaderProps> = ({
   const { data: session } = useSession();
   const t = useTranslations('layouts.private.header');
   const { mutate: logout, isPending: isLoggingOut } = useLogout();
+  const router = useRouter();
 
   const bgColor = 'brand1.700';
 
   const getUserFullName = () => {
     const { firstName, lastName } = session?.user || {};
     return `${firstName} ${lastName}`.trim() || '';
+  };
+
+  const handleProfileClick = () => {
+    router.push('/profile');
   };
 
   return (
@@ -102,6 +108,14 @@ export const Header: React.FC<HeaderProps> = ({
               />
             </MenuButton>
             <MenuList minW="140px">
+              <MenuItem
+                onClick={handleProfileClick}
+                color="gray.900"
+                justifyContent="center"
+                icon={<Icon as={FaUser} color="brand1.600" boxSize={4} />}
+              >
+                {t('profile')}
+              </MenuItem>
               <MenuItem
                 onClick={() => logout()}
                 color="gray.900"
