@@ -9,11 +9,30 @@ export const useGetPets = (params: any = {}) => {
   });
 };
 
-export const useGetPet = ({ id, enabled = true }: { id: string; enabled?: boolean }) => {
+export const useGetPet = ({
+  id,
+  enabled = true,
+}: {
+  id: string;
+  enabled?: boolean;
+}) => {
   return useQuery({
     queryKey: ['pet', id],
     queryFn: () => PetService.getById(id),
     enabled: enabled && !!id,
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
-}; 
+};
+
+export const useGetUserPets = (
+  userId: string,
+  page: number = 1,
+  limit: number = 10
+) => {
+  return useQuery({
+    queryKey: ['user-pets', userId, page, limit],
+    queryFn: () => PetService.getByUserId(userId, { page, limit }),
+    enabled: !!userId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+};

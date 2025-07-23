@@ -1,4 +1,4 @@
-import { ReactElement, useState } from 'react';
+import { ReactElement, useState, useEffect } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 import { NextSeo } from 'next-seo';
 import {
@@ -22,7 +22,7 @@ import {
   Card,
   CardBody,
 } from '@chakra-ui/react';
-import { ChevronRightIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
+import { ChevronRightIcon, EditIcon, ArrowBackIcon, ViewIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
 import { handlePermission } from '@helpers/middlewares';
 import { GetServerSideProps } from 'next';
@@ -30,8 +30,12 @@ import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
 import { useRouter } from 'next/router';
 import { useGetUser, useGetUserSessions } from 'lib/hooks';
+import { useGetUserPets } from 'lib/hooks/use-pets';
 import { usePermissions } from 'lib/hooks/use-permissions';
-import { Loader, SessionAuditPage } from 'components/shared';
+import { useCustomToast } from 'lib/hooks/use-custom-toast';
+import { Loader, SessionAuditPage, PetDetail } from 'components/shared';
+import TableComponent, { Column, Action } from 'components/shared/table';
+import { Pet } from 'lib/types/pet';
 
 interface ViewUserPageProps {
   id: string;
@@ -39,15 +43,70 @@ interface ViewUserPageProps {
 
 const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
   const t = useTranslations('pages.users.view');
+  const tPets = useTranslations('pages.pets.view');
   const router = useRouter();
   const [sessionsPage, setSessionsPage] = useState(1);
+  const [petsPage, setPetsPage] = useState(1);
+  const [activeTab, setActiveTab] = useState(0);
+  const [selectedPet, setSelectedPet] = useState<Pet | null>(null);
   const { canRead, isSuperAdmin } = usePermissions();
 
   const { user, isPending } = useGetUser({ id });
   const { data: sessionsData, isPending: isSessionsPending } =
     useGetUserSessions(id, sessionsPage, 10);
+  const { data: petsData, isPending: isPetsPending, error: petsError } = useGetUserPets(id, petsPage, 10);
+  const { errorToast } = useCustomToast();
 
   const canViewSessionAudit = isSuperAdmin() || canRead('audit');
+
+  const pets = petsData?.items || [];
+  const petsPagination = petsData?.pagination;
+
+  const petsColumns: Column[] = [
+    {
+      key: 'id',
+      label: 'ID',
+      width: '80px',
+      sortable: true,
+      sortKey: 'id',
+    },
+    {
+      key: 'name',
+      label: 'Nombre',
+      sortable: true,
+      sortKey: 'name',
+    },
+    {
+      key: 'petType.name',
+      label: 'Tipo',
+      sortable: true,
+      sortKey: 'petType.name',
+      type: 'custom',
+      renderCell: (item: any) => <Text>{item.petType?.name || '-'}</Text>,
+    },
+    {
+      key: 'createdAt',
+      label: 'Fecha de creación',
+      sortable: true,
+      sortKey: 'createdAt',
+      type: 'custom',
+      renderCell: (item: any) => (
+        <Text>{new Date(item.createdAt).toLocaleDateString()}</Text>
+      ),
+    },
+  ];
+
+  const petsActions: Action[] = [
+    {
+      name: 'view',
+      label: 'Ver',
+      icon: <ViewIcon />,
+      color: 'blue',
+      variant: 'ghost' as const,
+      size: 'sm' as const,
+      tooltip: 'Ver detalles de la mascota',
+    },
+  ];
 
   const handleEdit = () => {
     router.push(`/users/${id}/edit`);
@@ -60,6 +119,30 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
   const handleSessionsPageChange = (page: number) => {
     setSessionsPage(page);
   };
+
+  const handlePetsPageChange = (page: number) => {
+    setPetsPage(page);
+  };
+
+  const handleBackFromPet = () => {
+    setSelectedPet(null);
+    setActiveTab(1); // Volver al tab de mascotas
+  };
+
+  const handlePetAction = (actionName: string, item: Pet) => {
+    if (actionName === 'view') {
+      setSelectedPet(item);
+      setActiveTab(2); // Ir al tab de detalle de mascota
+    }
+  };
+
+  // Handle pets error
+  useEffect(() => {
+    if (petsError) {
+      const message = (petsError as any)?.response?.data?.message || 'Error al obtener las mascotas del usuario';
+      errorToast(message);
+    }
+  }, [petsError, errorToast]);
 
   if (isPending) {
     return <Loader fullHeight />;
@@ -162,6 +245,8 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
             variant="enclosed"
             colorScheme="brand1"
             borderColor="brand1.300"
+            index={activeTab}
+            onChange={setActiveTab}
           >
             <TabList>
               <Tab
@@ -176,6 +261,32 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
               >
                 {t('tabs.information')}
               </Tab>
+              <Tab
+                bg="brand1.200"
+                color="brand1.700"
+                fontSize="sm"
+                _selected={{
+                  bg: 'brand1.600',
+                  color: 'white',
+                }}
+                _hover={{ bg: 'brand1.300' }}
+              >
+                Mascotas
+              </Tab>
+              {selectedPet && (
+                <Tab
+                  bg="brand1.200"
+                  color="brand1.700"
+                  fontSize="sm"
+                  _selected={{
+                    bg: 'brand1.600',
+                    color: 'white',
+                  }}
+                  _hover={{ bg: 'brand1.300' }}
+                >
+                  Detalle Mascota
+                </Tab>
+              )}
               {canViewSessionAudit && (
                 <Tab
                   bg="brand1.200"
@@ -342,6 +453,32 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
               </Card>
             </TabPanel>
 
+              {/* Pets Tab */}
+              <TabPanel>
+                <TableComponent
+                  rows={pets}
+                  columns={petsColumns}
+                  actions={petsActions}
+                  loading={isPetsPending}
+                  emptyText={t('noPets')}
+                  shadow={true}
+                  onAction={handlePetAction}
+                  onChangePage={handlePetsPageChange}
+                  metadata={petsPagination}
+                />
+              </TabPanel>
+
+              {/* Pet Detail Tab */}
+              {selectedPet && (
+                <TabPanel>
+                  <PetDetail
+                    pet={selectedPet}
+                    onBack={handleBackFromPet}
+                    backButtonText={tPets('actions.backToPets')}
+                  />
+                </TabPanel>
+              )}
+
               {/* Session Audit Tab */}
               {canViewSessionAudit && (
                 <TabPanel>
@@ -385,6 +522,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       messages: pick(await import(`../../../message/${locale}.json`), [
         'pages.users.view',
         'pages.users.index',
+        'pages.pets.view',
         'layouts.private.header',
         'components.forms.user',
         'general.form.errors',
@@ -393,6 +531,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.shared.table',
         'components.shared.sessionAudit',
         'sessionAudit',
+        'lib.hooks.pets',
       ]),
     },
   };

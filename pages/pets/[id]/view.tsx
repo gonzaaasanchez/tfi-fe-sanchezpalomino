@@ -24,7 +24,7 @@ import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
 import { useRouter } from 'next/router';
 import { useGetPet } from 'lib/hooks/use-pets';
-import { Loader } from 'components/shared';
+import { Loader, PetDetail } from 'components/shared';
 
 interface ViewPetPageProps {
   id: string;
@@ -101,182 +101,11 @@ const ViewPetPage: NextPageWithLayout<ViewPetPageProps> = ({ id }) => {
             </BreadcrumbItem>
           </Breadcrumb>
 
-          {/* Header */}
-          <Box>
-            <HStack
-              justify="space-between"
-              align="flex-start"
-            >
-              <Box>
-                <Heading
-                  size="lg"
-                  mb={2}
-                  color="gray.800"
-                >
-                  {t('title')}
-                </Heading>
-                <Text color="gray.600">{t('description')}</Text>
-              </Box>
-              <HStack spacing={3}>
-                <Button
-                  leftIcon={<ArrowBackIcon />}
-                  variant="outline"
-                  onClick={handleBack}
-                >
-                  {t('actions.back')}
-                </Button>
-              </HStack>
-            </HStack>
-          </Box>
-
-          {/* Pet Details */}
-          <Card>
-            <CardBody>
-              <VStack
-                spacing={6}
-                align="stretch"
-              >
-                <Heading
-                  size="sm"
-                  color="brand1.700"
-                >
-                  {t('sections.petInfo')}
-                </Heading>
-
-              <VStack
-                spacing={4}
-                align="stretch"
-              >
-                <HStack justify="space-between">
-                  <Text
-                    fontWeight="semibold"
-                    color="gray.700"
-                  >
-                    {t('fields.id')}:
-                  </Text>
-                  <Text color="gray.600">{pet.id}</Text>
-                </HStack>
-
-                <HStack justify="space-between">
-                  <Text
-                    fontWeight="semibold"
-                    color="gray.700"
-                  >
-                    {t('fields.name')}:
-                  </Text>
-                  <Text color="gray.600">{pet.name}</Text>
-                </HStack>
-
-                <HStack justify="space-between">
-                  <Text
-                    fontWeight="semibold"
-                    color="gray.700"
-                  >
-                    {t('fields.petType')}:
-                  </Text>
-                  <Text color="gray.600">{pet.petType?.name || '-'}</Text>
-                </HStack>
-
-                {pet.comment && (
-                  <HStack justify="space-between">
-                    <Text
-                      fontWeight="semibold"
-                      color="gray.700"
-                    >
-                      {t('fields.comment')}:
-                    </Text>
-                    <Text color="gray.600">{pet.comment}</Text>
-                  </HStack>
-                )}
-
-                <HStack justify="space-between">
-                  <Text
-                    fontWeight="semibold"
-                    color="gray.700"
-                  >
-                    {t('fields.owner')}:
-                  </Text>
-                  <Text color="gray.600">
-                    {pet.owner?.firstName} {pet.owner?.lastName}
-                  </Text>
-                </HStack>
-
-                {pet.characteristics && pet.characteristics.length > 0 && (
-                  <Box>
-                    <Text
-                      fontWeight="semibold"
-                      color="gray.700"
-                      mb={2}
-                    >
-                      {t('fields.characteristics')}:
-                    </Text>
-                    <VStack
-                      align="start"
-                      spacing={1}
-                    >
-                      {pet.characteristics.map((char, index) => (
-                        <Text
-                          key={index}
-                          color="gray.600"
-                        >
-                          • {char.name}: {char.value}
-                        </Text>
-                      ))}
-                    </VStack>
-                  </Box>
-                )}
-              </VStack>
-
-              <Divider />
-
-              {/* Timestamps */}
-              <VStack
-                spacing={4}
-                align="stretch"
-              >
-                {pet.createdAt && (
-                  <HStack justify="space-between">
-                    <Text
-                      fontWeight="semibold"
-                      color="gray.700"
-                    >
-                      {t('fields.createdAt')}:
-                    </Text>
-                    <Text color="gray.600">
-                      {new Date(pet.createdAt).toLocaleDateString('es-ES', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </Text>
-                  </HStack>
-                )}
-
-                {pet.updatedAt && (
-                  <HStack justify="space-between">
-                    <Text
-                      fontWeight="semibold"
-                      color="gray.700"
-                    >
-                      {t('fields.updatedAt')}:
-                    </Text>
-                    <Text color="gray.600">
-                      {new Date(pet.updatedAt).toLocaleDateString('es-ES', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })}
-                    </Text>
-                  </HStack>
-                )}
-              </VStack>
-            </VStack>
-          </CardBody>
-        </Card>
+          <PetDetail
+            pet={pet}
+            onBack={handleBack}
+            backButtonText={t('actions.back')}
+          />
       </VStack>
       </Container>
     </>

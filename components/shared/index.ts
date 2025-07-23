@@ -7,3 +7,4 @@ export type { PaginationProps } from './pagination';
 export { AuditChangeCard } from './audit-change-card';
 export { AuditPage } from './audit-page';
 export { SessionAuditPage } from './session-audit-page';
+export { PetDetail } from './pet-detail';

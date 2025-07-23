@@ -1,5 +1,12 @@
 {
   "general": {
+    "commonFields": {
+      "id": "ID",
+      "name": "Nombre",
+      "createdAt": "Fecha de Creación",
+      "updatedAt": "Última Actualización",
+      "comment": "Comentario"
+    },
     "permissions": {
       "modules": {
         "users": "Usuarios",
@@ -1108,7 +1115,8 @@
           "view": "Ver"
         },
         "actions": {
-          "back": "Volver"
+          "back": "Volver",
+          "backToPets": "Volver a Mascotas"
         },
         "sections": {
           "petInfo": "Información de la Mascota"
@@ -1123,7 +1131,8 @@
           "createdAt": "Fecha de Creación",
           "updatedAt": "Última Actualización"
         },
-        "notFound": "Mascota no encontrada"
+        "notFound": "Mascota no encontrada",
+        "noPets": "No hay mascotas registradas"
       }
     }
   }

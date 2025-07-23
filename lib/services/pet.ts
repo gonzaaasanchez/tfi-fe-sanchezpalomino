@@ -12,4 +12,14 @@ export class PetService {
     const response = await ClientApi.get(`/pets/admin/${id}`);
     return response.data.data;
   }
+
+  static async getByUserId(
+    userId: string,
+    params: any = {}
+  ): Promise<PaginatedResponse<Pet>> {
+    const response = await ClientApi.get(`/pets/admin/all`, { 
+      params: { ...params, owner: userId } 
+    });
+    return response.data.data;
+  }
 }
