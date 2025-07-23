@@ -46,7 +46,9 @@ export const getServerSideProps: GetServerSideProps = async ({
         'layouts.private',
         'pages.auth.login',
         'components.forms.auth.login',
-        'general.common'
+        'general.common',
+        'lib.shared.changePassword',
+        'lib.shared.recoverPassword'
       ])
     }
   };

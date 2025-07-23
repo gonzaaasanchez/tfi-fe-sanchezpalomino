@@ -264,6 +264,7 @@
             "forgotPassword": "¿Olvidaste tu contraseña?",
             "submit": "Iniciar Sesión"
           },
+          "recoverPassword": "Recuperar contraseña",
           "labels": {
             "email": "Correo Electrónico",
             "password": "Contraseña"
@@ -444,6 +445,37 @@
           "passwordChanged": "Contraseña cambiada exitosamente"
         },
         "validation": {
+          "codePattern": "El código debe tener exactamente 6 dígitos",
+          "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
+          "passwordPattern": "La contraseña debe contener al menos una letra mayúscula, una minúscula y un número"
+        }
+      },
+      "recoverPassword": {
+        "title": "Recuperar Contraseña",
+        "description": "Ingresa tu correo electrónico para recibir un código de verificación",
+        "labels": {
+          "email": "Correo Electrónico",
+          "code": "Código de Verificación",
+          "newPassword": "Nueva Contraseña"
+        },
+        "placeholders": {
+          "email": "ejemplo@gmail.com",
+          "code": "123456",
+          "newPassword": "·················"
+        },
+        "actions": {
+          "sendCode": "Enviar Código",
+          "resendCode": "Reenviar Código",
+          "submit": "Cambiar Contraseña"
+        },
+        "responses": {
+          "codeSent": "Código enviado exitosamente",
+          "codeResent": "Código reenviado exitosamente",
+          "passwordChanged": "Contraseña cambiada exitosamente"
+        },
+        "validation": {
+          "emailRequired": "El correo electrónico es requerido",
+          "emailInvalid": "Ingresa un correo electrónico válido",
           "codePattern": "El código debe tener exactamente 6 dígitos",
           "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
           "passwordPattern": "La contraseña debe contener al menos una letra mayúscula, una minúscula y un número"

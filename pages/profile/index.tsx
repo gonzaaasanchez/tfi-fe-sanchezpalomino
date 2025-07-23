@@ -137,6 +137,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         'general.form.errors',
         'lib.hooks.auth.responses',
         'layouts.private.header',
+        'general.auth.logout',
+        'lib.hooks.auth',
       ]),
     },
   };
