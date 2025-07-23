@@ -132,16 +132,18 @@ const EditConfigPage: NextPageWithLayout<EditConfigPageProps> = ({ key }) => {
                 color="gray.600"
                 _hover={{ bg: 'brand1.50', color: 'brand1.600' }}
                 _active={{ bg: 'brand1.100' }}
-                children="+"
-              />
+              >
+                +
+              </NumberIncrementStepper>
               <NumberDecrementStepper
                 border="none"
                 bg="gray.50"
                 color="gray.600"
                 _hover={{ bg: 'brand1.50', color: 'brand1.600' }}
                 _active={{ bg: 'brand1.100' }}
-                children="-"
-              />
+              >
+                -
+              </NumberDecrementStepper>
             </NumberInputStepper>
           </NumberInput>
         );
