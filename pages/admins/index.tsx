@@ -275,6 +275,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.shared.filters',
         'components.shared.loader',
         'general.common',
+        'general.sidebar',
       ]),
     },
   };

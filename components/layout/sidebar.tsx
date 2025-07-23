@@ -6,6 +6,7 @@ import {
   SidebarModule,
 } from '../../lib/config/sidebar-modules';
 import { usePermissions } from '@hooks/use-permissions';
+import { useSidebarTranslations } from '@hooks/use-sidebar';
 
 interface Module {
   name: string;
@@ -26,6 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const router = useRouter();
   const { hasPermission, isSuperAdmin } = usePermissions();
+  const { getModuleName } = useSidebarTranslations();
 
   // Filter modules based on permissions
   const filteredModules = sidebarModules.filter((module: SidebarModule) => {
@@ -126,7 +128,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     fontSize="sm"
                     fontWeight="medium"
                   >
-                    {module.name}
+                    {getModuleName(module.name)}
                   </Text>
                 </Flex>
               );

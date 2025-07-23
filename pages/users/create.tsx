@@ -121,6 +121,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.forms.user',
         'general.form.errors',
         'general.common',
+        'general.sidebar',
       ]),
     },
   };

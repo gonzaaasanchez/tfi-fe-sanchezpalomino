@@ -139,6 +139,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'layouts.private.header',
         'general.auth.logout',
         'lib.hooks.auth',
+        'general.sidebar',
       ]),
     },
   };

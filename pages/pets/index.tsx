@@ -170,7 +170,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.shared.permission-guard',
         'components.shared.pagination',
         'components.shared.table',
-        'general.common'
+        'general.common',
+        'general.sidebar'
       ]),
     },
   };

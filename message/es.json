@@ -22,7 +22,8 @@
         "posts": "Publicaciones",
         "comments": "Comentarios",
         "likes": "Me Gusta",
-        "audit": "Auditoría de sesiones"
+        "audit": "Auditoría de sesiones",
+        "settings": "Configuraciones"
       },
       "actions": {
         "create": "Crear",
@@ -74,6 +75,22 @@
         "error": "Error al cerrar sesión en el servidor",
         "success": "Sesión cerrada exitosamente"
       }
+    },
+    "configKeys": {
+      "system_commission": "Comisión del Sistema"
+    },
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "admins": "Administradores",
+      "roles": "Roles",
+      "users": "Usuarios",
+      "petTypes": "Tipos de Mascota",
+      "petCharacteristics": "Características de Mascotas",
+      "pets": "Mascotas",
+      "reservations": "Reservas",
+      "settings": "Configuraciones",
+      "reviews": "Reseñas",
+      "logs": "Logs"
     }
   },
   "components": {
@@ -142,6 +159,16 @@
         },
         "loading": {
           "creating": "Creando...",
+          "updating": "Actualizando..."
+        }
+      },
+      "config": {
+        "title": "Configuraciones del Sistema",
+        "description": "Modifica las configuraciones del sistema. Los cambios se aplicarán inmediatamente.",
+        "cta": {
+          "update": "Actualizar Configuraciones"
+        },
+        "loading": {
           "updating": "Actualizando..."
         }
       },
@@ -421,6 +448,12 @@
           "forgotPasswordError": "Error al enviar el código de verificación",
           "resetPasswordError": "Error al cambiar la contraseña"
         }
+      },
+      "configs": {
+        "responses": {
+          "updateSuccess": "Configuraciones actualizadas exitosamente",
+          "updateError": "Error al actualizar las configuraciones"
+        }
       }
     },
     "shared": {
@@ -498,6 +531,71 @@
       },
       "actions": {
         "changePassword": "Cambiar Contraseña"
+      }
+    },
+    "settings": {
+      "index": {
+        "meta": {
+          "title": "Configuraciones",
+          "description": "Gestión de configuraciones del sistema"
+        },
+        "title": "Configuraciones del Sistema",
+        "description": "Administra las configuraciones globales del sistema",
+        "emptyText": "No hay configuraciones disponibles",
+        "columns": {
+          "key": "Clave",
+          "value": "Valor",
+          "type": "Tipo",
+          "updatedAt": "Última Actualización"
+        },
+        "actions": {
+          "view": {
+            "label": "Editar",
+            "tooltip": "Editar configuración"
+          },
+          "edit": {
+            "label": "Editar",
+            "tooltip": "Editar configuración"
+          },
+          "delete": {
+            "label": "Eliminar",
+            "tooltip": "Eliminar configuración"
+          }
+        }
+      },
+      "edit": {
+        "meta": {
+          "title": "Editar Configuración",
+          "description": "Editar configuración del sistema"
+        },
+        "title": "Editar Configuración",
+        "description": "Modifica el valor de la configuración",
+        "breadcrumb": {
+          "home": "Inicio",
+          "settings": "Configuraciones",
+          "edit": "Editar"
+        },
+        "actions": {
+          "back": "Volver"
+        },
+        "form": {
+          "cta": {
+            "update": "Actualizar Configuración",
+            "cancel": "Cancelar"
+          },
+          "loading": {
+            "updating": "Actualizando..."
+          }
+        },
+        "tabs": {
+          "edit": "Editar",
+          "audit": "Auditoría"
+        },
+        "audit": {
+          "description": "Historial de cambios de esta configuración",
+          "noChanges": "No se han registrado cambios"
+        },
+        "notFound": "Configuración no encontrada"
       }
     },
     "admins": {

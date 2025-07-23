@@ -125,6 +125,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.forms.petCharacteristic',
         'general.form.errors',
         'general.common',
+        'general.sidebar',
       ]),
     },
   };

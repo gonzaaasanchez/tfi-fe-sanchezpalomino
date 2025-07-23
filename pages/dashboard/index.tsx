@@ -43,7 +43,8 @@ export const getServerSideProps: GetServerSideProps = async ({
       messages: pick(await import(`../../message/${locale}.json`), [
         'pages.dashboard.index',
         'layouts.private.header',
-        'general.common'
+        'general.common',
+        'general.sidebar'
       ])
     }
   };

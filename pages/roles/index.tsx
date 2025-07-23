@@ -154,6 +154,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.shared.pagination',
         'components.shared.table',
         'general.common',
+        'general.sidebar',
       ]),
     },
   };

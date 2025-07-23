@@ -1,4 +1,4 @@
-import { LockIcon } from '@chakra-ui/icons';
+import { LockIcon, SettingsIcon } from '@chakra-ui/icons';
 import {
   FaUsers,
   FaPaw,
@@ -18,57 +18,65 @@ export interface SidebarModule {
 
 export const sidebarModules: SidebarModule[] = [
   {
-    name: 'Dashboard',
+    name: 'dashboard',
     path: '/dashboard',
     icon: FaChartBar,
+    module: 'dashboard',
   },
   {
-    name: 'Admins',
+    name: 'admins',
     path: '/admins',
     icon: FaUserShield,
     module: 'admins',
     action: 'getAll',
   },
   {
-    name: 'Roles',
+    name: 'roles',
     path: '/roles',
     icon: LockIcon,
     module: 'roles',
     action: 'getAll',
   },
   {
-    name: 'Usuarios',
+    name: 'users',
     path: '/users',
     icon: FaUsers,
     module: 'users',
     action: 'getAll',
   },
   {
-    name: 'Tipos de mascota',
+    name: 'petTypes',
     path: '/petTypes',
     icon: FaPaw,
     module: 'petTypes',
     action: 'getAll',
   },
   {
-    name: 'Características de mascotas',
+    name: 'petCharacteristics',
     path: '/petCharacteristics',
     icon: FaPaw,
     module: 'petCharacteristics',
     action: 'getAll',
   },
   {
-    name: 'Mascotas',
+    name: 'pets',
     path: '/pets',
     icon: FaPaw,
     module: 'pets',
     action: 'getAll',
   },
   {
-    name: 'Reservas',
+    name: 'reservations',
     path: '/reservations',
     icon: FaCalendarCheck,
     module: 'reservations',
+    action: 'getAll',
+  },
+  {
+    name: 'settings',
+    path: '/settings',
+    icon: SettingsIcon,
+    module: 'settings',
     action: 'getAll',
   },
   // {
