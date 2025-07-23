@@ -471,6 +471,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'pages.roles.index',
         'layouts.private.header',
         'general.common',
+        'general.sidebar',
         'general.permissions',
         'general.audit',
       ]),

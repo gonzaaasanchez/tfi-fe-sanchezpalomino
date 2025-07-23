@@ -120,7 +120,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.forms.role',
         'layouts.private.header',
         'general.common',
-        'general.permissions'
+        'general.permissions',
+        'general.sidebar'
       ])
     }
   };

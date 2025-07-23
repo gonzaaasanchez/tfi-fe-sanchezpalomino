@@ -23,7 +23,7 @@
         "comments": "Comentarios",
         "likes": "Me Gusta",
         "audit": "Auditoría de sesiones",
-        "settings": "Configuraciones"
+        "config": "Configuraciones"
       },
       "actions": {
         "create": "Crear",

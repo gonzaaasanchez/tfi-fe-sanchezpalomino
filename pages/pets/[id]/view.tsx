@@ -131,6 +131,8 @@ export const getServerSideProps: GetServerSideProps = async ({
       messages: pick(await import(`../../../message/${locale}.json`), [
         'pages.pets.view',
         'layouts.private.header',
+        'general.common',
+        'general.sidebar',
       ]),
     },
   };

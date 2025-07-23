@@ -142,7 +142,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         'layouts.private.header',
         'components.forms.user',
         'general.form.errors',
-        'general.common'
+        'general.common',
+        'general.sidebar'
       ])
     }
   };

@@ -411,6 +411,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.shared.table',
         'components.shared.sessionAudit',
         'general.common',
+        'general.sidebar',
         'general.audit',
         'sessionAudit',
       ]),

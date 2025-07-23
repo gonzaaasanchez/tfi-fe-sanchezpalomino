@@ -168,6 +168,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.forms.admin',
         'general.form.errors',
         'general.common',
+        'general.sidebar',
       ]),
     },
   };

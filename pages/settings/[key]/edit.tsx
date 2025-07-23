@@ -409,6 +409,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'layouts.private.header',
         'lib.hooks.configs',
         'general.common',
+        'general.sidebar',
         'general.audit',
         'general.configKeys',
       ]),
