@@ -110,7 +110,7 @@ const Dashboard: NextPageWithLayout = () => {
                       {data?.stats.usersGrowth && data.stats.usersGrowth >= 0
                         ? '+'
                         : ''}
-                      {data?.stats.usersGrowth || 0}% desde el mes pasado
+                      {data?.stats.usersGrowth || 0}{t('indicators.growthFromLastMonth')}
                     </StatHelpText>
                   </>
                 )}
@@ -163,7 +163,7 @@ const Dashboard: NextPageWithLayout = () => {
                       data.stats.reservationsGrowth >= 0
                         ? '+'
                         : ''}
-                      {data?.stats.reservationsGrowth || 0}% desde el mes pasado
+                      {data?.stats.reservationsGrowth || 0}{t('indicators.growthFromLastMonth')}
                     </StatHelpText>
                   </>
                 )}
@@ -214,7 +214,7 @@ const Dashboard: NextPageWithLayout = () => {
                       {data?.stats.petsGrowth && data.stats.petsGrowth >= 0
                         ? '+'
                         : ''}
-                      {data?.stats.petsGrowth || 0}% desde el mes pasado
+                      {data?.stats.petsGrowth || 0}{t('indicators.growthFromLastMonth')}
                     </StatHelpText>
                   </>
                 )}

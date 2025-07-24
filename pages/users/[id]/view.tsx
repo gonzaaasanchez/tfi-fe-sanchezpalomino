@@ -126,13 +126,11 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
 
   const handleBackFromPet = () => {
     setSelectedPet(null);
-    setActiveTab(1); // Volver al tab de mascotas
   };
 
   const handlePetAction = (actionName: string, item: Pet) => {
     if (actionName === 'view') {
       setSelectedPet(item);
-      setActiveTab(2); // Ir al tab de detalle de mascota
     }
   };
 
@@ -273,20 +271,6 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
               >
                 Mascotas
               </Tab>
-              {selectedPet && (
-                <Tab
-                  bg="brand1.200"
-                  color="brand1.700"
-                  fontSize="sm"
-                  _selected={{
-                    bg: 'brand1.600',
-                    color: 'white',
-                  }}
-                  _hover={{ bg: 'brand1.300' }}
-                >
-                  Detalle Mascota
-                </Tab>
-              )}
               {canViewSessionAudit && (
                 <Tab
                   bg="brand1.200"
@@ -455,29 +439,26 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
 
               {/* Pets Tab */}
               <TabPanel>
-                <TableComponent
-                  rows={pets}
-                  columns={petsColumns}
-                  actions={petsActions}
-                  loading={isPetsPending}
-                  emptyText={t('noPets')}
-                  shadow={true}
-                  onAction={handlePetAction}
-                  onChangePage={handlePetsPageChange}
-                  metadata={petsPagination}
-                />
-              </TabPanel>
-
-              {/* Pet Detail Tab */}
-              {selectedPet && (
-                <TabPanel>
+                {selectedPet ? (
                   <PetDetail
                     pet={selectedPet}
                     onBack={handleBackFromPet}
                     backButtonText={tPets('actions.backToPets')}
                   />
-                </TabPanel>
-              )}
+                ) : (
+                  <TableComponent
+                    rows={pets}
+                    columns={petsColumns}
+                    actions={petsActions}
+                    loading={isPetsPending}
+                    emptyText={t('noPets')}
+                    shadow={true}
+                    onAction={handlePetAction}
+                    onChangePage={handlePetsPageChange}
+                    metadata={petsPagination}
+                  />
+                )}
+              </TabPanel>
 
               {/* Session Audit Tab */}
               {canViewSessionAudit && (

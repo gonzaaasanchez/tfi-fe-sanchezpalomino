@@ -1,7 +1,7 @@
-import { ReactElement } from 'react';
+import { ReactElement, useState } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 import { NextSeo } from 'next-seo';
-import { Box, Heading, Text, VStack, Tag } from '@chakra-ui/react';
+import { Box, Heading, Text, VStack, Tag, Select, Button, HStack } from '@chakra-ui/react';
 import { PrivateLayout } from 'layouts/private';
 import { handlePermission } from '@helpers/middlewares';
 import { GetServerSideProps } from 'next';
@@ -9,17 +9,194 @@ import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/router';
 import { PermissionGuard } from 'components/shared/permission-guard';
 import { useGetReservations } from 'lib/hooks/use-reservations';
+import { useGetUsers, useGetCaregivers } from 'lib/hooks/use-users';
+import { useReservationStatus } from 'lib/hooks/use-reservation-status';
 import { Reservation } from 'lib/types/reservation';
 import TableComponent, { Column, Action } from 'components/shared/table';
 import { createStandardTableActions } from 'lib/helpers/table-utils';
 import { pick } from 'lodash';
-import { getReservationStatusConfig } from 'lib/helpers/utils';
+import { 
+  getReservationStatusConfig, 
+  generateHTMLReport, 
+  generateTableRows, 
+  completeHTMLReport, 
+  downloadHTMLReport,
+  ReportColumn,
+  ReportFilter
+} from 'lib/helpers/utils';
+import { FiltersFormData, FilterField } from '@interfaces/forms';
+import Filters from 'components/shared/filters';
+import { DownloadIcon } from '@chakra-ui/icons';
 
 const ReservationsPage: NextPageWithLayout = () => {
   const t = useTranslations('pages.reservations.index');
+  const tFilters = useTranslations('components.shared.filters');
+  const tStatus = useTranslations('pages.reservations.index.status');
+  const { getStatusOptions } = useReservationStatus();
   const router = useRouter();
-  const { reservations, pagination, currentPage, setCurrentPage, isPending } =
+  const { reservations, pagination, currentPage, setCurrentPage, userId, setUserId, caregiverId, setCaregiverId, status, setStatus, isPending } =
     useGetReservations({ limit: 10 });
+
+  // Estado para controlar el loading específico de los filtros
+  const [isFiltersLoading, setIsFiltersLoading] = useState(false);
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+  // Obtener todos los usuarios para el filtro
+  const { users } = useGetUsers({ limit: 1000 });
+
+  // Obtener cuidadores para el filtro
+  const { caregivers } = useGetCaregivers({ limit: 1000 });
+
+  // Función para generar y descargar el reporte
+  const generatePDF = async () => {
+    setIsGeneratingPDF(true);
+    try {
+      // Preparar filtros
+      const filters: ReportFilter[] = [];
+      
+      if (userId) {
+        const user = users?.find(u => u.id === userId);
+        filters.push({
+          label: 'Usuario',
+          value: user ? `${user.firstName} ${user.lastName}` : userId
+        });
+      }
+      if (caregiverId) {
+        const caregiver = caregivers?.find(c => c.id === caregiverId);
+        filters.push({
+          label: 'Cuidador',
+          value: caregiver ? `${caregiver.firstName} ${caregiver.lastName}` : caregiverId
+        });
+      }
+      if (status) {
+        const statusLabel = tStatus(status);
+        filters.push({
+          label: 'Estado',
+          value: statusLabel
+        });
+      }
+
+      // Definir columnas del reporte
+      const reportColumns: ReportColumn[] = [
+        { key: 'id', label: 'ID' },
+        { 
+          key: 'user', 
+          label: 'Usuario',
+          render: (value, item) => `${item.user.firstName} ${item.user.lastName}`
+        },
+        { 
+          key: 'caregiver', 
+          label: 'Cuidador',
+          render: (value, item) => `${item.caregiver.firstName} ${item.caregiver.lastName}`
+        },
+        { key: 'startDate', label: 'Fecha de Inicio' },
+        { key: 'endDate', label: 'Fecha de Fin' },
+        { key: 'status', label: 'Estado' },
+        { key: 'createdAt', label: 'Fecha de Creación' }
+      ];
+
+      // Generar reporte HTML
+      const htmlHeader = generateHTMLReport({
+        title: 'REPORTE DE RESERVACIONES',
+        columns: reportColumns,
+        filters,
+        totalRecords: reservations?.length || 0,
+        statusConfig: {
+          getStatusConfig: getReservationStatusConfig,
+          statusKey: 'status'
+        }
+      });
+
+      // Generar filas de la tabla
+      const tableRows = generateTableRows(
+        reservations || [],
+        reportColumns,
+        {
+          getStatusConfig: getReservationStatusConfig,
+          statusKey: 'status',
+          t: (key) => t(`status.${key}`)
+        }
+      );
+
+      // Completar el reporte
+      const htmlContent = completeHTMLReport(tableRows);
+      const fullHTML = htmlHeader + htmlContent;
+
+      // Descargar el reporte
+      const filename = `reporte-reservaciones-${new Date().toISOString().split('T')[0]}.html`;
+      downloadHTMLReport(fullHTML, filename);
+    } catch (error) {
+      console.error('Error generando reporte:', error);
+    } finally {
+      setIsGeneratingPDF(false);
+    }
+  };
+
+  const filters: FilterField[] = [
+    {
+      name: 'userId',
+      label: tFilters('user.label'),
+      tooltip: tFilters('user.tooltip'),
+      value: userId,
+      component: Select,
+      componentProps: {
+        placeholder: tFilters('user.placeholder'),
+        size: 'md',
+        children: [
+          <option key="all" value="">
+            Todos los usuarios
+          </option>,
+          ...(users || []).map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.firstName} {user.lastName}
+            </option>
+          )),
+        ],
+      },
+    },
+    {
+      name: 'caregiverId',
+      label: tFilters('caregiver.label'),
+      tooltip: tFilters('caregiver.tooltip'),
+      value: caregiverId,
+      component: Select,
+      componentProps: {
+        placeholder: tFilters('caregiver.placeholder'),
+        size: 'md',
+        children: [
+          <option key="all" value="">
+            Todos los cuidadores
+          </option>,
+          ...(caregivers || []).map((caregiver) => (
+            <option key={caregiver.id} value={caregiver.id}>
+              {caregiver.firstName} {caregiver.lastName}
+            </option>
+          )),
+        ],
+      },
+    },
+    {
+      name: 'status',
+      label: tFilters('status.label'),
+      tooltip: tFilters('status.tooltip'),
+      value: status,
+      component: Select,
+      componentProps: {
+        placeholder: tFilters('status.placeholder'),
+        size: 'md',
+        children: [
+          <option key="all" value="">
+            Todos los estados
+          </option>,
+          ...getStatusOptions().map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          )),
+        ],
+      },
+    },
+  ];
 
   const columns: Column[] = [
     {
@@ -126,6 +303,28 @@ const ReservationsPage: NextPageWithLayout = () => {
     setCurrentPage(page);
   };
 
+  const handleFiltersSubmit = async (filters: FiltersFormData) => {
+    setIsFiltersLoading(true);
+    try {
+      const userIdValue = filters.userId as string;
+      setUserId(userIdValue || '');
+      const caregiverIdValue = filters.caregiverId as string;
+      setCaregiverId(caregiverIdValue || '');
+      const statusValue = filters.status as string;
+      setStatus(statusValue || '');
+      setCurrentPage(1);
+    } finally {
+      setIsFiltersLoading(false);
+    }
+  };
+
+  const handleFiltersReset = () => {
+    setUserId('');
+    setCaregiverId('');
+    setStatus('');
+    setCurrentPage(1);
+  };
+
   return (
     <>
       <NextSeo
@@ -151,6 +350,31 @@ const ReservationsPage: NextPageWithLayout = () => {
           module="reservations"
           action="getAll"
         >
+          <Filters
+            title={tFilters('title')}
+            filters={filters}
+            onSubmit={handleFiltersSubmit}
+            onReset={handleFiltersReset}
+            loading={isFiltersLoading}
+          />
+          
+          <Box
+            display="flex"
+            justifyContent="end"
+            mb={0}
+          >
+            <Button
+              colorScheme="blue"
+              leftIcon={<DownloadIcon />}
+              onClick={generatePDF}
+              isLoading={isGeneratingPDF}
+              size="sm"
+              me={2}
+            >
+              {t('actions.downloadPDF.label')}
+            </Button>
+          </Box>
+          
           <TableComponent
             rows={reservations || []}
             columns={columns}
@@ -185,6 +409,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.shared.permission-guard',
         'components.shared.pagination',
         'components.shared.table',
+        'components.shared.filters',
         'general.common',
         'general.sidebar',
         'general.auth.logout',
