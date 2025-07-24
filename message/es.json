@@ -364,6 +364,21 @@
           "label": "Buscar",
           "tooltip": "Buscar por nombre, apellido, email",
           "placeholder": "Buscar..."
+        },
+        "user": {
+          "label": "Usuario",
+          "tooltip": "Filtrar por usuario específico",
+          "placeholder": "Seleccionar usuario"
+        },
+        "caregiver": {
+          "label": "Cuidador",
+          "tooltip": "Filtrar por cuidador específico",
+          "placeholder": "Seleccionar cuidador"
+        },
+        "status": {
+          "label": "Estado",
+          "tooltip": "Filtrar por estado de la reserva",
+          "placeholder": "Seleccionar estado"
         }
       },
       "pagination": {
@@ -1208,15 +1223,14 @@
           }
         },
         "status": {
-          "payment_pending": "Pago Pendiente",
-          "payment_rejected": "Pago Rechazado",
+          "pending": "Pendiente",
           "waiting_acceptance": "Esperando Aceptación",
           "confirmed": "Confirmada",
           "started": "Iniciada",
+          "rejected": "Rechazada",
           "finished": "Finalizada",
-          "cancelledOwner": "Cancelada por Propietario",
-          "cancelledCaregiver": "Cancelada por Cuidador",
-          "rejected": "Rechazada"
+          "cancelled_owner": "Cancelada por Propietario",
+          "cancelled_caregiver": "Cancelada por Cuidador"
         },
         "careLocationLabels": {
           "pet_home": "Casa de la Mascota",

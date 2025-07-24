@@ -78,4 +78,28 @@ export class UserService {
       throw error;
     }
   }
+
+  static async getCaregivers(params: {
+    search: string;
+    limit: number;
+    page?: number;
+  }): Promise<PaginatedResponse<User>> {
+    try {
+      const response = await ClientApi.get<{
+        success: boolean;
+        data: PaginatedResponse<User>;
+        message?: string;
+      }>(`${this.BASE_URL}/caregivers`, {
+        params: {
+          search: params.search,
+          limit: params.limit,
+          page: params.page || 1,
+        },
+      });
+
+      return response.data.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

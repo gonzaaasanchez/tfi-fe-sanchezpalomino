@@ -8,14 +8,20 @@ import { DEFAULT_PARAM_LIMIT } from '../constants/params';
 export function useGetReservations(params?: UseGetAllType) {
   const [search, setSearch] = useState<string>(params?.initialSearch || '');
   const [currentPage, setCurrentPage] = useState<number>(params?.page || 1);
+  const [userId, setUserId] = useState<string>('');
+  const [caregiverId, setCaregiverId] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
 
   const { data, isPending, error, isError } = useQuery({
-    queryKey: ['/reservations/admin/all', search, currentPage],
+    queryKey: ['/reservations/admin/all', search, currentPage, userId, caregiverId, status],
     queryFn: () => {
       return ReservationService.getReservations({
         search,
         limit: params?.limit || DEFAULT_PARAM_LIMIT,
         page: currentPage,
+        userId: userId || undefined,
+        caregiverId: caregiverId || undefined,
+        status: status || undefined,
       });
     },
     retry: false,
@@ -31,6 +37,12 @@ export function useGetReservations(params?: UseGetAllType) {
     setSearch,
     currentPage,
     setCurrentPage,
+    userId,
+    setUserId,
+    caregiverId,
+    setCaregiverId,
+    status,
+    setStatus,
     isPending,
   };
 }
