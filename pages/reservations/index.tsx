@@ -187,6 +187,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.shared.table',
         'general.common',
         'general.sidebar',
+        'general.auth.logout',
       ]),
       permissions,
     },

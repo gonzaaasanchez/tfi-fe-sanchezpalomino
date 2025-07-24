@@ -191,6 +191,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'general.common',
         'general.configKeys',
         'general.sidebar',
+        'general.auth.logout',
       ]),
     },
   };

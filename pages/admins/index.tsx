@@ -276,6 +276,7 @@ export const getServerSideProps: GetServerSideProps = async ({
         'components.shared.loader',
         'general.common',
         'general.sidebar',
+        'general.auth.logout',
       ]),
     },
   };
