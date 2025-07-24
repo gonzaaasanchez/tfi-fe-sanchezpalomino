@@ -135,7 +135,7 @@ const Charts: React.FC = () => {
               <div
                 style={{
                   fontSize: '18px',
-                  color: '#24BE5C',
+                  color: '#7A93B5',
                   display: 'inline-block',
                 }}
               >
@@ -190,6 +190,20 @@ const Charts: React.FC = () => {
             >
               {t('petTypes.title')}
             </Heading>
+            <Box
+              textAlign="center"
+              mb={4}
+            >
+              <div
+                style={{
+                  fontSize: '18px',
+                  color: '#7A93B5',
+                  display: 'inline-block',
+                }}
+              >
+                {t('petTypes.total')}: {data.stats.totalPets.toLocaleString()}
+              </div>
+            </Box>
             <ResponsiveContainer
               width="100%"
               height={300}
