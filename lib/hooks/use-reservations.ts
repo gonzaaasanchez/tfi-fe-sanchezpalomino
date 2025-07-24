@@ -30,6 +30,29 @@ export function useGetReservations(params?: UseGetAllType) {
     staleTime: 60000,
   });
 
+  // Función para obtener todas las reservas (sin paginación) para exportar PDF
+  const getAllReservationsForExport = async (): Promise<Reservation[]> => {
+    try {
+      const response = await ReservationService.getReservations({
+        search,
+        limit: 999999, // Límite muy alto para obtener todos los registros
+        page: 1,
+        userId: userId || undefined,
+        caregiverId: caregiverId || undefined,
+        status: status || undefined,
+      });
+      
+      // Obtener los items y asegurar que sea un array
+      const items = response.data.items;
+      const result = (Array.isArray(items) ? items : []) as unknown as Reservation[];
+      
+      return result;
+    } catch (error) {
+      console.error('Error obteniendo todas las reservas para exportar:', error);
+      return [];
+    }
+  };
+
   return {
     reservations: data?.data?.items || [],
     pagination: data?.data?.pagination,
@@ -44,6 +67,7 @@ export function useGetReservations(params?: UseGetAllType) {
     status,
     setStatus,
     isPending,
+    getAllReservationsForExport,
   };
 }
 

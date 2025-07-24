@@ -54,6 +54,8 @@ const ReservationsPage: NextPageWithLayout = () => {
     status,
     setStatus,
     isPending,
+    getAllReservationsForExport,
+    search,
   } = useGetReservations({ limit: 10 });
 
   // Estado para controlar el loading específico de los filtros
@@ -70,20 +72,28 @@ const ReservationsPage: NextPageWithLayout = () => {
   const generatePDF = async () => {
     setIsGeneratingPDF(true);
     try {
+      // Obtener todas las reservas para el reporte (sin paginación)
+      const reservationsForExport = await getAllReservationsForExport();
+
+      if (reservationsForExport.length === 0) {
+        alert(t('export.noReservations'));
+        return;
+      }
+
       // Preparar filtros
       const filters: ReportFilter[] = [];
 
       if (userId) {
         const user = users?.find((u) => u.id === userId);
         filters.push({
-          label: 'Usuario',
+          label: t('export.filterLabels.user'),
           value: user ? `${user.firstName} ${user.lastName}` : userId,
         });
       }
       if (caregiverId) {
         const caregiver = caregivers?.find((c) => c.id === caregiverId);
         filters.push({
-          label: 'Cuidador',
+          label: t('export.filterLabels.caregiver'),
           value: caregiver
             ? `${caregiver.firstName} ${caregiver.lastName}`
             : caregiverId,
@@ -92,50 +102,54 @@ const ReservationsPage: NextPageWithLayout = () => {
       if (status) {
         const statusLabel = tStatus(status);
         filters.push({
-          label: 'Estado',
+          label: t('export.filterLabels.status'),
           value: statusLabel,
         });
       }
 
       // Definir columnas del reporte
       const reportColumns: ReportColumn[] = [
-        { key: 'id', label: 'ID' },
+        { key: 'id', label: t('export.columns.id') },
         {
           key: 'user',
-          label: 'Usuario',
+          label: t('export.columns.user'),
           render: (value, item) =>
             `${item.user.firstName} ${item.user.lastName}`,
         },
         {
           key: 'caregiver',
-          label: 'Cuidador',
+          label: t('export.columns.caregiver'),
           render: (value, item) =>
             `${item.caregiver.firstName} ${item.caregiver.lastName}`,
         },
-        { key: 'startDate', label: 'Fecha de Inicio' },
-        { key: 'endDate', label: 'Fecha de Fin' },
-        { key: 'status', label: 'Estado' },
-        { key: 'createdAt', label: 'Fecha de Creación' },
+        { key: 'startDate', label: t('export.columns.startDate') },
+        { key: 'endDate', label: t('export.columns.endDate') },
+        { key: 'status', label: t('export.columns.status') },
+        { key: 'createdAt', label: t('export.columns.createdAt') },
       ];
 
-      // Generar reporte HTML
+      // Generar reporte HTML con TODOS los datos
       const htmlHeader = generateHTMLReport({
-        title: 'REPORTE DE RESERVAS',
+        title: t('export.reportTitle'),
         columns: reportColumns,
         filters,
-        totalRecords: reservations?.length || 0,
+        totalRecords: reservationsForExport.length, // Usar el total real de registros
         statusConfig: {
           getStatusConfig: getReservationStatusConfig,
           statusKey: 'status',
         },
       });
 
-      // Generar filas de la tabla
-      const tableRows = generateTableRows(reservations || [], reportColumns, {
-        getStatusConfig: getReservationStatusConfig,
-        statusKey: 'status',
-        t: (key) => t(`status.${key}`),
-      });
+      // Generar filas de la tabla con TODOS los datos
+      const tableRows = generateTableRows(
+        reservationsForExport,
+        reportColumns,
+        {
+          getStatusConfig: getReservationStatusConfig,
+          statusKey: 'status',
+          t: (key) => t(`status.${key}`),
+        }
+      );
 
       // Completar el reporte
       const htmlContent = completeHTMLReport(tableRows);
@@ -168,7 +182,7 @@ const ReservationsPage: NextPageWithLayout = () => {
             key="all"
             value=""
           >
-            Todos los usuarios
+            {t('filters.allUsers')}
           </option>,
           ...(users || []).map((user) => (
             <option
@@ -195,7 +209,7 @@ const ReservationsPage: NextPageWithLayout = () => {
             key="all"
             value=""
           >
-            Todos los cuidadores
+            {t('filters.allCaregivers')}
           </option>,
           ...(caregivers || []).map((caregiver) => (
             <option
@@ -222,7 +236,7 @@ const ReservationsPage: NextPageWithLayout = () => {
             key="all"
             value=""
           >
-            Todos los estados
+            {t('filters.allStatuses')}
           </option>,
           ...getStatusOptions().map((option) => (
             <option
@@ -421,11 +435,11 @@ const ReservationsPage: NextPageWithLayout = () => {
             onAction={handleAction}
             onChangePage={handlePageChange}
             metadata={pagination}
-          />
-        </PermissionGuard>
-      </VStack>
-    </>
-  );
+                     />
+         </PermissionGuard>
+       </VStack>
+     </>
+   );
 };
 
 ReservationsPage.getLayout = function getLayout(page: ReactElement) {
