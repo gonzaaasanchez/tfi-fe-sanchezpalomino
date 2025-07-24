@@ -769,24 +769,16 @@
         }
       },
       "view": {
-        "meta": {
-          "title": "Ver Usuario",
-          "description": "Ver información del usuario"
+        "actions": {
+          "back": "Volver",
+          "edit": "Editar"
         },
-        "title": "Ver Usuario",
-        "description": "Información detallada del usuario",
         "breadcrumb": {
           "home": "Inicio",
           "users": "Usuarios",
           "view": "Ver"
         },
-        "actions": {
-          "back": "Volver",
-          "edit": "Editar"
-        },
-        "sections": {
-          "userInfo": "Información del Usuario"
-        },
+        "description": "Información detallada del usuario",
         "fields": {
           "id": "ID",
           "firstName": "Nombre",
@@ -797,29 +789,38 @@
           "createdAt": "Fecha de Creación",
           "updatedAt": "Última Actualización"
         },
-        "tabs": {
-          "information": "Información",
-          "sessionAudit": "Auditoría de Sesiones"
+        "meta": {
+          "title": "Ver Usuario",
+          "description": "Ver información del usuario"
+        },
+        "notFound": "Usuario no encontrado",
+        "noPets": "No hay mascotas registradas para este usuario",
+        "sections": {
+          "userInfo": "Información del Usuario"
         },
         "sessionAudit": {
           "noSessions": "No se han registrado sesiones para este usuario",
           "description": "Registro de todas las sesiones del usuario"
         },
-        "notFound": "Usuario no encontrado"
+        "tabs": {
+          "information": "Información",
+          "sessionAudit": "Auditoría de Sesiones"
+        },
+        "title": "Ver Usuario"
       },
       "edit": {
-        "meta": {
-          "title": "Editar Usuario",
-          "description": "Editar información del usuario"
-        },
-        "title": "Editar Usuario",
-        "description": "Modifica la información del usuario",
         "breadcrumb": {
           "home": "Inicio",
           "users": "Usuarios",
           "edit": "Editar"
         },
-        "notFound": "Usuario no encontrado"
+        "description": "Modifica la información del usuario",
+        "meta": {
+          "title": "Editar Usuario",
+          "description": "Editar información del usuario"
+        },
+        "notFound": "Usuario no encontrado",
+        "title": "Editar Usuario"
       }
     },
     "petTypes": {
