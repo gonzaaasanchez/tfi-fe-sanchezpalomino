@@ -1037,7 +1037,8 @@
         "indicators": {
           "totalUsers": "Usuarios Registrados",
           "totalReservations": "Reservas Totales",
-          "totalPets": "Mascotas Totales"
+          "totalPets": "Mascotas Totales",
+          "growthFromLastMonth": " % desde el mes pasado"
         },
         "charts": {
           "petTypes": {
