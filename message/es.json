@@ -1053,6 +1053,10 @@
           "revenue": {
             "title": "Ingresos por Categoría de Servicio",
             "tooltip": "Ingresos"
+          },
+          "error": {
+            "title": "Error al cargar los datos",
+            "message": "Los gráficos no están disponibles en este momento"
           }
         }
       }

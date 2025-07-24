@@ -13,3 +13,4 @@ export * from './use-roles';
 export * from './use-sessions';
 export * from './use-sidebar';
 export * from './use-users';
+export * from './use-dashboard';

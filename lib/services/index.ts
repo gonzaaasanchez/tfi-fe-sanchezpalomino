@@ -8,3 +8,4 @@ export { PetCharacteristicService } from './petCharacteristic';
 export { ReviewService } from './review';
 export { PetService } from './pet';
 export { LogsService } from './logs';
+export { DashboardService } from './dashboard';
