@@ -1220,6 +1220,10 @@
           "delete": {
             "label": "Eliminar",
             "tooltip": "Eliminar reserva"
+          },
+          "downloadPDF": {
+            "label": "Descargar Reporte",
+            "tooltip": "Descargar reporte en PDF"
           }
         },
         "status": {
