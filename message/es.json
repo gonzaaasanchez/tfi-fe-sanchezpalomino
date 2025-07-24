@@ -805,6 +805,7 @@
           "noSessions": "No se han registrado sesiones para este usuario",
           "description": "Registro de todas las sesiones del usuario"
         },
+        "noPets": "Este usuario no tiene mascotas registradas",
         "notFound": "Usuario no encontrado"
       },
       "edit": {
