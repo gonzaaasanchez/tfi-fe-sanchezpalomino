@@ -1045,14 +1045,17 @@
             "loading": "Cargando gráficos..."
           },
           "newUsers": {
-            "title": "Nuevos Usuarios Registrados por Mes"
+            "title": "Nuevos Usuarios Registrados por Mes",
+            "legend": "Número de Usuarios"
           },
           "reservations": {
-            "title": "Tendencia de Reservas por Mes"
+            "title": "Tendencia de Reservas por Mes",
+            "legend": "Número de Reservas"
           },
           "revenue": {
             "title": "Ingresos por Categoría de Servicio",
-            "tooltip": "Ingresos"
+            "tooltip": "Ingresos",
+            "total": "Total: $"
           },
           "error": {
             "title": "Error al cargar los datos",

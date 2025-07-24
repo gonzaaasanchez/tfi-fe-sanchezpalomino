@@ -33,19 +33,23 @@ const Charts: React.FC = () => {
   const Line = Recharts.Line as any;
   const AreaChart = Recharts.AreaChart as any;
   const Area = Recharts.Area as any;
+  const Text = Recharts.Text as any;
 
   if (loading) {
     return (
       <Box
         textAlign="center"
         py={8}
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        gap={4}
       >
         <Spinner
           size="lg"
           color="blue.500"
         />
         <Text
-          mt={4}
           color="gray.600"
         >
           {t('petTypes.loading')}
@@ -99,6 +103,7 @@ const Charts: React.FC = () => {
               <Line
                 type="monotone"
                 dataKey="reservations"
+                name={t('reservations.legend')}
                 stroke="#E53E3E"
                 strokeWidth={2}
                 dot={{ fill: '#E53E3E', strokeWidth: 2, r: 4 }}
@@ -118,11 +123,28 @@ const Charts: React.FC = () => {
           <CardBody>
             <Heading
               size="sm"
-              mb={4}
+              mb={2}
               textAlign="center"
             >
               {t('revenue.title')}
             </Heading>
+            <Box
+              textAlign="center"
+              mb={4}
+            >
+              <div
+                style={{
+                  fontSize: '18px',
+                  color: '#24BE5C',
+                  display: 'inline-block',
+                }}
+              >
+                {t('revenue.total')}
+                {data.revenue
+                  .reduce((total: number, item: any) => total + item.revenue, 0)
+                  .toLocaleString()}
+              </div>
+            </Box>
             <ResponsiveContainer
               width="100%"
               height={300}
@@ -221,6 +243,7 @@ const Charts: React.FC = () => {
               <Legend />
               <Bar
                 dataKey="users"
+                name={t('newUsers.legend')}
                 fill="#3182CE"
               />
             </BarChart>
