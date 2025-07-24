@@ -3,7 +3,7 @@ services:
     name: tfi-fe-sanchezpalomino
     runtime: node
     buildCommand: npm install && npm run build
-    startCommand: npm start
+    startCommand: npm start & npm run keep-alive
     envVars:
       - key: NODE_ENV
         value: production
