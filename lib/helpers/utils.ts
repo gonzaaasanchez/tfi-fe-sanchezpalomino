@@ -15,8 +15,10 @@ export const getReservationStatusConfig = (
       return { label: getLabel('payment_pending'), color: 'yellow' };
     case 'payment_rejected':
       return { label: getLabel('payment_rejected'), color: 'red' };
-    case 'waiting_acceptance':
-      return { label: getLabel('waiting_acceptance'), color: 'orange' };
+      case 'pending':
+        return { label: getLabel('pending'), color: 'orange' };
+    // case 'waiting_acceptance':
+    //   return { label: getLabel('waiting_acceptance'), color: 'orange' };
     case 'confirmed':
       return { label: getLabel('confirmed'), color: 'green' };
     case 'started':

@@ -1211,6 +1211,7 @@
           "payment_pending": "Pago Pendiente",
           "payment_rejected": "Pago Rechazado",
           "waiting_acceptance": "Esperando Aceptación",
+          "pending": "Esperando Aceptación",
           "confirmed": "Confirmada",
           "started": "Iniciada",
           "finished": "Finalizada",
