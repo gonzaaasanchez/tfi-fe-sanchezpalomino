@@ -9,7 +9,6 @@ import {
   Tag,
   Select,
   Button,
-  HStack,
 } from '@chakra-ui/react';
 import { PrivateLayout } from 'layouts/private';
 import { handlePermission } from '@helpers/middlewares';
@@ -408,7 +407,8 @@ const ReservationsPage: NextPageWithLayout = () => {
             loading={isFiltersLoading}
           />
 
-          <Box
+          {/* TODO: TFI content */}
+          {/* <Box
             display="flex"
             justifyContent="end"
             mb={0}
@@ -423,7 +423,7 @@ const ReservationsPage: NextPageWithLayout = () => {
             >
               {t('actions.downloadPDF.label')}
             </Button>
-          </Box>
+          </Box> */}
 
           <TableComponent
             rows={reservations || []}
