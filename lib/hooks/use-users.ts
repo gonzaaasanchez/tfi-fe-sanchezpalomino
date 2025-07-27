@@ -108,3 +108,38 @@ export const useDeleteUser = () => {
     },
   });
 };
+
+export function useGetCaregivers(params?: UseGetAllType) {
+  const [search, setSearch] = useState<string>(params?.initialSearch || '');
+  const [currentPage, setCurrentPage] = useState<number>(params?.page || 1);
+
+  const { data, isPending, error } = useQuery({
+    queryKey: ['/users/caregivers', search, currentPage],
+    queryFn: () =>
+      UserService.getCaregivers({
+        search,
+        limit: params?.limit || DEFAULT_PARAM_LIMIT,
+        page: currentPage,
+      }),
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    staleTime: 60000,
+  });
+
+  // Si hay error (endpoint no existe), usar el hook de usuarios como fallback
+  const fallbackUsers = useGetUsers(params);
+
+  // Si hay error en el endpoint de cuidadores, usar usuarios como fallback
+  const shouldUseFallback = error && fallbackUsers.users;
+
+  return {
+    caregivers: shouldUseFallback ? fallbackUsers.users : (data?.items as User[] || []),
+    pagination: shouldUseFallback ? fallbackUsers.pagination : data?.pagination,
+    search,
+    setSearch,
+    currentPage,
+    setCurrentPage,
+    isPending: isPending || (shouldUseFallback && fallbackUsers.isPending),
+  };
+}

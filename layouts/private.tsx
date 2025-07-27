@@ -4,7 +4,6 @@ import { Header } from 'components/layout/header';
 import Sidebar from 'components/layout/sidebar';
 
 export function PrivateLayout({ children }: PrivateLayoutProps) {
-  // Determinar si el sidebar debe estar abierto por defecto basado en el tamaño de pantalla
   const defaultIsOpen = useBreakpointValue({ base: false, lg: true });
   const { isOpen, onToggle, onClose } = useDisclosure({ defaultIsOpen });
 
@@ -23,9 +22,17 @@ export function PrivateLayout({ children }: PrivateLayoutProps) {
           ml={{ base: 0, lg: '280px' }}
           w="100%"
           transition="margin-left 0.3s ease-in-out"
+          overflowX="auto"
+          minW="0"
         >
           <Box p={4}>
-            <Box w="100%">{children}</Box>
+            <Box 
+              w="100%" 
+              overflowX="auto"
+              minW="0"
+            >
+              {children}
+            </Box>
           </Box>
         </Box>
       </Box>

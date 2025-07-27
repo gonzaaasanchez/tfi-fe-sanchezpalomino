@@ -364,6 +364,21 @@
           "label": "Buscar",
           "tooltip": "Buscar por nombre, apellido, email",
           "placeholder": "Buscar..."
+        },
+        "user": {
+          "label": "Usuario",
+          "tooltip": "Filtrar por usuario específico",
+          "placeholder": "Seleccionar usuario"
+        },
+        "caregiver": {
+          "label": "Cuidador",
+          "tooltip": "Filtrar por cuidador específico",
+          "placeholder": "Seleccionar cuidador"
+        },
+        "status": {
+          "label": "Estado",
+          "tooltip": "Filtrar por estado de la reserva",
+          "placeholder": "Seleccionar estado"
         }
       },
       "pagination": {
@@ -769,24 +784,16 @@
         }
       },
       "view": {
-        "meta": {
-          "title": "Ver Usuario",
-          "description": "Ver información del usuario"
+        "actions": {
+          "back": "Volver",
+          "edit": "Editar"
         },
-        "title": "Ver Usuario",
-        "description": "Información detallada del usuario",
         "breadcrumb": {
           "home": "Inicio",
           "users": "Usuarios",
           "view": "Ver"
         },
-        "actions": {
-          "back": "Volver",
-          "edit": "Editar"
-        },
-        "sections": {
-          "userInfo": "Información del Usuario"
-        },
+        "description": "Información detallada del usuario",
         "fields": {
           "id": "ID",
           "firstName": "Nombre",
@@ -797,30 +804,38 @@
           "createdAt": "Fecha de Creación",
           "updatedAt": "Última Actualización"
         },
-        "tabs": {
-          "information": "Información",
-          "sessionAudit": "Auditoría de Sesiones"
+        "meta": {
+          "title": "Ver Usuario",
+          "description": "Ver información del usuario"
+        },
+        "notFound": "Usuario no encontrado",
+        "noPets": "No hay mascotas registradas para este usuario",
+        "sections": {
+          "userInfo": "Información del Usuario"
         },
         "sessionAudit": {
           "noSessions": "No se han registrado sesiones para este usuario",
           "description": "Registro de todas las sesiones del usuario"
         },
-        "noPets": "Este usuario no tiene mascotas registradas",
-        "notFound": "Usuario no encontrado"
+        "tabs": {
+          "information": "Información",
+          "sessionAudit": "Auditoría de Sesiones"
+        },
+        "title": "Ver Usuario"
       },
       "edit": {
-        "meta": {
-          "title": "Editar Usuario",
-          "description": "Editar información del usuario"
-        },
-        "title": "Editar Usuario",
-        "description": "Modifica la información del usuario",
         "breadcrumb": {
           "home": "Inicio",
           "users": "Usuarios",
           "edit": "Editar"
         },
-        "notFound": "Usuario no encontrado"
+        "description": "Modifica la información del usuario",
+        "meta": {
+          "title": "Editar Usuario",
+          "description": "Editar información del usuario"
+        },
+        "notFound": "Usuario no encontrado",
+        "title": "Editar Usuario"
       }
     },
     "petTypes": {
@@ -1205,23 +1220,49 @@
           "delete": {
             "label": "Eliminar",
             "tooltip": "Eliminar reserva"
+          },
+          "downloadPDF": {
+            "label": "Descargar Reporte",
+            "tooltip": "Descargar reporte en PDF"
           }
         },
         "status": {
-          "payment_pending": "Pago Pendiente",
-          "payment_rejected": "Pago Rechazado",
+          "pending": "Pendiente",
           "waiting_acceptance": "Esperando Aceptación",
           "pending": "Esperando Aceptación",
           "confirmed": "Confirmada",
           "started": "Iniciada",
+          "rejected": "Rechazada",
           "finished": "Finalizada",
-          "cancelledOwner": "Cancelada por Propietario",
-          "cancelledCaregiver": "Cancelada por Cuidador",
-          "rejected": "Rechazada"
+          "cancelled_owner": "Cancelada por Propietario",
+          "cancelled_caregiver": "Cancelada por Cuidador"
         },
         "careLocationLabels": {
           "pet_home": "Casa de la Mascota",
           "caregiver_home": "Casa del Cuidador"
+        },
+        "export": {
+          "noReservations": "No hay reservas para exportar con los filtros actuales",
+          "reportTitle": "REPORTE DE RESERVAS",
+          "filterLabels": {
+            "user": "Usuario",
+            "caregiver": "Cuidador",
+            "status": "Estado"
+          },
+          "columns": {
+            "id": "ID",
+            "user": "Usuario",
+            "caregiver": "Cuidador",
+            "startDate": "Fecha de Inicio",
+            "endDate": "Fecha de Fin",
+            "status": "Estado",
+            "createdAt": "Fecha de Creación"
+          }
+        },
+        "filters": {
+          "allUsers": "Todos los usuarios",
+          "allCaregivers": "Todos los cuidadores",
+          "allStatuses": "Todos los estados"
         }
       },
       "view": {

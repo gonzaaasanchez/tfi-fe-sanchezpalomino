@@ -8,14 +8,20 @@ import { DEFAULT_PARAM_LIMIT } from '../constants/params';
 export function useGetReservations(params?: UseGetAllType) {
   const [search, setSearch] = useState<string>(params?.initialSearch || '');
   const [currentPage, setCurrentPage] = useState<number>(params?.page || 1);
+  const [userId, setUserId] = useState<string>('');
+  const [caregiverId, setCaregiverId] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
 
   const { data, isPending, error, isError } = useQuery({
-    queryKey: ['/reservations/admin/all', search, currentPage],
+    queryKey: ['/reservations/admin/all', search, currentPage, userId, caregiverId, status],
     queryFn: () => {
       return ReservationService.getReservations({
         search,
         limit: params?.limit || DEFAULT_PARAM_LIMIT,
         page: currentPage,
+        userId: userId || undefined,
+        caregiverId: caregiverId || undefined,
+        status: status || undefined,
       });
     },
     retry: false,
@@ -24,6 +30,29 @@ export function useGetReservations(params?: UseGetAllType) {
     staleTime: 60000,
   });
 
+  // Función para obtener todas las reservas (sin paginación) para exportar PDF
+  const getAllReservationsForExport = async (): Promise<Reservation[]> => {
+    try {
+      const response = await ReservationService.getReservations({
+        search,
+        limit: 999999, // Límite muy alto para obtener todos los registros
+        page: 1,
+        userId: userId || undefined,
+        caregiverId: caregiverId || undefined,
+        status: status || undefined,
+      });
+      
+      // Obtener los items y asegurar que sea un array
+      const items = response.data.items;
+      const result = (Array.isArray(items) ? items : []) as unknown as Reservation[];
+      
+      return result;
+    } catch (error) {
+      console.error('Error obteniendo todas las reservas para exportar:', error);
+      return [];
+    }
+  };
+
   return {
     reservations: data?.data?.items || [],
     pagination: data?.data?.pagination,
@@ -31,7 +60,14 @@ export function useGetReservations(params?: UseGetAllType) {
     setSearch,
     currentPage,
     setCurrentPage,
+    userId,
+    setUserId,
+    caregiverId,
+    setCaregiverId,
+    status,
+    setStatus,
     isPending,
+    getAllReservationsForExport,
   };
 }
 
