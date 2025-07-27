@@ -5,11 +5,11 @@ export interface ReservationStatusOption {
 }
 
 export const RESERVATION_STATUS_OPTIONS: ReservationStatusOption[] = [
-  // {
-  //   value: 'pending',
-  //   label: 'Pendiente',
-  //   color: 'yellow'
-  // },
+  {
+    value: 'pending',
+    label: 'Pendiente',
+    color: 'yellow'
+  },
   {
     value: 'waiting_acceptance',
     label: 'Esperando Aceptación',

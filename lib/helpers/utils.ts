@@ -11,14 +11,14 @@ export const getReservationStatusConfig = (
   t?: (key: string) => string
 ) => {
   const statusOption = getReservationStatusOption(status);
-  
+
   if (statusOption) {
-    return { 
-      label: t ? t(statusOption.value) : statusOption.label, 
-      color: statusOption.color 
+    return {
+      label: t ? t(statusOption.value) : statusOption.label,
+      color: statusOption.color,
     };
   }
-  
+
   return { label: status, color: 'gray' };
 };
 
@@ -30,25 +30,28 @@ export interface PermissionChange {
   changeType: 'enabled' | 'disabled';
 }
 
-export function detectPermissionChanges(oldPermissions: any, newPermissions: any): PermissionChange[] {
+export function detectPermissionChanges(
+  oldPermissions: any,
+  newPermissions: any
+): PermissionChange[] {
   const changes: PermissionChange[] = [];
-  
+
   // Iterar sobre todos los módulos
   for (const moduleName in oldPermissions) {
     const oldModule = oldPermissions[moduleName];
     const newModule = newPermissions[moduleName];
-    
+
     // Si el módulo no existe en el nuevo objeto, saltar
     if (!newModule) continue;
-    
+
     // Iterar sobre todas las acciones del módulo
     for (const actionName in oldModule) {
       const oldValue = oldModule[actionName];
       const newValue = newModule[actionName];
-      
+
       // Si la acción no existe en el nuevo módulo, saltar
       if (newValue === undefined) continue;
-      
+
       // Si los valores son diferentes, registrar el cambio
       if (oldValue !== newValue) {
         changes.push({
@@ -56,12 +59,12 @@ export function detectPermissionChanges(oldPermissions: any, newPermissions: any
           action: actionName,
           oldValue,
           newValue,
-          changeType: newValue ? 'enabled' : 'disabled'
+          changeType: newValue ? 'enabled' : 'disabled',
         });
       }
     }
   }
-  
+
   return changes;
 }
 
@@ -84,7 +87,10 @@ export interface ReportOptions {
   totalRecords: number;
   dateFormat?: string;
   statusConfig?: {
-    getStatusConfig: (status: string, t: (key: string) => string) => { label: string; color: string };
+    getStatusConfig: (
+      status: string,
+      t: (key: string) => string
+    ) => { label: string; color: string };
     statusKey: string;
   };
 }
@@ -97,7 +103,7 @@ export const generateHTMLReport = (options: ReportOptions) => {
     filters = [],
     totalRecords,
     dateFormat = 'dd/MM/yyyy',
-    statusConfig
+    statusConfig,
   } = options;
 
   const date = new Date().toLocaleDateString('es-ES');
@@ -192,7 +198,7 @@ export const generateHTMLReport = (options: ReportOptions) => {
         <h3>Filtros aplicados:</h3>
         <ul>
     `;
-    filters.forEach(filter => {
+    filters.forEach((filter) => {
       html += `<li>${filter.label}: ${filter.value}</li>`;
     });
     html += `
@@ -206,11 +212,11 @@ export const generateHTMLReport = (options: ReportOptions) => {
         <thead>
           <tr>
   `;
-  
-  columns.forEach(column => {
+
+  columns.forEach((column) => {
     html += `<th>${column.label}</th>`;
   });
-  
+
   html += `
           </tr>
         </thead>
@@ -225,7 +231,10 @@ export const generateTableRows = (
   data: any[],
   columns: ReportColumn[],
   statusConfig?: {
-    getStatusConfig: (status: string, t: (key: string) => string) => { label: string; color: string };
+    getStatusConfig: (
+      status: string,
+      t: (key: string) => string
+    ) => { label: string; color: string };
     statusKey: string;
     t: (key: string) => string;
   }
@@ -237,9 +246,9 @@ export const generateTableRows = (
   let rows = '';
   data.forEach((item: any) => {
     rows += '<tr>';
-    columns.forEach(column => {
+    columns.forEach((column) => {
       let cellContent = '';
-      
+
       if (column.render) {
         cellContent = column.render(item[column.key], item);
       } else if (column.key.includes('.')) {
@@ -257,7 +266,10 @@ export const generateTableRows = (
       // Manejo especial para estados
       if (statusConfig && column.key === statusConfig.statusKey) {
         const statusValue = item[statusConfig.statusKey];
-        const statusConfigResult = statusConfig.getStatusConfig(statusValue, statusConfig.t);
+        const statusConfigResult = statusConfig.getStatusConfig(
+          statusValue,
+          statusConfig.t
+        );
         cellContent = `<span class="status status-${statusValue}">${statusConfigResult.label}</span>`;
       }
 

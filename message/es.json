@@ -1229,6 +1229,7 @@
         "status": {
           "pending": "Pendiente",
           "waiting_acceptance": "Esperando Aceptación",
+          "pending": "Esperando Aceptación",
           "confirmed": "Confirmada",
           "started": "Iniciada",
           "rejected": "Rechazada",
