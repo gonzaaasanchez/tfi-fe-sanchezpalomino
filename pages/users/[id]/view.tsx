@@ -271,8 +271,7 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
               >
                 Mascotas
               </Tab>
-              {/* TODO: TFI content */}
-              {/* {canViewSessionAudit && (
+              {canViewSessionAudit && (
                 <Tab
                   bg="brand1.200"
                   color="brand1.700"
@@ -285,7 +284,7 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
                 >
                   {t('tabs.sessionAudit')}
                 </Tab>
-              )} */}
+              )}
             </TabList>
 
             <TabPanels>

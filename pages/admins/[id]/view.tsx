@@ -193,8 +193,7 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
               >
                 {t('tabs.information')}
               </Tab>
-              {/* TODO: TFI content */}
-              {/* {canViewChangesLogs && (
+              {canViewChangesLogs && (
                 <Tab
                   bg="brand1.200"
                   color="brand1.700"
@@ -221,7 +220,7 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
                 >
                   {t('tabs.sessionAudit')}
                 </Tab>
-              )} */}
+              )}
             </TabList>
 
             <TabPanels>
@@ -351,7 +350,6 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
               </TabPanel>
 
               {/* Audit Tab */}
-
               {canViewChangesLogs && (
                 <TabPanel>
                   <AuditPage

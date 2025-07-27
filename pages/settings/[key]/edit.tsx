@@ -298,8 +298,7 @@ const EditConfigPage: NextPageWithLayout<EditConfigPageProps> = ({ key }) => {
               >
                 {t('tabs.edit')}
               </Tab>
-              {/* TODO: TFI content */}
-              {/* {canViewChangesLogs && (
+              {canViewChangesLogs && (
                 <Tab
                   bg="brand1.200"
                   color="brand1.700"
@@ -312,7 +311,7 @@ const EditConfigPage: NextPageWithLayout<EditConfigPageProps> = ({ key }) => {
                 >
                   {t('tabs.audit')}
                 </Tab>
-              )} */}
+              )}
             </TabList>
 
             <TabPanels>

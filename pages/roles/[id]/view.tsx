@@ -238,8 +238,7 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
               >
                 {t('tabs.information')}
               </Tab>
-              {/* TODO: TFI content */}
-              {/* {canViewChangesLogs && (
+              {canViewChangesLogs && (
                 <Tab
                   bg="brand1.200"
                   color="brand1.700"
@@ -252,7 +251,7 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
                 >
                   {t('tabs.audit')}
                 </Tab>
-              )} */}
+              )}
             </TabList>
 
             <TabPanels>
