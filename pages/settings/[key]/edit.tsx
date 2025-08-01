@@ -44,7 +44,7 @@ import {
   useGetEntityLogs,
   usePermissions,
 } from 'lib/hooks';
-import { Loader, AuditPage } from 'components/shared';
+import { LottieLoader, AuditPage } from 'components/shared';
 import { Config } from 'lib/types/config';
 import { useConfigDisplayName } from 'lib/helpers/config-utils';
 import { useState, useEffect } from 'react';
@@ -187,7 +187,7 @@ const EditConfigPage: NextPageWithLayout<EditConfigPageProps> = ({ key }) => {
   };
 
   if (isPending) {
-    return <Loader fullHeight />;
+    return <LottieLoader type="loading" size="lg" height="50vh" />;
   }
 
   if (!config) {

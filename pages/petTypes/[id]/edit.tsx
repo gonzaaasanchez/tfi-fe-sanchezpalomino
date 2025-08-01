@@ -20,7 +20,7 @@ import { useCustomToast } from '@hooks/use-custom-toast';
 import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
 import { useGetPetType } from '@hooks/use-pet-types';
-import { Loader } from 'components/shared';
+import { LottieLoader } from 'components/shared';
 
 interface EditPetTypePageProps {
   id: string;
@@ -43,7 +43,7 @@ const EditPetTypePage: NextPageWithLayout<EditPetTypePageProps> = ({ id }) => {
   };
 
   if (isPending) {
-    return <Loader fullHeight />;
+    return <LottieLoader type="loading" size="lg" height="50vh" />;
   }
 
   if (!petType) {

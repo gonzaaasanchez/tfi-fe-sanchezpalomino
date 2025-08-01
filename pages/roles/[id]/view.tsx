@@ -33,7 +33,7 @@ import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
 import { useRouter } from 'next/router';
 import { useGetRole, useGetEntityLogs, usePermissions } from 'lib/hooks';
-import { Loader, AuditPage } from 'components/shared';
+import { LottieLoader, AuditPage } from 'components/shared';
 
 interface ViewRolePageProps {
   id: string;
@@ -61,7 +61,7 @@ const ViewRolePage: NextPageWithLayout<ViewRolePageProps> = ({ id }) => {
   };
 
   if (isPending) {
-    return <Loader fullHeight />;
+    return <LottieLoader type="loading" size="lg" height="50vh" />;
   }
 
   if (!role) {

@@ -36,7 +36,7 @@ import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
 import { useRouter } from 'next/router';
 import { useGetPost, useGetPostComments } from 'lib/hooks';
-import { Loader } from 'components/shared';
+import { LottieLoader } from 'components/shared';
 import { getImageUrl } from 'lib/helpers/utils';
 import TableComponent, { Column } from 'components/shared/table';
 
@@ -50,7 +50,11 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
   const { post, isPending } = useGetPost({ id });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [commentsPage, setCommentsPage] = useState(1);
-  const { comments, pagination: commentsPagination, isPending: isCommentsPending } = useGetPostComments(id, { limit: 10, page: commentsPage });
+  const {
+    comments,
+    pagination: commentsPagination,
+    isPending: isCommentsPending,
+  } = useGetPostComments(id, { limit: 10, page: commentsPage });
 
   const handleEdit = () => {
     router.push(`/posts/${id}/edit`);
@@ -65,7 +69,13 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
   };
 
   if (isPending) {
-    return <Loader fullHeight />;
+    return (
+      <LottieLoader
+        type="loading"
+        size="lg"
+        height="50vh"
+      />
+    );
   }
 
   if (!post) {
@@ -223,24 +233,35 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
                           <Text color="gray.600">{post.id}</Text>
                         </HStack>
 
-                        <HStack justify="space-between" align="flex-start">
+                        <HStack
+                          justify="space-between"
+                          align="flex-start"
+                        >
                           <Text
                             fontWeight="semibold"
                             color="gray.700"
                           >
                             {t('fields.title')}:
                           </Text>
-                          <Text color="gray.600" textAlign="right">{post.title}</Text>
+                          <Text
+                            color="gray.600"
+                            textAlign="right"
+                          >
+                            {post.title}
+                          </Text>
                         </HStack>
 
-                        <HStack justify="space-between" align="flex-start">
+                        <HStack
+                          justify="space-between"
+                          align="flex-start"
+                        >
                           <Text
                             fontWeight="semibold"
                             color="gray.700"
                           >
                             {t('fields.description')}:
                           </Text>
-                          <Text color="gray.600" textAlign="right">{post.description}</Text>
+                          <Text color="gray.600">{post.description}</Text>
                         </HStack>
 
                         <HStack justify="space-between">
@@ -314,8 +335,10 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
                               transition="transform 0.2s"
                               _hover={{ transform: 'scale(1.02)' }}
                               onClick={onOpen}
-                              onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                                e.currentTarget.src = "/images/icon.png";
+                              onError={(
+                                e: React.SyntheticEvent<HTMLImageElement>
+                              ) => {
+                                e.currentTarget.src = '/images/icon.png';
                               }}
                             />
                           </Box>
@@ -416,9 +439,7 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
                           wordBreak="break-word"
                           whiteSpace="pre-wrap"
                         >
-                          <Text>
-                            {item.comment}
-                          </Text>
+                          <Text>{item.comment}</Text>
                         </Box>
                       ),
                     },
@@ -430,13 +451,16 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
                       type: 'custom',
                       renderCell: (item: any) => (
                         <Text>
-                          {new Date(item.createdAt).toLocaleDateString('es-ES', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
+                          {new Date(item.createdAt).toLocaleDateString(
+                            'es-ES',
+                            {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit',
+                            }
+                          )}
                         </Text>
                       ),
                     },
@@ -454,7 +478,11 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
       </Container>
 
       {/* Image Modal */}
-      <Modal isOpen={isOpen} onClose={onClose} size="full">
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size="full"
+      >
         <ModalOverlay bg="blackAlpha.600" />
         <ModalContent
           bg="transparent"
@@ -488,7 +516,7 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
               crossOrigin="anonymous"
               onClick={(e: React.MouseEvent) => e.stopPropagation()}
               onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
-                e.currentTarget.src = "/images/icon.png";
+                e.currentTarget.src = '/images/icon.png';
               }}
             />
           </ModalBody>
@@ -528,4 +556,4 @@ export const getServerSideProps: GetServerSideProps = async ({
   };
 };
 
-export default ViewPostPage; 
+export default ViewPostPage;

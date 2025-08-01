@@ -29,7 +29,7 @@ import { PermissionGuard } from 'components/shared/permission-guard';
 import { useGetReservation } from 'lib/hooks';
 import { useGetReservationReviews } from 'lib/hooks/use-reviews';
 import { format } from 'date-fns';
-import Loader from 'components/shared/loader';
+import { LottieLoader } from 'components/shared';
 import { getReservationStatusConfig } from 'lib/helpers/utils';
 
 const ReservationViewPage: NextPageWithLayout = () => {
@@ -45,7 +45,7 @@ const ReservationViewPage: NextPageWithLayout = () => {
     });
 
   if (isPending) {
-    return <Loader size="lg" />;
+    return <LottieLoader type="loading" size="lg" height="50vh" />;
   }
 
   if (!reservation) {

@@ -32,7 +32,7 @@ import { useGetAdmin } from '@hooks/use-admins';
 import { useGetEntityLogs, useGetAdminSessions } from 'lib/hooks';
 import { usePermissions } from 'lib/hooks/use-permissions';
 import { PermissionGuard } from 'components/shared/permission-guard';
-import { Loader, AuditPage, SessionAuditPage } from 'components/shared';
+import { LottieLoader, AuditPage, SessionAuditPage } from 'components/shared';
 import { ReactElement, useState } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 
@@ -74,7 +74,7 @@ const ViewAdminPage: NextPageWithLayout<ViewAdminPageProps> = ({ id }) => {
   };
 
   if (isLoadingAdmin) {
-    return <Loader fullHeight />;
+    return <LottieLoader type="loading" size="lg" height="50vh" />;
   }
 
   // Si no se encontró el admin, redirigir

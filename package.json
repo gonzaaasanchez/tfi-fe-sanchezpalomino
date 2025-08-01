@@ -26,6 +26,7 @@
     "eslint-config-next": "^14.2.13",
     "framer-motion": "^10.18.0",
     "lodash": "^4.17.21",
+    "lottie-react": "^2.4.1",
     "next": "^14.2.13",
     "next-auth": "^4.24.6",
     "next-intl": "^3.17.6",

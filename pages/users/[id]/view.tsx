@@ -33,7 +33,7 @@ import { useGetUser, useGetUserSessions } from 'lib/hooks';
 import { useGetUserPets } from 'lib/hooks/use-pets';
 import { usePermissions } from 'lib/hooks/use-permissions';
 import { useCustomToast } from 'lib/hooks/use-custom-toast';
-import { Loader, SessionAuditPage, PetDetail } from 'components/shared';
+import { LottieLoader, SessionAuditPage, PetDetail } from 'components/shared';
 import TableComponent, { Column, Action } from 'components/shared/table';
 import { Pet } from 'lib/types/pet';
 
@@ -143,7 +143,7 @@ const ViewUserPage: NextPageWithLayout<ViewUserPageProps> = ({ id }) => {
   }, [petsError, errorToast]);
 
   if (isPending) {
-    return <Loader fullHeight />;
+    return <LottieLoader type="loading" size="lg" height="50vh" />;
   }
 
   if (!user) {

@@ -25,7 +25,7 @@ import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
 import { useRouter } from 'next/router';
 import { useGetPetType } from '@hooks/use-pet-types';
-import { Loader } from 'components/shared';
+import { LottieLoader } from 'components/shared';
 
 interface ViewPetTypePageProps {
   id: string;
@@ -45,7 +45,7 @@ const ViewPetTypePage: NextPageWithLayout<ViewPetTypePageProps> = ({ id }) => {
   };
 
   if (isPending) {
-    return <Loader fullHeight />;
+    return <LottieLoader type="loading" size="lg" height="50vh" />;
   }
 
   if (!petType) {

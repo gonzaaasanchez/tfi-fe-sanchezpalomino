@@ -21,7 +21,7 @@ import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
 import { useGetPetCharacteristic } from 'lib/hooks';
 import { PetCharacteristicFormType } from 'lib/types/forms';
-import { Loader } from 'components/shared';
+import { LottieLoader } from 'components/shared';
 
 interface EditPetCharacteristicPageProps {
   id: string;
@@ -45,7 +45,7 @@ const EditPetCharacteristicPage: NextPageWithLayout<EditPetCharacteristicPagePro
   };
 
   if (isPending) {
-    return <Loader fullHeight />;
+    return <LottieLoader type="loading" size="lg" height="50vh" />;
   }
 
   if (!petCharacteristic) {

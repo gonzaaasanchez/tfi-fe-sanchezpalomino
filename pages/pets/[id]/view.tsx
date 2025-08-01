@@ -24,7 +24,7 @@ import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
 import { useRouter } from 'next/router';
 import { useGetPet } from 'lib/hooks/use-pets';
-import { Loader, PetDetail } from 'components/shared';
+import { LottieLoader, PetDetail } from 'components/shared';
 
 interface ViewPetPageProps {
   id: string;
@@ -40,7 +40,7 @@ const ViewPetPage: NextPageWithLayout<ViewPetPageProps> = ({ id }) => {
   };
 
   if (isPending) {
-    return <Loader fullHeight />;
+    return <LottieLoader type="loading" size="lg" height="50vh" />;
   }
 
   if (!pet) {

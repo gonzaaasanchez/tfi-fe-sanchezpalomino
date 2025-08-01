@@ -19,7 +19,7 @@ import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
 import { NextSeo } from 'next-seo';
 import { useGetAdmin } from '@hooks/use-admins';
-import { Loader } from 'components/shared';
+import { LottieLoader } from 'components/shared';
 import { ReactElement } from 'react';
 import { NextPageWithLayout } from 'pages/_app';
 
@@ -47,7 +47,7 @@ const EditAdminPage: NextPageWithLayout<EditAdminPageProps> = ({ id }) => {
   };
 
   if (isLoadingAdmin) {
-    return <Loader fullHeight />;
+    return <LottieLoader type="loading" size="lg" height="50vh" />;
   }
 
   // Si no se encontró el admin, redirigir

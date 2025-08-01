@@ -22,7 +22,7 @@ import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import Pagination from './pagination';
 import { usePermissions } from '@hooks/use-permissions';
 import { useTranslations } from 'next-intl';
-import Loader from './loader';
+import { LottieLoader } from './lottie-loader';
 import { PaginationMetadata } from '../../lib/types/response';
 
 // Data types
@@ -183,7 +183,7 @@ const TableComponent: React.FC<TableProps> = ({
   );
   const renderLoadingState = () => (
     <Center py={12}>
-      <Loader size="lg" />
+              <LottieLoader type="loading" size="lg" />
     </Center>
   );
 
@@ -301,7 +301,7 @@ const TableComponent: React.FC<TableProps> = ({
                         >
                           <Box>
                             {isLoading ? (
-                              <Loader size="sm" />
+                              <LottieLoader type="loading" size="sm" />
                             ) : (
                               <IconButton
                                 size={action.size || 'sm'}

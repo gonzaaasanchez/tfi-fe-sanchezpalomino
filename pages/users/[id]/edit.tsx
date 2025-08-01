@@ -21,7 +21,7 @@ import { handlePermission } from '@helpers/middlewares';
 import { PrivateLayout } from 'layouts';
 import { useGetUser } from 'lib/hooks';
 import { UserFormType } from 'lib/types/forms';
-import { Loader } from 'components/shared';
+import { LottieLoader } from 'components/shared';
 
 interface EditUserPageProps {
   id: string;
@@ -45,7 +45,7 @@ const EditUserPage: NextPageWithLayout<EditUserPageProps> = ({ id }) => {
   };
 
   if (isPending) {
-    return <Loader fullHeight />;
+    return <LottieLoader type="loading" size="lg" height="50vh" />;
   }
 
   if (!user) {
