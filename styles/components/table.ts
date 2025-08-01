@@ -14,7 +14,7 @@ export const Table: ComponentStyleConfig = {
         fontWeight: '600',
         lineHeight: '22px',
         color: 'brand1.700',
-        verticalAlign: 'middle'
+        verticalAlign: 'top'
       }
     },
     tbody: {
@@ -23,7 +23,7 @@ export const Table: ComponentStyleConfig = {
           fontSize: '14px',
           lineHeight: '22px',
           padding: '22px 22px 22px 0',
-          verticalAlign: 'middle',
+          verticalAlign: 'top',
           borderBottom: '1px solid',
           borderColor: 'gray.200'
         }

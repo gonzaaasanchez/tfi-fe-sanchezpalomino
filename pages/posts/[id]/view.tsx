@@ -21,7 +21,6 @@ import {
   TabPanel,
   Card,
   CardBody,
-  Image,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -36,9 +35,10 @@ import { GetServerSideProps } from 'next';
 import { useTranslations } from 'next-intl';
 import { pick } from 'lodash';
 import { useRouter } from 'next/router';
-import { useGetPost } from 'lib/hooks';
+import { useGetPost, useGetPostComments } from 'lib/hooks';
 import { Loader } from 'components/shared';
 import { getImageUrl } from 'lib/helpers/utils';
+import TableComponent, { Column } from 'components/shared/table';
 
 interface ViewPostPageProps {
   id: string;
@@ -49,6 +49,8 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
   const router = useRouter();
   const { post, isPending } = useGetPost({ id });
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [commentsPage, setCommentsPage] = useState(1);
+  const { comments, pagination: commentsPagination, isPending: isCommentsPending } = useGetPostComments(id, { limit: 10, page: commentsPage });
 
   const handleEdit = () => {
     router.push(`/posts/${id}/edit`);
@@ -56,6 +58,10 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
 
   const handleBack = () => {
     router.push('/posts');
+  };
+
+  const handleCommentsPageChange = (page: number) => {
+    setCommentsPage(page);
   };
 
   if (isPending) {
@@ -172,6 +178,18 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
                 _hover={{ bg: 'brand1.300' }}
               >
                 {t('tabs.information')}
+              </Tab>
+              <Tab
+                bg="brand1.200"
+                color="brand1.700"
+                fontSize="sm"
+                _selected={{
+                  bg: 'brand1.600',
+                  color: 'white',
+                }}
+                _hover={{ bg: 'brand1.300' }}
+              >
+                Comentarios
               </Tab>
             </TabList>
 
@@ -361,6 +379,75 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
                   </CardBody>
                 </Card>
               </TabPanel>
+
+              {/* Comments Tab */}
+              <TabPanel>
+                <TableComponent
+                  rows={comments}
+                  columns={[
+                    {
+                      key: 'id',
+                      label: 'ID',
+                      width: '80px',
+                      sortable: true,
+                      sortKey: 'id',
+                    },
+                    {
+                      key: 'author',
+                      label: 'Autor',
+                      sortable: true,
+                      sortKey: 'author',
+                      type: 'custom',
+                      renderCell: (item: any) => (
+                        <Text>
+                          {item.author?.firstName} {item.author?.lastName}
+                        </Text>
+                      ),
+                    },
+                    {
+                      key: 'comment',
+                      label: 'Comentario',
+                      sortable: true,
+                      sortKey: 'comment',
+                      type: 'custom',
+                      renderCell: (item: any) => (
+                        <Box
+                          maxW="300px"
+                          wordBreak="break-word"
+                          whiteSpace="pre-wrap"
+                        >
+                          <Text>
+                            {item.comment}
+                          </Text>
+                        </Box>
+                      ),
+                    },
+                    {
+                      key: 'createdAt',
+                      label: 'Fecha de Creación',
+                      sortable: true,
+                      sortKey: 'createdAt',
+                      type: 'custom',
+                      renderCell: (item: any) => (
+                        <Text>
+                          {new Date(item.createdAt).toLocaleDateString('es-ES', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
+                        </Text>
+                      ),
+                    },
+                  ]}
+                  loading={isCommentsPending}
+                  emptyText="No hay comentarios disponibles"
+                  shadow={true}
+                  onChangePage={handleCommentsPageChange}
+                  metadata={commentsPagination}
+                />
+              </TabPanel>
             </TabPanels>
           </Tabs>
         </VStack>
@@ -431,6 +518,8 @@ export const getServerSideProps: GetServerSideProps = async ({
         'pages.posts.view',
         'layouts.private.header',
         'lib.hooks.posts',
+        'components.shared.pagination',
+        'components.shared.table',
         'general.common',
         'general.sidebar',
         'general.auth.logout',

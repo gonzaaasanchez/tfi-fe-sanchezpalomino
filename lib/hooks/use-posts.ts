@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { PostService } from '../services/post';
 import { Post } from '../types/post';
+import { Comment } from '../types/comment';
 import { UseGetAllType, UseGetOneByIdType } from '../types/hooks';
 import { DEFAULT_PARAM_LIMIT } from '../constants/params';
 
@@ -46,4 +47,37 @@ export function useGetPost({ id }: UseGetOneByIdType) {
   });
 
   return { post: data as Post | undefined, isPending };
+}
+
+export function useGetPostComments(
+  postId: string,
+  params?: {
+    limit?: number;
+    page?: number;
+  }
+) {
+  const [currentPage, setCurrentPage] = useState<number>(params?.page || 1);
+
+  const { data, isPending, error } = useQuery({
+    queryKey: [`/comments/posts/${postId}/comments`, currentPage],
+    queryFn: () =>
+      PostService.getPostComments(postId, {
+        limit: params?.limit || DEFAULT_PARAM_LIMIT,
+        page: currentPage,
+      }),
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    staleTime: 60000,
+    enabled: !!postId,
+  });
+
+  return {
+    comments: data?.items as Comment[] || [],
+    pagination: data?.pagination,
+    currentPage,
+    setCurrentPage,
+    isPending,
+    error,
+  };
 } 
