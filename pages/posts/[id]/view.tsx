@@ -223,24 +223,24 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
                           <Text color="gray.600">{post.id}</Text>
                         </HStack>
 
-                        <HStack justify="space-between">
+                        <HStack justify="space-between" align="flex-start">
                           <Text
                             fontWeight="semibold"
                             color="gray.700"
                           >
                             {t('fields.title')}:
                           </Text>
-                          <Text color="gray.600">{post.title}</Text>
+                          <Text color="gray.600" textAlign="right">{post.title}</Text>
                         </HStack>
 
-                        <HStack justify="space-between">
+                        <HStack justify="space-between" align="flex-start">
                           <Text
                             fontWeight="semibold"
                             color="gray.700"
                           >
                             {t('fields.description')}:
                           </Text>
-                          <Text color="gray.600">{post.description}</Text>
+                          <Text color="gray.600" textAlign="right">{post.description}</Text>
                         </HStack>
 
                         <HStack justify="space-between">
