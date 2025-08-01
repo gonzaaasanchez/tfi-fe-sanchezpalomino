@@ -89,6 +89,7 @@
       "petCharacteristics": "Características de Mascotas",
       "pets": "Mascotas",
       "reservations": "Reservas",
+      "posts": "Posts",
       "settings": "Configuraciones",
       "reviews": "Reseñas",
       "logs": "Logs"
@@ -469,6 +470,12 @@
         "responses": {
           "updateSuccess": "Configuraciones actualizadas exitosamente",
           "updateError": "Error al actualizar las configuraciones"
+        }
+      },
+      "posts": {
+        "responses": {
+          "getError": "Error al obtener los posts",
+          "getOneError": "Error al obtener el post"
         }
       }
     },
@@ -1227,7 +1234,7 @@
           }
         },
         "status": {
-          "pending": "Pendiente",
+          "pending_payment": "Pendiente de Pago",
           "waiting_acceptance": "Esperando Aceptación",
           "pending": "Esperando Aceptación",
           "confirmed": "Confirmada",
@@ -1387,6 +1394,75 @@
         },
         "notFound": "Mascota no encontrada",
         "noPets": "No hay mascotas registradas"
+      }
+    },
+    "posts": {
+      "index": {
+        "meta": {
+          "title": "Posts",
+          "description": "Gestión de posts del sistema"
+        },
+        "title": "Posts",
+        "description": "Administra los posts del sistema",
+        "emptyText": "No hay posts disponibles",
+        "columns": {
+          "id": "ID",
+          "title": "Título",
+          "description": "Descripción",
+          "author": "Autor",
+          "commentsCount": "Comentarios",
+          "likesCount": "Me Gusta",
+          "createdAt": "Fecha de Creación"
+        },
+        "actions": {
+          "view": {
+            "label": "Ver",
+            "tooltip": "Ver detalles del post"
+          },
+          "edit": {
+            "label": "Editar",
+            "tooltip": "Editar post"
+          },
+          "delete": {
+            "label": "Eliminar",
+            "tooltip": "Eliminar post"
+          }
+        }
+      },
+      "view": {
+        "meta": {
+          "title": "Ver Post",
+          "description": "Ver información del post"
+        },
+        "title": "Ver Post",
+        "description": "Información detallada del post",
+        "breadcrumb": {
+          "home": "Inicio",
+          "posts": "Posts",
+          "view": "Ver"
+        },
+        "actions": {
+          "back": "Volver",
+          "edit": "Editar"
+        },
+        "fields": {
+          "id": "ID",
+          "title": "Título",
+          "description": "Descripción",
+          "image": "Imagen",
+          "author": "Autor",
+          "commentsCount": "Comentarios",
+          "likesCount": "Me Gusta",
+          "createdAt": "Fecha de Creación",
+          "updatedAt": "Última Actualización"
+        },
+        "sections": {
+          "postInfo": "Información del Post"
+        },
+        "tabs": {
+          "information": "Información"
+        },
+        "notFound": "Post no encontrado"
       }
     }
   }

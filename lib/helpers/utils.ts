@@ -316,3 +316,22 @@ export const downloadHTMLReport = (htmlContent: string, filename: string) => {
   document.body.removeChild(link);
   window.URL.revokeObjectURL(url);
 };
+
+export const getImageUrl = (imagePath: string): string => {
+  if (!imagePath) return '';
+  
+  // If it's already a full URL, return as is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  
+  // If it's a relative path, prepend the API base URL
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (baseUrl) {
+    // Remove /api from imagePath if baseUrl already contains it
+    const cleanImagePath = imagePath.startsWith('/api') ? imagePath.substring(4) : imagePath;
+    return `${baseUrl}${cleanImagePath}`;
+  }
+  
+  return imagePath;
+};

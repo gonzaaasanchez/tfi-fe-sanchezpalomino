@@ -6,6 +6,7 @@ import {
   FaUserShield,
   FaCalendarCheck,
   FaFileAlt,
+  FaRss,
 } from 'react-icons/fa';
 
 export interface SidebarModule {
@@ -73,12 +74,20 @@ export const sidebarModules: SidebarModule[] = [
     action: 'getAll',
   },
   {
+    name: 'posts',
+    path: '/posts',
+    icon: FaRss,
+    module: 'posts',
+    action: 'getAll',
+  },
+  {
     name: 'settings',
     path: '/settings',
     icon: SettingsIcon,
     module: 'settings',
     action: 'getAll',
   },
+
   // {
   //   name: 'Reseñas',
   //   path: '/reviews',
