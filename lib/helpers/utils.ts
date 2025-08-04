@@ -168,7 +168,8 @@ export const generateHTMLReport = (options: ReportOptions) => {
           font-size: 12px;
           font-weight: bold;
         }
-        .status-pending { background-color: #fff3cd; color: #856404; }
+        .status-payment_pending { background-color: #fff3cd; color: #856404; }
+        .status-payment_rejected { background-color: #f8d7da; color: #721c24; }
         .status-waiting_acceptance { background-color: #d1ecf1; color: #0c5460; }
         .status-confirmed { background-color: #d4edda; color: #155724; }
         .status-started { background-color: #cce5ff; color: #004085; }
