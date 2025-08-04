@@ -1235,8 +1235,8 @@
         },
         "status": {
           "pending_payment": "Pendiente de Pago",
+          "pending_rejection": "Pago Rechazado",
           "waiting_acceptance": "Esperando Aceptación",
-          "pending": "Esperando Aceptación",
           "confirmed": "Confirmada",
           "started": "Iniciada",
           "rejected": "Rechazada",

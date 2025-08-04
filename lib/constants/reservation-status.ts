@@ -6,9 +6,14 @@ export interface ReservationStatusOption {
 
 export const RESERVATION_STATUS_OPTIONS: ReservationStatusOption[] = [
   {
-    value: 'pending',
-    label: 'Pendiente',
+    value: 'pending-payment',
+    label: 'Pendiente de Pago',
     color: 'yellow'
+  },
+  {
+    value: 'payment_rejected',
+    label: 'Pago Rechazado',
+    color: 'red'
   },
   {
     value: 'waiting_acceptance',
