@@ -11,6 +11,8 @@ export class ReservationService {
     status?: string;
     userId?: string;
     caregiverId?: string;
+    dateFrom?: string;
+    dateTo?: string;
   }): Promise<BaseResponse<PaginatedResponse<Reservation[]>>> {
     try {
       const response = await ClientApi.get<
@@ -23,6 +25,8 @@ export class ReservationService {
           status: params.status,
           userId: params.userId,
           caregiverId: params.caregiverId,
+          dateFrom: params.dateFrom,
+          dateTo: params.dateTo,
         },
       });
 

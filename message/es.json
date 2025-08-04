@@ -380,6 +380,16 @@
           "label": "Estado",
           "tooltip": "Filtrar por estado de la reserva",
           "placeholder": "Seleccionar estado"
+        },
+        "dateFrom": {
+          "label": "Fecha desde",
+          "tooltip": "Filtrar reservas desde esta fecha (YYYY-MM-DD)",
+          "placeholder": "Seleccionar fecha desde"
+        },
+        "dateTo": {
+          "label": "Fecha hasta",
+          "tooltip": "Filtrar reservas hasta esta fecha (YYYY-MM-DD)",
+          "placeholder": "Seleccionar fecha hasta"
         }
       },
       "pagination": {
@@ -1255,7 +1265,9 @@
           "filterLabels": {
             "user": "Usuario",
             "caregiver": "Cuidador",
-            "status": "Estado"
+            "status": "Estado",
+            "dateFrom": "Fecha desde",
+            "dateTo": "Fecha hasta"
           },
           "columns": {
             "id": "ID",

@@ -11,9 +11,11 @@ export function useGetReservations(params?: UseGetAllType) {
   const [userId, setUserId] = useState<string>('');
   const [caregiverId, setCaregiverId] = useState<string>('');
   const [status, setStatus] = useState<string>('');
+  const [dateFrom, setDateFrom] = useState<string>('');
+  const [dateTo, setDateTo] = useState<string>('');
 
   const { data, isPending, error, isError } = useQuery({
-    queryKey: ['/reservations/admin/all', search, currentPage, userId, caregiverId, status],
+    queryKey: ['/reservations/admin/all', search, currentPage, userId, caregiverId, status, dateFrom, dateTo],
     queryFn: () => {
       return ReservationService.getReservations({
         search,
@@ -22,6 +24,8 @@ export function useGetReservations(params?: UseGetAllType) {
         userId: userId || undefined,
         caregiverId: caregiverId || undefined,
         status: status || undefined,
+        dateFrom: dateFrom || undefined,
+        dateTo: dateTo || undefined,
       });
     },
     retry: false,
@@ -40,6 +44,8 @@ export function useGetReservations(params?: UseGetAllType) {
         userId: userId || undefined,
         caregiverId: caregiverId || undefined,
         status: status || undefined,
+        dateFrom: dateFrom || undefined,
+        dateTo: dateTo || undefined,
       });
       
       // Obtener los items y asegurar que sea un array
@@ -66,6 +72,10 @@ export function useGetReservations(params?: UseGetAllType) {
     setCaregiverId,
     status,
     setStatus,
+    dateFrom,
+    setDateFrom,
+    dateTo,
+    setDateTo,
     isPending,
     getAllReservationsForExport,
   };

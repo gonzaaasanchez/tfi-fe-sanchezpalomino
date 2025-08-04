@@ -10,6 +10,7 @@ import {
   Select,
   Button,
   HStack,
+  Input,
 } from '@chakra-ui/react';
 import { PrivateLayout } from 'layouts/private';
 import { handlePermission } from '@helpers/middlewares';
@@ -53,6 +54,10 @@ const ReservationsPage: NextPageWithLayout = () => {
     setCaregiverId,
     status,
     setStatus,
+    dateFrom,
+    setDateFrom,
+    dateTo,
+    setDateTo,
     isPending,
     getAllReservationsForExport,
     search,
@@ -104,6 +109,18 @@ const ReservationsPage: NextPageWithLayout = () => {
         filters.push({
           label: t('export.filterLabels.status'),
           value: statusLabel,
+        });
+      }
+      if (dateFrom) {
+        filters.push({
+          label: t('export.filterLabels.dateFrom'),
+          value: dateFrom,
+        });
+      }
+      if (dateTo) {
+        filters.push({
+          label: t('export.filterLabels.dateTo'),
+          value: dateTo,
         });
       }
 
@@ -254,6 +271,30 @@ const ReservationsPage: NextPageWithLayout = () => {
         ],
       },
     },
+    {
+      name: 'dateFrom',
+      label: tFilters('dateFrom.label'),
+      tooltip: tFilters('dateFrom.tooltip'),
+      value: dateFrom,
+      component: Input,
+      componentProps: {
+        type: 'date',
+        placeholder: tFilters('dateFrom.placeholder'),
+        size: 'md',
+      },
+    },
+    {
+      name: 'dateTo',
+      label: tFilters('dateTo.label'),
+      tooltip: tFilters('dateTo.tooltip'),
+      value: dateTo,
+      component: Input,
+      componentProps: {
+        type: 'date',
+        placeholder: tFilters('dateTo.placeholder'),
+        size: 'md',
+      },
+    },
   ];
 
   const columns: Column[] = [
@@ -377,6 +418,10 @@ const ReservationsPage: NextPageWithLayout = () => {
       setCaregiverId(caregiverIdValue || '');
       const statusValue = filters.status as string;
       setStatus(statusValue || '');
+      const dateFromValue = filters.dateFrom as string;
+      setDateFrom(dateFromValue || '');
+      const dateToValue = filters.dateTo as string;
+      setDateTo(dateToValue || '');
       setCurrentPage(1);
     } finally {
       setIsFiltersLoading(false);
@@ -387,6 +432,8 @@ const ReservationsPage: NextPageWithLayout = () => {
     setUserId('');
     setCaregiverId('');
     setStatus('');
+    setDateFrom('');
+    setDateTo('');
     setCurrentPage(1);
   };
 
