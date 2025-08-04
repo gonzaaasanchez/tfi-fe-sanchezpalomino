@@ -6,7 +6,7 @@ export interface ReservationStatusOption {
 
 export const RESERVATION_STATUS_OPTIONS: ReservationStatusOption[] = [
   {
-    value: 'pending-payment',
+    value: 'pending_payment',
     label: 'Pendiente de Pago',
     color: 'yellow'
   },

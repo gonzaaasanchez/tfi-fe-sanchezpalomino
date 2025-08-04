@@ -127,7 +127,7 @@ const ReservationsPage: NextPageWithLayout = () => {
         { key: 'status', label: t('export.columns.status') },
         {
           key: 'commission',
-          label: t('export.columns.commission'),
+          label: t('export.columns.commission'),  
           render: (value, item) => `$${item.commission || '0.00'}`,
         },
         { key: 'createdAt', label: t('export.columns.createdAt') },
