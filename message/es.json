@@ -1212,6 +1212,7 @@
           "pets": "Mascotas",
           "pet": "Mascotas",
           "totalPrice": "Precio Total",
+          "commission": "Comisión",
           "status": "Estado",
           "createdAt": "Fecha de Creación"
         },
@@ -1263,6 +1264,7 @@
             "startDate": "Fecha de Inicio",
             "endDate": "Fecha de Fin",
             "status": "Estado",
+            "commission": "Comisión",
             "createdAt": "Fecha de Creación"
           }
         },

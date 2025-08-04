@@ -125,6 +125,11 @@ const ReservationsPage: NextPageWithLayout = () => {
         { key: 'startDate', label: t('export.columns.startDate') },
         { key: 'endDate', label: t('export.columns.endDate') },
         { key: 'status', label: t('export.columns.status') },
+        {
+          key: 'commission',
+          label: t('export.columns.commission'),
+          render: (value, item) => `$${item.commission || '0.00'}`,
+        },
         { key: 'createdAt', label: t('export.columns.createdAt') },
       ];
 
@@ -320,6 +325,16 @@ const ReservationsPage: NextPageWithLayout = () => {
           </Tag>
         );
       },
+    },
+    {
+      key: 'commission',
+      label: t('columns.commission'),
+      type: 'custom',
+      renderCell: (item: Reservation) => (
+        <Text>
+          ${item.commission || '0.00'}
+        </Text>
+      ),
     },
   ];
 
