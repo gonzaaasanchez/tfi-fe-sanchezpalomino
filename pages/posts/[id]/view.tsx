@@ -28,7 +28,7 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from '@chakra-ui/react';
-import { ChevronRightIcon, EditIcon, ArrowBackIcon } from '@chakra-ui/icons';
+import { ChevronRightIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { PrivateLayout } from 'layouts/private';
 import { handlePermission } from '@helpers/middlewares';
 import { GetServerSideProps } from 'next';
@@ -55,10 +55,6 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
     pagination: commentsPagination,
     isPending: isCommentsPending,
   } = useGetPostComments(id, { limit: 10, page: commentsPage });
-
-  const handleEdit = () => {
-    router.push(`/posts/${id}/edit`);
-  };
 
   const handleBack = () => {
     router.push('/posts');
@@ -152,21 +148,13 @@ const ViewPostPage: NextPageWithLayout<ViewPostPageProps> = ({ id }) => {
                 </Heading>
                 <Text color="gray.600">{t('description')}</Text>
               </Box>
-              <HStack spacing={3}>
-                <Button
-                  leftIcon={<ArrowBackIcon />}
-                  variant="outline"
-                  onClick={handleBack}
-                >
-                  {t('actions.back')}
-                </Button>
-                <Button
-                  leftIcon={<EditIcon />}
-                  onClick={handleEdit}
-                >
-                  {t('actions.edit')}
-                </Button>
-              </HStack>
+              <Button
+                leftIcon={<ArrowBackIcon />}
+                variant="outline"
+                onClick={handleBack}
+              >
+                {t('actions.back')}
+              </Button>
             </HStack>
           </Box>
 
